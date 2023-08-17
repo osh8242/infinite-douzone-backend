@@ -20,4 +20,7 @@
         name='lee' where emp_code = (#{empCode})
     </update>
 
+    <delete id="deleteSwsm">
+        delete from swsm where emp_code=(#{empCode})
+    </delete>
 </mapper>

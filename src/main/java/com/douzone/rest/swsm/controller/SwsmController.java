@@ -13,22 +13,14 @@ import java.util.List;
 @RequestMapping("/swsm")
 public class SwsmController {
 
-    //   @Autowired
-    //    private SwsmService swsmService;
-
-    private SwsmService swsmService;
-
-    @Autowired
-    public SwsmController(SwsmService swsmService){
-        this.swsmService=swsmService;
-    }
+ @Autowired
+ private SwsmService swsmService;
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Swsm>> getAllSwsm(){
         List<Swsm> swsmList=swsmService.getAllSwsm();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
     }
-
 
     @PostMapping("/insertSwsm")
     public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm){
