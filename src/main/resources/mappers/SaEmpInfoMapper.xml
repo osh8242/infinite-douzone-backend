@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.emp.dao.SaEmpInfoMapper">
+    <select id="getAllSaEmpInfo" resultType="SaEmpInfo">
+        SELECT *
+        FROM SAEMPINFO
+    </select>
+
+    <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
+        delete
+        from SAEMPINFO
+        where CD_EMP = #{cdEmp}
+    </delete>
+
+</mapper>
