@@ -7,13 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface SaEmpInfoMapper {
-    List<SaEmpInfo> getAllSaEmpInfo();//전체조회
+    List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo);//리스트조회
 
     SaEmpInfo getSaEmpInfoByCdEmp(SaEmpInfo saEmpInfo);//하나조회
     
-    void deleteEmpInfo(SaEmpInfo saEmpInfo);//삭제
-
-
-    
+    void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
+    void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
 
 }

@@ -2,16 +2,55 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.douzone.rest.emp.dao.SaEmpInfoMapper">
-    <select id="getAllSaEmpInfo" resultType="SaEmpInfo">
+<mapper namespace="com.douzone.rest.saEmpInfo.dao.SaEmpInfoMapper">
+
+    <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
         SELECT *
         FROM SAEMPINFO
+        WHERE 1=1
+        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
+        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
+        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
+        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
+
     </select>
+
+    <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
+        SELECT *
+        FROM SAEMPINFO
+        WHERE CD_EMP = #{cdEmp}
+    </select>
+
 
     <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
         delete
         from SAEMPINFO
         where CD_EMP = #{cdEmp}
     </delete>
+
+    <update id="updateEmpInfo" parameterType="SaEmpInfo">
+        update SAEMPINFO
+        set CD_EMP = #{cdEmp}
+            <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>
+            <if test="daEnter                  != null">, DA_ENTER = #{daEnter}</if>
+            <if test="ynMateDed                != null">, YN_MATEDED = #{ynMateDed}</if>
+            <if test="num20Family              != null">, NUM_20FAMILY = #{num20Family}</if>
+            <if test="num60Family              != null">, NUM_60FAMILY = #{num60Family}</if>
+            <if test="numManyFamily            != null">, NUM_MANYFAMILY = #{numManyFamily}</if>
+            <if test="ynResident               != null">, YN_RESIDENT = #{ynResident}</if>
+            <if test="ynUnit                   != null">, YN_UNIT = #{ynUnit}</if>
+            <if test="ynForLabor               != null">, YN_FORLABOR = #{ynForLabor}</if>
+            <if test="ynOverwork               != null">, YN_OVERWORK = #{ynOverwork}</if>
+            <if test="cdOccup                  != null">, CD_OCCUP = #{cdOccup}</if>
+            <if test="rankNo                   != null">, RANK_NO = #{rankNo}</if>
+            <if test="cdDept                   != null">, CD_DEPT = #{cdDept}</if>
+            <if test="cdField                  != null">, CD_FIELD = #{cdField}</if>
+            <if test="cdProject                != null">, CD_PROJECT = #{cdProject}</if>
+            <if test="amNationPen              != null">, AM_NATIONPEN = #{amNationPen}</if>
+            <if test="amHealthInsur            != null">, AM_HEALTHINSUR = #{amHealthInsur}</if>
+            <if test="mn211                    != null">, MN_2_1_1 = #{mn211}</if>
+            <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
+        where CD_EMP = #{cdEmp}
+    </update>
 
 </mapper>

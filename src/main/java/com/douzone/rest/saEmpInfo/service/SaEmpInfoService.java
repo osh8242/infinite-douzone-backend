@@ -12,21 +12,35 @@ import java.util.List;
 public class SaEmpInfoService {
 
     SaEmpInfoMapper saEmpInfoMapper;
+
     @Autowired
-    public SaEmpInfoService(SaEmpInfoMapper saEmpInfoMapper){
+    public SaEmpInfoService(SaEmpInfoMapper saEmpInfoMapper) {
         this.saEmpInfoMapper = saEmpInfoMapper;
     }
 
-    public List<SaEmpInfo> getAllSaEmpInfo(){
-        return saEmpInfoMapper.getAllSaEmpInfo();
+    public List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo) {
+        return saEmpInfoMapper.getSaEmpInfoList(saEmpInfo);
     }
 
-    public void deleteEmpInfo(SaEmpInfo saEmpInfo){
+    public SaEmpInfo getSaEmpInfoByCdEmp(SaEmpInfo saEmpInfo) {
+        return saEmpInfoMapper.getSaEmpInfoByCdEmp(saEmpInfo);
+    }
+
+    public void deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
         try {
-            saEmpInfoMapper.deleteEmpInfo(saEmpInfo);
-        }catch (Exception e){
+            saEmpInfoMapper.deleteSaEmpInfo(saEmpInfo);
+        } catch (Exception e) {
             e.getStackTrace();
         }
     }
+
+    public void updateEmpInfo(SaEmpInfo saEmpInfo) {
+        try {
+            saEmpInfoMapper.updateEmpInfo(saEmpInfo);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
+
 
 }
