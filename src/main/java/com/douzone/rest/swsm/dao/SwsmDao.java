@@ -13,6 +13,6 @@ public interface SwsmDao {
     int insertSwsm(Swsm swsm);
     int updateSwsm(Swsm swsm);
     int deleteSwsm(Swsm swsm);
-    List<Swsm> getAllSwsmList();
+    List<Swsm> getAllSwsm();
 
 }

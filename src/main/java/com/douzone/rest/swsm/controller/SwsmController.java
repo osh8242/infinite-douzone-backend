@@ -7,19 +7,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/swsm")
 public class SwsmController {
 
     @Autowired
     private SwsmService swsmService;
 
-    @GetMapping("getAllList")
+    @Autowired
+    public SwsmController(SwsmService swsmService){
+        this.swsmService=swsmService;
+    }
+
+    @GetMapping("/getAll")
     public ResponseEntity<List<Swsm>> swsmList(){
-        List<Swsm> swsmList=swsmService.swsmList();
+        List<Swsm> swsms=swsmService.swsmList();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
     }
 
