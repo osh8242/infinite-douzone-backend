@@ -17,7 +17,7 @@ public class SwsmController {
     //    private SwsmService swsmService;
 
     private SwsmService swsmService;
- 
+
     @Autowired
     public SwsmController(SwsmService swsmService){
         this.swsmService=swsmService;
@@ -36,7 +36,15 @@ public class SwsmController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @DeleteMapping("/deleteSwsm")
+    public ResponseEntity<Integer> deleteSwsm(@RequestBody Swsm swsm){
+        return ResponseEntity.status(HttpStatus.OK).body(swsmService.deleteSwsm(swsm));
+    }
 
+    @PostMapping("/updateSwsm")
+    public ResponseEntity<Integer> updateSwsm(@RequestBody Swsm swsm){
+        return ResponseEntity.status(HttpStatus.OK).body(swsmService.updateSwsm(swsm));
+    }
 
 
 }
