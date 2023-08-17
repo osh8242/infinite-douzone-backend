@@ -12,16 +12,15 @@ import java.util.List;
 
 @Service
 public class SwsmService {
-
+    //    @Autowired
 //    private SwsmDao swsmDao;
-//
-//    @Autowired
-//    public SwsmService(SwsmDao swsmDao) {
-//        this.swsmDao = swsmDao;
-//    }
+    private SwsmDao swsmDao;
 
     @Autowired
-    private SwsmDao swsmDao;
+    public SwsmService(SwsmDao swsmDao) {
+        this.swsmDao = swsmDao;
+    }
+
 
     public int insertSwsm(Swsm swsm) {
         return swsmDao.insertSwsm(swsm);

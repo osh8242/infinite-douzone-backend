@@ -16,6 +16,9 @@ import java.util.List;
 @RequestMapping("/swsm")
 public class SwsmController {
 
+    //   @Autowired
+    //    private SwsmService swsmService;
+
     @Autowired
     private SwsmService swsmService;
 
@@ -25,10 +28,17 @@ public class SwsmController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Swsm>> swsmList(){
-        List<Swsm> swsms=swsmService.swsmList();
+    public ResponseEntity<List<Swsm>> getAllSwsm(){
+        List<Swsm> swsmList=swsmService.getAllSwsm();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
     }
+
+    public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm){
+        int result=swsmService.insertSwsm(swsm);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+
 
 
 }

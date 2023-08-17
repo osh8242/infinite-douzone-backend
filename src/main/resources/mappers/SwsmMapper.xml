@@ -9,4 +9,10 @@
         emp_code
         FROM SWSM
     </select>
+
+    <insert id="insertSwsm" parameterType="Swsm">
+        insert into swsm(emp_code)
+        value (#{empCode})
+    </insert>
+
 </mapper>
