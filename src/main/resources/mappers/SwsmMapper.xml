@@ -12,7 +12,7 @@
 
     <insert id="insertSwsm" parameterType="Swsm">
         insert into swsm(emp_code)
-        value (#{empCode})
+        values (#{empCode})
     </insert>
 
 </mapper>
