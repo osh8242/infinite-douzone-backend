@@ -11,5 +11,8 @@
         insert into empadd (cd_emp)
         values (#{cdEmp}})
     </insert>
+    <delete id="deleteEmpByCD_EMP" parameterType="EmpAdd">
+        delete from empadd where cd_emp = #{cdEmp}
+    </delete>
 
 </mapper>

@@ -30,8 +30,25 @@ public class EmpAddController {
     @PostMapping("/insertEmpAdd")
     public ResponseEntity<Integer> insertEmpAdd(@RequestBody EmpAdd empAdd) {
         int result = 0;
-        System.out.println("empAdd = " + empAdd);
         result = empAddService.insertEmpAdd(empAdd);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/deleteEmpAdd")
+    public ResponseEntity<Integer> deleteEmpByCD_EMP(@RequestBody EmpAdd empAdd){
+        System.out.println("EmpAddController.deleteEmpByCD_EMP");
+        System.out.println("empAdd = " + empAdd);
+        int result = 0;
+        result = empAddService.deleteEmpByCD_EMP(empAdd);
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/updateEmpAdd")
+    public ResponseEntity<Integer> updateEmpAddByCD_EMP(@RequestBody EmpAdd empAdd){
+        System.out.println("EmpAddController.deleteEmpByCD_EMP");
+        System.out.println("empAdd = " + empAdd);
+        int result = 0;
+        result = empAddService.updateEmpAddByCD_EMP(empAdd);
         return ResponseEntity.ok(result);
     }
 //    public EmpAdd getEmpAddByCD_EMP(EmpAdd empAdd);
