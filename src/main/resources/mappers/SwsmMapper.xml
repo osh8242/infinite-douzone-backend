@@ -15,4 +15,9 @@
         values (#{empCode})
     </insert>
 
+    <update id="updateSwsm">
+        update swsm set
+        name='lee' where emp_code = (#{empCode})
+    </update>
+
 </mapper>
