@@ -17,7 +17,7 @@ public class SwsmController {
     //    private SwsmService swsmService;
 
     private SwsmService swsmService;
-
+ 
     @Autowired
     public SwsmController(SwsmService swsmService){
         this.swsmService=swsmService;
