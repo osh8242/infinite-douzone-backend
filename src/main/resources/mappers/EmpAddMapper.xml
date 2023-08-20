@@ -7,12 +7,65 @@
     <select id="getAllEmpAdd" resultType="EmpAdd">
         select * from empadd
     </select>
+    <select id="getEmpAddByCdEmp" resultType="EmpAdd">
+        SELECT * FROM empadd WHERE CD_EMP = #{cdEmp}
+    </select>
     <insert id="insertEmpAdd" parameterType="EmpAdd">
-        insert into empadd (cd_emp)
-        values (#{cdEmp}})
+        INSERT INTO empadd (
+        CD_EMP, NM_CHNAME, NM_ENNAME, YN_DRAWCONTRACTS, DC_MIDRETIRE,
+        FG_WEDDING, FG_DISORDER, DA_BIRTH, STR_HOBBY, NM_SPECIAL,
+        TY_RELIGION, ZIP_HOME, ZIP_ORGIN, ADD_ORGIN1, ADD_ORGIN2,
+        MN_KEEPGARDEN, MN_KEEPESTATE, FG_OWNHOUSE, TEL_OFFICE1, TEL_OFFICE2,
+        TEL_OFFICE3, TEL_EXTENS, TY_MILIT, WHY_MLTOFF, DA_MLTBEGIN,
+        DA_MLTEND, FG_MLTTYPE, NM_MLTBRANC, STR_MLTDISCH, CD_MLTRANK
+        ) VALUES (
+        #{cdEmp}, #{nmChName}, #{nmEnName}, #{ynDrawContracts}, #{dcMidRetire},
+        #{fgWedding}, #{fgDisorder}, #{daBirth}, #{strHobby}, #{nmSpecial},
+        #{tyReligion}, #{zipHome}, #{zipOrgin}, #{addOrgin1}, #{addOrgin2},
+        #{mnKeepGarden}, #{mnKeepEstate}, #{fgOwnHouse}, #{telOffice1}, #{telOffice2},
+        #{telOffice3}, #{telExtens}, #{tyMilit}, #{whyMltOff}, #{daMltBegin},
+        #{daMltEnd}, #{fgMltType}, #{nmMltBranc}, #{strMltDisch}, #{cdMltRank}
+        )
     </insert>
-    <delete id="deleteEmpByCD_EMP" parameterType="EmpAdd">
-        delete from empadd where cd_emp = #{cdEmp}
+
+    <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
+        DELETE FROM empadd WHERE CD_EMP = #{cdEmp}
     </delete>
+
+    <update id="updateEmpAdd" parameterType="EmpAdd">
+        UPDATE empadd
+        SET CD_EMP = #{cdEmp}
+        <if test="nmChName != null">        NM_CHNAME = #{nmChName},</if>
+        <if test="nmEnName != null">        NM_ENNAME = #{nmEnName},</if>
+        <if test="ynDrawContracts != null"> YN_DRAWCONTRACTS = #{ynDrawContracts},</if>
+        <if test="dcMidRetire != null">     DC_MIDRETIRE = #{dcMidRetire},</if>
+        <if test="fgWedding != null">       FG_WEDDING = #{fgWedding},</if>
+        <if test="fgDisorder != null">      FG_DISORDER = #{fgDisorder},</if>
+        <if test="daBirth != null">         DA_BIRTH = #{daBirth},</if>
+        <if test="strHobby != null">        STR_HOBBY = #{strHobby},</if>
+        <if test="nmSpecial != null">       NM_SPECIAL = #{nmSpecial},</if>
+        <if test="tyReligion != null">      TY_RELIGION = #{tyReligion},</if>
+        <if test="zipHome != null">         ZIP_HOME = #{zipHome},</if>
+        <if test="zipOrgin != null">        ZIP_ORGIN = #{zipOrgin},</if>
+        <if test="addOrgin1 != null">       ADD_ORGIN1 = #{addOrgin1},</if>
+        <if test="addOrgin2 != null">       ADD_ORGIN2 = #{addOrgin2},</if>
+        <if test="mnKeepGarden != null">    MN_KEEPGARDEN = #{mnKeepGarden},</if>
+        <if test="mnKeepEstate != null">    MN_KEEPESTATE = #{mnKeepEstate},</if>
+        <if test="fgOwnHouse != null">      FG_OWNHOUSE = #{fgOwnHouse},</if>
+        <if test="telOffice1 != null">      TEL_OFFICE1 = #{telOffice1},</if>
+        <if test="telOffice2 != null">      TEL_OFFICE2 = #{telOffice2},</if>
+        <if test="telOffice3 != null">      TEL_OFFICE3 = #{telOffice3},</if>
+        <if test="telExtens != null">       TEL_EXTENS = #{telExtens},</if>
+        <if test="tyMilit != null">         TY_MILIT = #{tyMilit},</if>
+        <if test="whyMltOff != null">       WHY_MLTOFF = #{whyMltOff},</if>
+        <if test="daMltBegin != null">      DA_MLTBEGIN = #{daMltBegin},</if>
+        <if test="daMltEnd != null">        DA_MLTEND = #{daMltEnd},</if>
+        <if test="fgMltType != null">       FG_MLTTYPE = #{fgMltType},</if>
+        <if test="nmMltBranc != null">      NM_MLTBRANC = #{nmMltBranc},</if>
+        <if test="strMltDisch != null">     STR_MLTDISCH = #{strMltDisch},</if>
+        <if test="cdMltRank != null">       CD_MLTRANK = #{cdMltRank}</if>
+        WHERE CD_EMP = #{cdEmp}
+    </update>
+
 
 </mapper>

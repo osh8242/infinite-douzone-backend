@@ -26,6 +26,11 @@ public class EmpAddController {
 
         return ResponseEntity.ok(empAdds);
     }
+    @GetMapping("/getEmpAddByCdEmp")
+    public ResponseEntity<EmpAdd> getAllEmpAdd(@RequestBody EmpAdd empAdd) {
+        empAdd = empAddService.getEmpAddByCdEmp(empAdd);
+        return ResponseEntity.ok(empAdd);
+    }
 
     @PostMapping("/insertEmpAdd")
     public ResponseEntity<Integer> insertEmpAdd(@RequestBody EmpAdd empAdd) {
@@ -39,7 +44,7 @@ public class EmpAddController {
         System.out.println("EmpAddController.deleteEmpByCD_EMP");
         System.out.println("empAdd = " + empAdd);
         int result = 0;
-        result = empAddService.deleteEmpByCD_EMP(empAdd);
+        result = empAddService.deleteEmpByCdEmp(empAdd);
         return ResponseEntity.ok(result);
     }
 
@@ -48,7 +53,7 @@ public class EmpAddController {
         System.out.println("EmpAddController.deleteEmpByCD_EMP");
         System.out.println("empAdd = " + empAdd);
         int result = 0;
-        result = empAddService.updateEmpAddByCD_EMP(empAdd);
+        result = empAddService.updateEmpAddByCdEmp(empAdd);
         return ResponseEntity.ok(result);
     }
 //    public EmpAdd getEmpAddByCD_EMP(EmpAdd empAdd);
