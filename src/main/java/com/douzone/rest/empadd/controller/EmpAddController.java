@@ -23,7 +23,6 @@ public class EmpAddController {
     public ResponseEntity<List<EmpAdd>> getAllEmpAdd() {
         List<EmpAdd> empAdds = null;
         empAdds = empAddService.getAllEmpAdd();
-
         return ResponseEntity.ok(empAdds);
     }
     @GetMapping("/getEmpAddByCdEmp")

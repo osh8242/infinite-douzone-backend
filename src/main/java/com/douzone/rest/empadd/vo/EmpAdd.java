@@ -34,5 +34,11 @@ public class EmpAdd {
     private String nmMltBranc;
     private String strMltDisch;
     private String cdMltRank;
+    private String noSocial;
+    private String fgSex;
+    private String cdDept;
+    private String rankNo;
+    private String daEnter;
+    private String daRetire;
 }
 
