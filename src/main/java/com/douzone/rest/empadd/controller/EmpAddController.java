@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/empAdd")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpAddController {
 
     private EmpAddService empAddService;
@@ -25,7 +26,7 @@ public class EmpAddController {
         empAdds = empAddService.getAllEmpAdd();
         return ResponseEntity.ok(empAdds);
     }
-    @GetMapping("/getEmpAddByCdEmp")
+    @PostMapping("/getEmpAddByCdEmp")
     public ResponseEntity<EmpAdd> getAllEmpAdd(@RequestBody EmpAdd empAdd) {
         empAdd = empAddService.getEmpAddByCdEmp(empAdd);
         return ResponseEntity.ok(empAdd);

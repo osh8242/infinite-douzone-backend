@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class EmpAdd {
     private String cdEmp;
+    private String tyEmploy;
+    private String cdOffduty;
     private String nmChName;
     private String nmEnName;
     private String ynDrawContracts;
