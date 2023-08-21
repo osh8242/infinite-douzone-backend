@@ -1,10 +1,8 @@
-package com.douzone.rest.sallowpay.controller;
+package com.douzone.rest.saallowpay.controller;
 
-import com.douzone.rest.saEmpInfo.service.SaEmpInfoService;
-import com.douzone.rest.sallowpay.service.SaLowPayService;
-import com.douzone.rest.sallowpay.vo.SaLowPay;
+import com.douzone.rest.saallowpay.service.SaAllowPayService;
+import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,29 +10,29 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class SaLowPayController {
-    SaLowPayService saLowPayService;
+public class SaAllowPayController {
+    SaAllowPayService saAllowPayService;
     @Autowired
-    public SaLowPayController(SaLowPayService saLowPayService){
-        this.saLowPayService = saLowPayService;
+    public SaAllowPayController(SaAllowPayService saAllowPayService){
+        this.saAllowPayService = saAllowPayService;
     }
 
     //사원별 급여항목 리스트
     @GetMapping("/getSaLowPayByCdEmp")
-    public List<SaLowPay> getSalLowPayList(SaLowPay saLowPay) {
+    public List<SaAllowPay> getSalLowPayList(SaAllowPay saAllowPay) {
 
-        List<SaLowPay> salLowPayList = null;
+        List<SaAllowPay> salLowPayList = null;
         try {
-            salLowPayList = saLowPayService.getSalLowPayList(saLowPay);
+            salLowPayList = saAllowPayService.getSalLowPayList(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return salLowPayList;
     }
     @PutMapping("/updateSalowPay")
-    public void updateSalowPay(SaLowPay saLowPay) {
+    public void updateSalowPay(SaAllowPay saAllowPay) {
         try {
-            saLowPayService.updateSalowPay(saLowPay);
+            saAllowPayService.updateSalowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }

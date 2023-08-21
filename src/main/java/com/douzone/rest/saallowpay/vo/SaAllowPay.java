@@ -1,9 +1,9 @@
-package com.douzone.rest.sallowpay.vo;
+package com.douzone.rest.saallowpay.vo;
 
 import lombok.Data;
 
 @Data
-public class SaLowPay {
+public class SaAllowPay {
     private String cdAllow;     //급여항목
     private String allowPay;    //급여항목 지급금액
     private String cdEmp;       //사원코드
