@@ -1,7 +1,7 @@
-package com.douzone.rest.emp.controller;
+package com.douzone.rest.empfam.controller;
 
-import com.douzone.rest.emp.service.EmpService;
-import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.empfam.service.EmpFamService;
+import com.douzone.rest.empfam.vo.EmpFam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,45 +10,43 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/emp/*")
-public class EmpController {
-
+@RequestMapping("/empfam/*")
+public class EmpFamController {
     @Autowired
-    private EmpService empservice;
+    private EmpFamService empFamService;
 
     @GetMapping("getAll")
-    public ResponseEntity<?> getAllEmp(){
-        System.out.println("Emp Controller 진입");
-        List<Emp> result = empservice.getAllEmp();
-            System.out.println("result = "+result);
-        return new ResponseEntity<List>(result, HttpStatus.OK);
+    public ResponseEntity<List> getAllEmpFam() {
+        System.out.println("empfam/getAll 컨트롤러 진입!");
+        List<EmpFam> empfamList = empFamService.getAllEmpFam();
+        return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
-    @GetMapping("getOne")
-    public Emp getOneEmp(){
-        System.out.println("Emp getOneEmp Controller -----");
-        Emp emp = empservice.getOneEmp();
-        return emp;
+    @PostMapping("getOne")
+    public ResponseEntity<?> getOneEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
+        System.out.println("empfam/getOne 컨트롤러 진입!");
+        EmpFam result = empFamService.getOneEmpFamByCdEmpAndCdCalrel(empfam);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("insert")
-    public int insertEmp(@RequestBody Emp emp){
-        System.out.println("Emp insert Controller -----");
-        int result = empservice.insertEmp(emp);
+    @PutMapping("insert")
+    public int insertEmpFam(@RequestBody EmpFam empfam){
+        System.out.println("empfam/insert 컨트롤러 진입!");
+        int result = empFamService.insertEmpFam(empfam);
         return result;
     }
 
     @PostMapping("update")
-    public int updateEmp(@RequestBody Emp emp){
-        System.out.println("Emp update Controller -----");
-        int result = empservice.updateEmp(emp);
+    public int updateEmpFam(@RequestBody EmpFam empfam){
+        System.out.println("empfam/update 컨트롤러 진입!");
+        int result = empFamService.updateEmpFam(empfam);
         return result;
     }
 
     @PostMapping("delete")
-    public int deleteEmp(@RequestBody Emp emp){
-        System.out.println("Emp delete Controller -----");
-        int result =empservice.deleteEmp(emp);
+    public int deleteEmp(@RequestBody EmpFam empfam){
+        System.out.println("empfam/delete 컨트롤러 진입!");
+        int result = empFamService.deleteEmpFam(empfam);
         return result;
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.empfam.dao.EmpFamDao">
+    <select id="getAllEmpFam" resultType="EmpFam">
+        SELECT cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
+               no_social, fg_school, fg_graduation, yn_together,
+               yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos
+        FROM EmpFam
+    </select>
+
+    <select id="getOneEmpFambyCdEmpAndCdCalrel" parameterType="EmpFam">
+        SELECT cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
+               no_social, fg_school, fg_graduation, yn_together,
+               yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos
+        FROM EmpFam
+        WHERE cd_emp = #{cdEmp}
+          AND cd_calrel = #{cdCalrel}
+    </select>
+
+    <insert id="insertEmpFam" parameterType="EmpFam">
+        INSERT INTO EMPFAM(
+            cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
+            no_social, fg_school, fg_graduation, yn_together,
+            yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos)
+        VALUES (
+                   #{cdEmp}, #{cdCalrel}, #{cdFamrel}, #{nmKrname}, #{ynFor},
+                   #{noSocial}, #{fgSchool}, #{fgGraduation}, #{ynTogether},
+                   #{ynLunarbir}, #{daBirth}, #{cdJob}, #{nmKrcom}, #{cdOffpos})
+    </insert>
+
+    <update id="updateEmpFam" parameterType="EmpFam">
+        UPDATE EMPFAM
+        SET cd_famrel = #{cdFamrel},
+            nm_krname = #{nmKrname},
+            yn_for = #{ynFor},
+            no_social = #{noSocial},
+            fg_school = #{fgSchool},
+            fg_graduation = #{fgGraduation},
+            yn_together = #{ynTogether},
+            yn_lunarbir = #{ynLunarbir},
+            da_birth = #{daBirth},
+            cd_job = #{cdJob},
+            nm_krcom = #{nmKrcom},
+            cd_offpos = #{cdOffpos}
+        WHERE cd_emp = #{cdEmp}
+          AND cd_calrel = #{cdCalrel}
+    </update>
+
+    <delete id="deleteEmpFam" parameterType="EmpFam">
+        DELETE
+        FROM EmpFam
+        WHERE cd_emp = #{cdEmp}
+          AND cd_calrel = #{cdCalrel}
+    </delete>
+</mapper>

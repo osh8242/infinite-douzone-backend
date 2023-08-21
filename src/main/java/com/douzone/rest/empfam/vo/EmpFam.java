@@ -1,4 +1,4 @@
-package com.douzone.rest.empFam.vo;
+package com.douzone.rest.empfam.vo;
 
 import lombok.Data;
 
@@ -18,7 +18,4 @@ public class EmpFam {
     private String cdJob;
     private String nmKrcom;
     private String cdOffpos;
-
-    // Getter and Setter methods for each variable
-    // ...
 }

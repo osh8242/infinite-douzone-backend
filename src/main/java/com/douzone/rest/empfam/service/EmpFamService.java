@@ -1,7 +1,7 @@
 package com.douzone.rest.empfam.service;
 
-import com.douzone.rest.empfam.dao.EmpDao;
-import com.douzone.rest.empfam.vo.Emp;
+import com.douzone.rest.empfam.dao.EmpFamDao;
+import com.douzone.rest.empfam.vo.EmpFam;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,47 +9,43 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmpService {
-
+public class EmpFamService {
     @Autowired
     private SqlSession sqlSession;
 
-    public List<Emp> getAllEmp(){
-        System.out.println("EmpService 진입");
-        EmpDao empdao = sqlSession.getMapper(EmpDao.class);
-        List<Emp> result = empdao.getAllEmp();
+    public List<EmpFam> getAllEmpFam() {
+        System.out.println("getAllEmpFam Service 진입!");
+        EmpFamDao empfamdao = sqlSession.getMapper(EmpFamDao.class);
+        return empfamdao.getAllEmpFam();
+    }
+
+    public EmpFam getOneEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
+        System.out.println("getOneEmpFam Service 진입!");
+        EmpFamDao empfamdao = sqlSession.getMapper(EmpFamDao.class);
+        return empfamdao.getOneEmpFamByCdEmpAndCdCalrel(empfam);
+    }
+
+    public int insertEmpFam(EmpFam empfam) {
+        System.out.println("insertEmpFam Service 진입!");
+        EmpFamDao empfamdao = sqlSession.getMapper(EmpFamDao.class);
+        int result = empfamdao.insertEmpFam(empfam);
+        if(result != 0) System.out.println("insert 성공!");
         return result;
     }
 
-    public Emp getOneEmp(){
-        System.out.println("Emp Service -----");
-        EmpDao empdao = sqlSession.getMapper(EmpDao.class);
-        Emp emp = empdao.getOneEmp();
-        System.out.println("emp= "+ emp);
-        return emp;
-    }
-
-    public int insertEmp(Emp emp){
-        System.out.println("Emp insert -----");
-        EmpDao empdao = sqlSession.getMapper(EmpDao.class);
-        int result = empdao.insertEmp(emp);
-        System.out.println("result= " + result);
+    public int updateEmpFam(EmpFam empfam) {
+        System.out.println("updateEmpFam Service 진입!");
+        EmpFamDao empfamdao = sqlSession.getMapper(EmpFamDao.class);
+        int result = empfamdao.updateEmpFam(empfam);
+        if(result != 0) System.out.println("update 성공!");
         return result;
     }
 
-    public int updateEmp(Emp emp){
-        System.out.println("Emp update -----");
-        EmpDao empdao = sqlSession.getMapper(EmpDao.class);
-        int result = empdao.updateEmp(emp);
-        System.out.println("result= "+result);
-        return result;
-    }
-
-    public int deleteEmp(Emp emp){
-        System.out.println("Emp delete -----");
-        EmpDao empDao = sqlSession.getMapper(EmpDao.class);
-        int result = empDao.deleteEmp(emp);
-        System.out.println("result= "+result);
+    public int deleteEmpFam(EmpFam empfam) {
+        System.out.println("deleteEmpFam Service 진입!");
+        EmpFamDao empfamdao = sqlSession.getMapper(EmpFamDao.class);
+        int result = empfamdao.deleteEmpFam(empfam);
+        if(result != 0) System.out.println("delete 성공!");
         return result;
     }
 }
