@@ -16,10 +16,10 @@ public class EmpController {
     private EmpService empservice;
 
     @GetMapping("getAll")
-    public ResponseEntity<?> getAllEmp(){
+    public ResponseEntity<?> getAllEmp(@RequestBody Emp emp){
         System.out.println("Emp Controller 진입");
-        List<Emp> result = empservice.getAllEmp();
-            System.out.println("result = "+result);
+        List<Emp> result = empservice.getAllEmp(emp);
+        System.out.println("result = "+result);
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
@@ -30,7 +30,7 @@ public class EmpController {
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
     }
 
-    @PutMapping("insert")
+    @PostMapping("insert")
     public int insertEmp(@RequestBody Emp emp){
         System.out.println("Emp insert Controller -----");
         int result = empservice.insertEmp(emp);
