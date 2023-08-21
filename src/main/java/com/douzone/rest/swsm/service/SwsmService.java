@@ -21,7 +21,6 @@ public class SwsmService {
         this.swsmDao = swsmDao;
     }
 
-
     public int insertSwsm(Swsm swsm) {
         return swsmDao.insertSwsm(swsm);
     }
