@@ -10,6 +10,81 @@
         FROM SWSM
     </select>
 
+    <select id="getCodeNameRrnByWithholdingYear" resultType="Swsm">
+        SELECT emp_code, name, rrn
+        where withholding_year=#{withholdingYear}
+        FROM SWSM
+    </select>
+
+    <insert id="insertSwsmByEmp" parameterType="Swsm">
+        insert into swsm(income_classfication
+        ,withholding_year
+        ,date_of_creation
+        ,emp_code
+        ,other_benefits_item
+        ,other_benefits_amount
+        ,name
+        ,resident_state
+        ,rrn
+        ,salary_amount
+        ,bonus_amount
+        ,start_emp_contract_period
+        ,end_emp_contract_period
+        ,post_code
+        ,address
+        ,job_description
+        ,start_break_time
+        ,end_break_time
+        ,working_day
+        ,day_off
+        ,salary_type
+        ,other_benefits
+        ,bonus_payment_status
+        ,salary_payment_date_type
+        ,payment_date
+        ,payment_method
+        ,emp_insurance
+        ,compensation_insurance
+        ,national_pension
+        ,health_insurance)
+        values (#{incomeClassfication}
+        ,#{withholdingYear}
+        ,#{dateOfCreation}
+        ,#{empCode}
+        ,#{otherBenefitsItem}
+        ,#{otherBenefitsAmount}
+        ,#{name}
+        ,#{residentState}
+        ,#{rrn}
+        ,#{salaryAmount}
+        ,#{bonusAmount}
+        ,#{startEmpContractPeriod}
+        ,#{endEmpContractPeriod}
+        ,#{postCode}
+        ,#{address}
+        ,#{jobDescription}
+        ,#{startBreakTime}
+        ,#{endBreakTime}
+        ,#{workingDay}
+        ,#{dayOff}
+        ,#{salaryType}
+        ,#{otherBenefits}
+        ,#{bonusPaymentStatus}
+        ,#{salaryPaymentDateType}
+        ,#{paymentDate}
+        ,#{paymentMethod}
+        ,#{empInsurance}
+        ,#{compensationInsurance}
+        ,#{nationalPension}
+        ,#{healthInsurance})
+    </insert>
+
+
+    <update id="updateSwsmByEmp">
+        update swsm set
+        name='lee' where emp_code = (#{empCode})
+    </update>
+
     <insert id="insertSwsm" parameterType="Swsm">
         insert into swsm(emp_code)
         values (#{empCode})

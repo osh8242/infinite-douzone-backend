@@ -10,9 +10,14 @@ import java.util.List;
 
 @Mapper
 public interface SwsmDao {
+    List<Swsm> getAllSwsm();
+    List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm);
     int insertSwsm(Swsm swsm);
+    int insertSwsmByEmp(Swsm swsm);
+
+    int updateSwsmByEmp(Swsm swsm);
     int updateSwsm(Swsm swsm);
     int deleteSwsm(Swsm swsm);
-    List<Swsm> getAllSwsm();
+
 
 }

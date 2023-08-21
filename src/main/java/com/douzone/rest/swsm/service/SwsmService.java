@@ -25,6 +25,19 @@ public class SwsmService {
         return swsmDao.insertSwsm(swsm);
     }
 
+    public int insertSwsmByEmp(Swsm swsm) {
+        return swsmDao.insertSwsmByEmp(swsm);
+    }
+
+    public int updateSwsmByEmp(Swsm swsm) {
+        return swsmDao.updateSwsmByEmp(swsm);
+    }
+
+
+    public List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm) {
+        return swsmDao.getCodeNameRrnByWithholdingYear(swsm);
+    }
+
     public int updateSwsm(Swsm swsm) {
         return swsmDao.updateSwsm(swsm);
     }

@@ -13,28 +13,48 @@ import java.util.List;
 @RequestMapping("/swsm")
 public class SwsmController {
 
- @Autowired
- private SwsmService swsmService;
+    @Autowired
+    private SwsmService swsmService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Swsm>> getAllSwsm(){
-        List<Swsm> swsmList=swsmService.getAllSwsm();
+    public ResponseEntity<List<Swsm>> getAllSwsm() {
+        List<Swsm> swsmList = swsmService.getAllSwsm();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
     }
 
-    @PostMapping("/insertSwsm")
-    public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm){
-        int result=swsmService.insertSwsm(swsm);
+    // 원천년도 기준 select code, name, rrn
+    @GetMapping("/getCodeNameRrnByWithholdingYear")
+    public ResponseEntity<List<Swsm>> getCodeNameRrnByWithholdingYear(@RequestBody Swsm swsm) {
+        List<Swsm> swsmList = swsmService.getCodeNameRrnByWithholdingYear(swsm);
+        return ResponseEntity.status(HttpStatus.OK).body(swsmList);
+    }
+
+    // 선택 사원 기준 insert
+    @PostMapping("/insertSwsmByEmp")
+    public ResponseEntity<Integer> insertSwsmByEmp(@RequestBody Swsm swsm) {
+        int result = swsmService.insertSwsmByEmp(swsm);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @PostMapping("/updateSwsmByEmp")
+    public ResponseEntity<Integer> updateSwsmByEmp(@RequestBody Swsm swsm) {
+        return ResponseEntity.status(HttpStatus.OK).body(swsmService.updateSwsmByEmp(swsm));
+    }
+
+    @PostMapping("/insertSwsm")
+    public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm) {
+        int result = swsmService.insertSwsm(swsm);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    ////
     @DeleteMapping("/deleteSwsm")
-    public ResponseEntity<Integer> deleteSwsm(@RequestBody Swsm swsm){
+    public ResponseEntity<Integer> deleteSwsm(@RequestBody Swsm swsm) {
         return ResponseEntity.status(HttpStatus.OK).body(swsmService.deleteSwsm(swsm));
     }
 
     @PostMapping("/updateSwsm")
-    public ResponseEntity<Integer> updateSwsm(@RequestBody Swsm swsm){
+    public ResponseEntity<Integer> updateSwsm(@RequestBody Swsm swsm) {
         return ResponseEntity.status(HttpStatus.OK).body(swsmService.updateSwsm(swsm));
     }
 
