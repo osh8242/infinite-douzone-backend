@@ -2,6 +2,7 @@ package com.douzone.rest.empfam.controller;
 
 import com.douzone.rest.empfam.service.EmpFamService;
 import com.douzone.rest.empfam.vo.EmpFam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,11 @@ public class EmpFamController {
     @PostMapping("getOne")
     public ResponseEntity<?> getOneEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
         System.out.println("empfam/getOne 컨트롤러 진입!");
-        EmpFam result = empFamService.getOneEmpFamByCdEmpAndCdCalrel(empfam);
+        EmpFam result = empFamService.getOneEmpFambyCdEmp(empfam);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("insert")
+    @PostMapping("insert")
     public int insertEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empfam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);
@@ -37,9 +38,9 @@ public class EmpFamController {
     }
 
     @PostMapping("update")
-    public int updateEmpFam(@RequestBody EmpFam empfam){
+    public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
-        int result = empFamService.updateEmpFam(empfam);
+        int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);
         return result;
     }
 

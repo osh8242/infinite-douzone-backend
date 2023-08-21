@@ -3,53 +3,79 @@
 
 <mapper namespace="com.douzone.rest.empfam.dao.EmpFamDao">
     <select id="getAllEmpFam" resultType="EmpFam">
-        SELECT cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
-               no_social, fg_school, fg_graduation, yn_together,
-               yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos
+        SELECT
+            *
         FROM EmpFam
     </select>
 
-    <select id="getOneEmpFambyCdEmpAndCdCalrel" parameterType="EmpFam">
-        SELECT cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
-               no_social, fg_school, fg_graduation, yn_together,
-               yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos
-        FROM EmpFam
+    <select id="getOneEmpFambyCdEmp" parameterType="EmpFam">
+        SELECT
+            *
+        FROM EMPFAM
         WHERE cd_emp = #{cdEmp}
-          AND cd_calrel = #{cdCalrel}
+        AND cd_calrel = #{cdCalrel}
     </select>
 
     <insert id="insertEmpFam" parameterType="EmpFam">
-        INSERT INTO EMPFAM(
-            cd_emp, cd_calrel, cd_famrel, nm_krname, yn_for,
-            no_social, fg_school, fg_graduation, yn_together,
-            yn_lunarbir, da_birth, cd_job, nm_krcom, cd_offpos)
-        VALUES (
-                   #{cdEmp}, #{cdCalrel}, #{cdFamrel}, #{nmKrname}, #{ynFor},
-                   #{noSocial}, #{fgSchool}, #{fgGraduation}, #{ynTogether},
-                   #{ynLunarbir}, #{daBirth}, #{cdJob}, #{nmKrcom}, #{cdOffpos})
+        INSERT INTO EMPFAM (
+            cd_emp,
+            cd_calrel,
+            cd_famrel,
+            nm_krname,
+            yn_for,
+            no_social,
+            fg_school,
+            fg_graduation,
+            yn_together,
+            yn_lunarbir,
+            da_birth,
+            cd_job,
+            nm_krcom,
+            cd_offpos
+        ) VALUES (
+             #{cdEmp, jdbcType=VARCHAR},
+             #{cdCalrel, jdbcType=VARCHAR},
+             #{cdFamrel, jdbcType=VARCHAR},
+             #{nmKrname, jdbcType=VARCHAR},
+             #{ynFor, jdbcType=VARCHAR},
+             #{noSocial, jdbcType=VARCHAR},
+             #{fgSchool, jdbcType=VARCHAR},
+             #{fgGraduation, jdbcType=VARCHAR},
+             #{ynTogether, jdbcType=VARCHAR},
+             #{ynLunarbir, jdbcType=VARCHAR},
+             #{daBirth, jdbcType=VARCHAR},
+             #{cdJob, jdbcType=VARCHAR},
+             #{nmKrcom, jdbcType=VARCHAR},
+             #{cdOffpos, jdbcType=VARCHAR}
+         )
     </insert>
 
-    <update id="updateEmpFam" parameterType="EmpFam">
+
+    <update id="updateEmpFamByCdEmpAndCdCalrel" parameterType="EmpFam">
         UPDATE EMPFAM
-        SET cd_famrel = #{cdFamrel},
-            nm_krname = #{nmKrname},
-            yn_for = #{ynFor},
-            no_social = #{noSocial},
-            fg_school = #{fgSchool},
-            fg_graduation = #{fgGraduation},
-            yn_together = #{ynTogether},
-            yn_lunarbir = #{ynLunarbir},
-            da_birth = #{daBirth},
-            cd_job = #{cdJob},
-            nm_krcom = #{nmKrcom},
-            cd_offpos = #{cdOffpos}
-        WHERE cd_emp = #{cdEmp}
-          AND cd_calrel = #{cdCalrel}
+        SET
+            cd_famrel = #{cdFamrel, jdbcType=VARCHAR},
+            nm_krname = #{nmKrname, jdbcType=VARCHAR},
+            yn_for = #{ynFor, jdbcType=VARCHAR},
+            no_social = #{noSocial, jdbcType=VARCHAR},
+            fg_school = #{fgSchool, jdbcType=VARCHAR},
+            fg_graduation = #{fgGraduation, jdbcType=VARCHAR},
+            yn_together = #{ynTogether, jdbcType=VARCHAR},
+            yn_lunarbir = #{ynLunarbir, jdbcType=VARCHAR},
+            da_birth = #{daBirth, jdbcType=VARCHAR},
+            cd_job = #{cdJob, jdbcType=VARCHAR},
+            nm_krcom = #{nmKrcom, jdbcType=VARCHAR},
+            cd_offpos = #{cdOffpos, jdbcType=VARCHAR}
+        WHERE
+            cd_emp = #{cdEmp, jdbcType=VARCHAR}
+        AND
+            cd_calrel = #{cdCalrel, jdbcType=VARCHAR}
     </update>
+
 
     <delete id="deleteEmpFam" parameterType="EmpFam">
         DELETE
-        FROM EmpFam
+        FROM EMPFAM
         WHERE cd_emp = #{cdEmp}
           AND cd_calrel = #{cdCalrel}
     </delete>
