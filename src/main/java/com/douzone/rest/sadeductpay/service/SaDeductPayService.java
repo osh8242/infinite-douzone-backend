@@ -1,9 +1,7 @@
-package com.douzone.rest.saDeductPay.service;
+package com.douzone.rest.sadeductpay.service;
 
-import com.douzone.rest.empadd.dao.EmpAddDao;
-import com.douzone.rest.saDeductPay.dao.SaDeductPayDao;
-import com.douzone.rest.saDeductPay.vo.SaDeductPay;
-import jdk.jfr.TransitionTo;
+import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

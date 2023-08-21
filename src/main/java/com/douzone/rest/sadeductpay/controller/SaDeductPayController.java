@@ -1,9 +1,7 @@
-package com.douzone.rest.saDeductPay.controller;
+package com.douzone.rest.sadeductpay.controller;
 
-import com.douzone.rest.empadd.service.EmpAddService;
-import com.douzone.rest.saDeductPay.service.SaDeductPayService;
-import com.douzone.rest.saDeductPay.vo.SaDeductPay;
-import com.douzone.rest.sallowpay.vo.SaLowPay;
+import com.douzone.rest.sadeductpay.service.SaDeductPayService;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +23,5 @@ public class SaDeductPayController {
             e.getStackTrace();
         }
     }
-
 
 }

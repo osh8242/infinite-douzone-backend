@@ -1,6 +1,6 @@
-package com.douzone.rest.saDeductPay.dao;
+package com.douzone.rest.sadeductpay.dao;
 
-import com.douzone.rest.saDeductPay.vo.SaDeductPay;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
