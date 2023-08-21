@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Swsm {
-    String incomeClassification;
+    String incomeClassfication;
     String withholdingYear;
-    String dateOfCreation;
+    String datexOfCreation;
     String empCode;
     String otherBenefitsItem;
     String otherBenefitsAmount;

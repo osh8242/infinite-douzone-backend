@@ -16,7 +16,7 @@ public class SwsmController {
     @Autowired
     private SwsmService swsmService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllSwsm")
     public ResponseEntity<List<Swsm>> getAllSwsm() {
         List<Swsm> swsmList = swsmService.getAllSwsm();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
@@ -39,6 +39,7 @@ public class SwsmController {
     public ResponseEntity<Integer> updateSwsmByEmp(@RequestBody Swsm swsm) {
         return ResponseEntity.status(HttpStatus.OK).body(swsmService.updateSwsmByEmp(swsm));
     }
+
 //    @PostMapping("/updateSwsm")
 //    public ResponseEntity<Integer> updateSwsm(@RequestBody Swsm swsm) {
 //        return ResponseEntity.status(HttpStatus.OK).body(swsmService.updateSwsm(swsm));

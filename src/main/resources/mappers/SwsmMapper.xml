@@ -6,7 +6,36 @@
 <mapper namespace="com.douzone.rest.swsm.dao.SwsmDao">
     <select id="getAllSwsm" resultType="Swsm">
         SELECT
-        emp_code
+        INCOME_CLASSFICATION,
+        WITHHOLDING_YEAR,
+        DATE_OF_CREATION,
+        EMP_CODE,
+        OTHER_BENEFITS_ITEM,
+        OTHER_BENEFITS_AMOUNT,
+        NAME,
+        RESIDENT_STATE,
+        RRN,
+        SALARY_AMOUNT,
+        BONUS_AMOUNT,
+        START_EMP_CONTRACT_PERIOD,
+        END_EMP_CONTRACT_PERIOD,
+        POST_CODE,
+        ADDRESS,
+        JOB_DESCRIPTION,
+        START_BREAK_TIME,
+        END_BREAK_TIME,
+        WORKING_DAY,
+        DAY_OFF,
+        SALARY_TYPE,
+        OTHER_BENEFITS,
+        BONUS_PAYMENT_STATUS,
+        SALARY_PAYMENT_DATE_TYPE,
+        PAYMENT_DATE,
+        PAYMENT_METHOD,
+        EMP_INSURANCE,
+        COMPENSATION_INSURANCE,
+        NATIONAL_PENSION,
+        HEALTH_INSURANCE
         FROM SWSM
     </select>
 
@@ -24,7 +53,36 @@
 
     <update id="updateSwsmByEmp">
         update swsm set
-        income_classfication=(#{income_classfication})
+        income_classfication=(#{incomeClassfication}),
+        withholding_year=(#{withholdingYear}),
+        date_of_creation=(#{dateOfCreation}),
+        emp_code=(#{empCode}),
+        other_benefits_item=(#{otherBenefitsItem}),
+        other_benefits_amount=(#{otherBenefitsAmount}),
+        name=(#{name}),
+        resident_state=(#{residentState}),
+        rrn=(#{rrn}),
+        salary_amount=(#{salaryAmount}),
+        bonus_amount=(#{bonusAmount}),
+        start_emp_contract_period=(#{startEmpContractPeriod}),
+        end_emp_contract_period=(#{endEmpContractPeriod}),
+        post_code=(#{postCode}),
+        address=(#{address}),
+        job_description=(#{jobDescription}),
+        start_break_time=(#{startBreakTime}),
+        end_break_time=(#{endBreakTime}),
+        working_day=(#{workingDay}),
+        day_off=(#{dayOff}),
+        salary_type=(#{salaryType}),
+        other_benefits=(#{otherBenefits}),
+        bonus_payment_status=(#{bonusPaymentStatus}),
+        salary_payment_date_type=(#{salaryPaymentDateType}),
+        payment_date=(#{paymentDate}),
+        payment_method=(#{paymentMethod}),
+        emp_insurance=(#{empInsurance}),
+        compensation_insurance=(#{compensationInsurance}),
+        national_pension=(#{nationalPension}),
+        health_insurance=(#{healthInsurance})
         where emp_code = (#{empCode})
     </update>
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class SwsmService {
-        @Autowired
+    @Autowired
     private SwsmDao swsmDao;
 //    private SwsmDao swsmDao;
 //
@@ -32,8 +32,6 @@ public class SwsmService {
     public List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm) {
         return swsmDao.getCodeNameRrnByWithholdingYear(swsm);
     }
-
-
     public List<Swsm> getAllSwsm() {
         return swsmDao.getAllSwsm();
     }
