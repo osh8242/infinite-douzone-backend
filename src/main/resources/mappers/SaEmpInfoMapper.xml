@@ -2,33 +2,59 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.douzone.rest.saEmpInfo.dao.SaEmpInfoMapper">
+<mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
 
     <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
-        SELECT *
+        /* 사원 조회 */
+        SELECT CD_EMP
+            , (SELECT NM_KRNAME FROM EMP WHERE CD_EMP = #{searchUseYn}) as NM_EMP
+            , MN_1_1_1
+            , DA_ENTER
+            , YN_MATEDED
+            , NUM_20FAMILY/NUM_60FAMILY/NUM_MANYFAMILY
+            , YN_RESIDENT
+            , YN_UNIT
+            , YN_FORLABOR
+            , YN_OVERWORK
+            , DA_RETIRE
+            , CD_OCCUP
+            , RANK_NO
+            , CD_DEPT
+            , CD_FIELD
+            , CD_PROJECT
+            , AM_NATIONPEN
+            , AM_HEALTHINSUR
+            , MN_2_1_1
+            , NO_SOCIAL
+            , MN_REDUCTION
         FROM SAEMPINFO
         WHERE 1=1
-        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
-        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
-        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
-        <if test="cdEmp!= null and cdEmp!= ''">    and CD_EMP = #{cdEmp}     </if>
-
+        <if test="searchEmpCd       != null and searchEmpCd       != ''">   and CD_EMP       = #{searchUseYn}      </if>
+        <if test="searchDeptCd      != null and searchDeptCd      != ''">   and CD_DEPT      = #{searchDeptCd}     </if>
+        <if test="searchRankNo      != null and searchRankNo      != ''">   and RANK_NO      = #{searchRankNo}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   and CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchCdField     != null and searchCdField     != ''">   and CD_FIELD     = #{searchCdField}    </if>
+        <if test="searchCdProject   != null and searchCdProject   != ''">   and CD_PROJECT   = #{searchCdProject}  </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   and YN_UNIT      = #{searchYnUnit}     </if>
+        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   and YN_FORLABOR  = #{searchYnForlabor} </if>
     </select>
 
     <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
+        /* 사원 상세 조회 */
         SELECT *
         FROM SAEMPINFO
         WHERE CD_EMP = #{cdEmp}
     </select>
 
-
     <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
+        /* 사원 삭제 */
         delete
         from SAEMPINFO
         where CD_EMP = #{cdEmp}
     </delete>
 
     <update id="updateEmpInfo" parameterType="SaEmpInfo">
+        /* 사원 수정 */
         update SAEMPINFO
         set CD_EMP = #{cdEmp}
             <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>

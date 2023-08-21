@@ -1,6 +1,6 @@
-package com.douzone.rest.saEmpInfo.dao;
+package com.douzone.rest.saempinfo.dao;
 
-import com.douzone.rest.saEmpInfo.vo.SaEmpInfo;
+import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,6 +12,7 @@ public interface SaEmpInfoMapper {
     SaEmpInfo getSaEmpInfoByCdEmp(SaEmpInfo saEmpInfo);//하나조회
     
     void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
+
     void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
 
 }

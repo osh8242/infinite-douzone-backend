@@ -1,7 +1,7 @@
-package com.douzone.rest.saEmpInfo.controller;
+package com.douzone.rest.saempinfo.controller;
 
-import com.douzone.rest.saEmpInfo.service.SaEmpInfoService;
-import com.douzone.rest.saEmpInfo.vo.SaEmpInfo;
+import com.douzone.rest.saempinfo.service.SaEmpInfoService;
+import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,21 +48,20 @@ public class SaEmpInfoController {
 
 
     //삭제
-    @DeleteMapping("/deleteEmpInfo")
-    public void deleteEmpInfo(SaEmpInfo saEmpInfo) {
+    @DeleteMapping("/deleteSaEmpInfo")
+    public void deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
         try {
             saEmpInfoService.deleteSaEmpInfo(saEmpInfo);
-
         } catch (Exception e) {
             e.getStackTrace();
         }
     }
-
-    @PutMapping("/updateEmpInfo")
+    
+    //수정
+    @PutMapping("/updateSaEmpInfo")
     public void updateEmpInfo(SaEmpInfo saEmpInfo) {
         try {
             saEmpInfoService.updateEmpInfo(saEmpInfo);
-
         } catch (Exception e) {
             e.getStackTrace();
         }

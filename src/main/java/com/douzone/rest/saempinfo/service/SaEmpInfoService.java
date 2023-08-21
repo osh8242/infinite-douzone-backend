@@ -1,8 +1,7 @@
-package com.douzone.rest.saEmpInfo.service;
+package com.douzone.rest.saempinfo.service;
 
-import com.douzone.rest.saEmpInfo.dao.SaEmpInfoMapper;
-import com.douzone.rest.saEmpInfo.vo.SaEmpInfo;
-import jakarta.annotation.Resource;
+import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
+import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
