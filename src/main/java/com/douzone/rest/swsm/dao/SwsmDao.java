@@ -12,12 +12,14 @@ import java.util.List;
 public interface SwsmDao {
     List<Swsm> getAllSwsm();
     List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm);
-    int insertSwsm(Swsm swsm);
-    int insertSwsmByEmp(Swsm swsm);
+
+    int insertSwsmEmp(Swsm swsm);
 
     int updateSwsmByEmp(Swsm swsm);
+
     int updateSwsm(Swsm swsm);
-    int deleteSwsm(Swsm swsm);
 
-
+//    int insertSwsm(Swsm swsm);
+//    int deleteSwsm(Swsm swsm);
+//  int insertSwsmByEmp(Swsm swsm);
 }
