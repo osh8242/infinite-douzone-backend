@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.emp.dao.EmpDao">
+    <select id="getAllEmp" resultType="Emp">
+        SELECT *
+        FROM emp
+    </select>
+
+    <select id="getOneEmp" parameterType="Emp">
+        SELECT *
+        FROM emp
+        WHERE cd_emp = 'EMP001'
+    </select>
+
+    <insert id="insertEmp" parameterType="Emp">
+        INSERT INTO Emp(cd_emp, nm_krname, yn_for, no_social, job_ok)
+        VALUES (#{cdEmp}, #{nmKrname}, #{ynFor}, #{noSocial}, #{jobOk})
+    </insert>
+
+    <update id="updateEmp" parameterType="Emp">
+        UPDATE Emp
+        SET nm_krname = #{nmKrname},
+            yn_for = #{ynFor},
+            no_social = #{noSocial},
+            job_ok = #{jobOk}
+        WHERE cd_emp = #{cdEmp}
+    </update>
+
+    <delete id="deleteEmp" parameterType="Emp">
+        DELETE
+        FROM EMP
+        WHERE cd_emp = #{cdEmp}
+    </delete>
+</mapper>
