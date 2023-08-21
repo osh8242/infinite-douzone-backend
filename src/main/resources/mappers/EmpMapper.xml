@@ -7,25 +7,135 @@
         FROM emp
     </select>
 
-    <select id="getOneEmp" parameterType="Emp">
+    <select id="getOneEmpByCdEmp" parameterType="Emp">
         SELECT *
         FROM emp
-        WHERE cd_emp = 'EMP001'
+        WHERE cd_emp = #{cdEmp}
     </select>
 
     <insert id="insertEmp" parameterType="Emp">
-        INSERT INTO Emp(cd_emp, nm_krname, yn_for, no_social, job_ok)
-        VALUES (#{cdEmp}, #{nmKrname}, #{ynFor}, #{noSocial}, #{jobOk})
+        INSERT INTO Emp(
+            cd_emp, nm_krname, yn_for, no_social, job_ok,
+            da_enter, fg_sex, abb_nation, yn_resident,
+            str_39_1_1, str_40_1_1, cd_nation, zip_home,
+            add_home1, add_home2, tel_home1, tel_home2,
+            tel_home3, cel_emp1, cel_emp2, cel_emp3,
+            em_emp, id_msn, cd_dept, cd_occup,
+            rank_no, cd_salcls, cd_field, cd_project,
+            da_retire, cd_bank, no_bnkacct, nm_bnkowner,
+            mn_6_1_1, cd_acctit1, cd_acctit2, fg_paysupply,
+            mn_mmaverage, mn_natptarget, mn_natpslev,
+            mn_hostarget, mn_hos, no_health,
+            mn_emptarget, mn_emp, yn_employ,
+            yn_ceo, yn_sanjae, yn_longinsur,
+            str_32_1_1, str_33_1_1, str_35_1_1,
+            mn_2_1_1, mn_3_1_1, str_1_1_1,
+            str_45_1_1, str_46_1_1, str_47_1_1,
+            mn_1_1_1, yn_danil, yn_iclman,
+            str_43_1_1, str_44_1_1, mn_iclpay,
+            str_34_1_1, yn_forlabor, yn_unit,
+            yn_overwork, str_42_1_1, mn_4_1_1
+        )
+        VALUES (
+                   #{cdEmp}, #{nmKrname}, #{ynFor}, #{noSocial}, #{jobOk},
+                   #{daEnter}, #{fgSex}, #{abbNation}, #{ynResident},
+                   #{str3911}, #{str4011}, #{cdNation}, #{zipHome},
+                   #{addHome1}, #{addHome2}, #{telHome1}, #{telHome2},
+                   #{telHome3}, #{celEmp1}, #{celEmp2}, #{celEmp3},
+                   #{emEmp}, #{idMsn}, #{cdDept}, #{cdOccup},
+                   #{rankNo}, #{cdSalcls}, #{cdField}, #{cdProject},
+                   #{daRetire}, #{cdBank}, #{noBnkacct}, #{nmBnkowner},
+                   #{mn611}, #{cdAcctit1}, #{cdAcctit2}, #{fgPaysupply},
+                   #{mnMmaverage}, #{mnNatptarget}, #{mnNatpslev},
+                   #{mnHostarget}, #{mnHos}, #{noHealth},
+                   #{mnEmptarget}, #{mnEmp}, #{ynEmploy},
+                   #{ynCeo}, #{ynSanjae}, #{ynLonginsur},
+                   #{str3211}, #{str3311}, #{str3511},
+                   #{mn2111}, #{mn3111}, #{str1111},
+                   #{str4511}, #{str4611}, #{str4711},
+                   #{mn1111}, #{ynDanil}, #{ynIclman},
+                   #{str4311}, #{str4411}, #{mnIclpay},
+                   #{str3411}, #{ynForlabor}, #{ynUnit},
+                   #{ynOverwork}, #{str4211}, #{mn4111}
+               )
     </insert>
+
 
     <update id="updateEmp" parameterType="Emp">
         UPDATE Emp
-        SET nm_krname = #{nmKrname},
+        SET
+            nm_krname = #{nmKrname},
             yn_for = #{ynFor},
             no_social = #{noSocial},
-            job_ok = #{jobOk}
+            job_ok = #{jobOk},
+            da_enter = #{daEnter},
+            fg_sex = #{fgSex},
+            abb_nation = #{abbNation},
+            yn_resident = #{ynResident},
+            str_39_1_1 = #{str3911},
+            str_40_1_1 = #{str4011},
+            cd_nation = #{cdNation},
+            zip_home = #{zipHome},
+            add_home1 = #{addHome1},
+            add_home2 = #{addHome2},
+            tel_home1 = #{telHome1},
+            tel_home2 = #{telHome2},
+            tel_home3 = #{telHome3},
+            cel_emp1 = #{celEmp1},
+            cel_emp2 = #{celEmp2},
+            cel_emp3 = #{celEmp3},
+            em_emp = #{emEmp},
+            id_msn = #{idMsn},
+            cd_dept = #{cdDept},
+            cd_occup = #{cdOccup},
+            rank_no = #{rankNo},
+            cd_salcls = #{cdSalcls},
+            cd_field = #{cdField},
+            cd_project = #{cdProject},
+            da_retire = #{daRetire},
+            cd_bank = #{cdBank},
+            no_bnkacct = #{noBnkacct},
+            nm_bnkowner = #{nmBnkowner},
+            mn_6_1_1 = #{mn611},
+            cd_acctit1 = #{cdAcctit1},
+            cd_acctit2 = #{cdAcctit2},
+            fg_paysupply = #{fgPaysupply},
+            mn_mmaverage = #{mnMmaverage},
+            mn_natptarget = #{mnNatptarget},
+            mn_natpslev = #{mnNatpslev},
+            mn_hostarget = #{mnHostarget},
+            mn_hos = #{mnHos},
+            no_health = #{noHealth},
+            mn_emptarget = #{mnEmptarget},
+            mn_emp = #{mnEmp},
+            yn_employ = #{ynEmploy},
+            yn_ceo = #{ynCeo},
+            yn_sanjae = #{ynSanjae},
+            yn_longinsur = #{ynLonginsur},
+            str_32_1_1 = #{str3211},
+            str_33_1_1 = #{str3311},
+            str_35_1_1 = #{str3511},
+            mn_2_1_1 = #{mn2111},
+            mn_3_1_1 = #{mn3111},
+            str_1_1_1 = #{str1111},
+            str_45_1_1 = #{str4511},
+            str_46_1_1 = #{str4611},
+            str_47_1_1 = #{str4711},
+            mn_1_1_1 = #{mn1111},
+            yn_danil = #{ynDanil},
+            yn_iclman = #{ynIclman},
+            str_43_1_1 = #{str4311},
+            str_44_1_1 = #{str4411},
+            mn_iclpay = #{mnIclpay},
+            str_34_1_1 = #{str3411},
+            yn_forlabor = #{ynForlabor},
+            yn_unit = #{ynUnit},
+            yn_overwork = #{ynOverwork},
+            str_42_1_1 = #{str4211},
+            mn_4_1_1 = #{mn4111}
         WHERE cd_emp = #{cdEmp}
     </update>
+
 
     <delete id="deleteEmp" parameterType="Emp">
         DELETE

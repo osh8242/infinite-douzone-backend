@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface EmpDao {
     public List<Emp> getAllEmp();
-    public Emp getOneEmp();
+    public Emp getOneEmpByCdEmp(Emp emp);
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);

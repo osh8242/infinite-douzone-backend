@@ -1,7 +1,7 @@
-package com.douzone.rest.emp.service;
+package com.douzone.rest.empfam.service;
 
-import com.douzone.rest.emp.dao.EmpDao;
-import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.empfam.dao.EmpDao;
+import com.douzone.rest.empfam.vo.Emp;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class EmpService {
+
     @Autowired
     private SqlSession sqlSession;
 
@@ -20,12 +21,12 @@ public class EmpService {
         return result;
     }
 
-    public Emp getOneEmpByCdEmp(Emp emp){
+    public Emp getOneEmp(){
         System.out.println("Emp Service -----");
         EmpDao empdao = sqlSession.getMapper(EmpDao.class);
-        Emp resultEmp = empdao.getOneEmpByCdEmp(emp);
-        System.out.println("resultEmp= "+ resultEmp);
-        return resultEmp;
+        Emp emp = empdao.getOneEmp();
+        System.out.println("emp= "+ emp);
+        return emp;
     }
 
     public int insertEmp(Emp emp){

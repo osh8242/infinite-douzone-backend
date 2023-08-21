@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/emp/*")
 public class EmpController {
+
     @Autowired
     private EmpService empservice;
 
@@ -23,14 +24,14 @@ public class EmpController {
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
-    @PostMapping("getOne")
-    public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
-        System.out.println("Emp getOneEmpByCdEmp Controller -----");
-        Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
-        return new ResponseEntity<>(resultEmp, HttpStatus.OK);
+    @GetMapping("getOne")
+    public Emp getOneEmp(){
+        System.out.println("Emp getOneEmp Controller -----");
+        Emp emp = empservice.getOneEmp();
+        return emp;
     }
 
-    @PutMapping("insert")
+    @PostMapping("insert")
     public int insertEmp(@RequestBody Emp emp){
         System.out.println("Emp insert Controller -----");
         int result = empservice.insertEmp(emp);
