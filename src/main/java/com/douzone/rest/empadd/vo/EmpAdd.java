@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class EmpAdd {
     private String cdEmp;
+    private String tyEmploy;
+    private String cdOffduty;
     private String nmChName;
     private String nmEnName;
     private String ynDrawContracts;
@@ -34,4 +36,10 @@ public class EmpAdd {
     private String nmMltBranc;
     private String strMltDisch;
     private String cdMltRank;
+    private String noSocial;
+    private String fgSex;
+    private String cdDept;
+    private String rankNo;
+    private String daEnter;
+    private String daRetire;
 }

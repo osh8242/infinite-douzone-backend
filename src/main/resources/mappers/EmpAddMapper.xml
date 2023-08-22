@@ -28,7 +28,11 @@
         #{tyMilit, jdbcType=VARCHAR},        #{whyMltOff, jdbcType=VARCHAR},
         #{daMltBegin, jdbcType=DATE},        #{daMltEnd, jdbcType=DATE},
         #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
-        #{strMltDisch, jdbcType=VARCHAR},    #{cdMltRank, jdbcType=VARCHAR})
+        #{strMltDisch, jdbcType=VARCHAR},    #{cdMltRank, jdbcType=VARCHAR}),
+        #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR},      #{fgSex, jdbcType=VARCHAR},
+        #{cdDept, jdbcType=VARCHAR},      #{rankNo, jdbcType=VARCHAR},
+        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR}
     </insert>
 
     <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
@@ -67,6 +71,12 @@
         <if test="nmMltBranc != null">NM_MLTBRANC = #{nmMltBranc},</if>
         <if test="strMltDisch != null">STR_MLTDISCH = #{strMltDisch},</if>
         <if test="cdMltRank != null">CD_MLTRANK = #{cdMltRank},</if>
+        <if test="noSocial != null">NO_SOCIAL = #{noSocial},</if>
+        <if test="fgSex != null">NO_SOCIAL = #{fgSex},</if>
+        <if test="cdDept != null">CD_DEPT = #{cdDept},</if>
+        <if test="rankNo != null">RANK_NO = #{rankNo},</if>
+        <if test="daEnter != null">DA_ENTER = #{daEnter},</if>
+        <if test="daRetire != null">DA_RETIRE = #{daRetire},</if>
         CD_EMP = #{cdEmp}
         WHERE CD_EMP = #{cdEmp}
     </update>

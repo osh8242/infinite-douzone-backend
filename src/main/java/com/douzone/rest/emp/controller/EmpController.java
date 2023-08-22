@@ -8,14 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
-@RequestMapping("/emp/*")
+@RequestMapping("/emp")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
+
     @Autowired
     private EmpService empservice;
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
@@ -23,7 +24,7 @@ public class EmpController {
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
-    @PostMapping("getOne")
+    @PostMapping("/getOne")
     public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
         Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
@@ -37,14 +38,14 @@ public class EmpController {
         return result;
     }
 
-    @PostMapping("update")
+    @PostMapping("/update")
     public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
         return result;
     }
 
-    @PostMapping("delete")
+    @PostMapping("/delete")
     public int deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
         int result =empservice.deleteEmp(emp);
