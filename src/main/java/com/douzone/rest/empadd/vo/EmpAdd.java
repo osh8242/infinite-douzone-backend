@@ -35,4 +35,3 @@ public class EmpAdd {
     private String strMltDisch;
     private String cdMltRank;
 }
-
