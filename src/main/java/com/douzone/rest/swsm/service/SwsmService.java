@@ -15,7 +15,6 @@ public class SwsmService {
     @Autowired
     private SwsmDao swsmDao;
 //    private SwsmDao swsmDao;
-//
 //    @Autowired
 //    public SwsmService(SwsmDao swsmDao) {
 //        this.swsmDao = swsmDao;
