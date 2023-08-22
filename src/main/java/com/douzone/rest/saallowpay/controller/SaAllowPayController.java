@@ -3,13 +3,13 @@ package com.douzone.rest.saallowpay.controller;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/saallowpay")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class SaAllowPayController {
     SaAllowPayService saAllowPayService;
     @Autowired
