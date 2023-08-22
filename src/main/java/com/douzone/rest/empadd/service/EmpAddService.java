@@ -22,9 +22,31 @@ public class EmpAddService {
         return empAdds;
     }
 
-    public Integer insertEmpAdd(EmpAdd empAdd){
-        Integer result = null;
+    public EmpAdd getEmpAddByCdEmp(EmpAdd empAdd){
+        EmpAdd result = empAddDao.getEmpAddByCdEmp(empAdd);
+        return result;
+    }
+
+    public int insertEmpAdd(EmpAdd empAdd){
+        int result = 0;
         result = empAddDao.insertEmpAdd(empAdd);
         return result;
     }
+<<<<<<< HEAD
 }
+=======
+
+    public int deleteEmpByCdEmp(EmpAdd empAdd){
+        int result = 0;
+        result = empAddDao.deleteEmpByCdEmp(empAdd);
+        return result;
+    }
+
+    public int updateEmpAddByCdEmp(EmpAdd empAdd){
+        int result = 0;
+        result = empAddDao.updateEmpAddByCdEmp(empAdd);
+        return result;
+    }
+
+}
+>>>>>>> 9060194c948163e56f496fc5b78196a20f02bcc0
