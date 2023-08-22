@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
+
+    <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
+        /* 사원 조회 */
+        SELECT CD_EMP
+            , (SELECT NM_KRNAME FROM EMP WHERE CD_EMP = #{searchUseYn}) as NM_EMP
+            , MN_1_1_1
+            , DA_ENTER
+            , YN_MATEDED
+            , NUM_20FAMILY/NUM_60FAMILY/NUM_MANYFAMILY
+            , YN_RESIDENT
+            , YN_UNIT
+            , YN_FORLABOR
+            , YN_OVERWORK
+            , DA_RETIRE
+            , CD_OCCUP
+            , RANK_NO
+            , CD_DEPT
+            , CD_FIELD
+            , CD_PROJECT
+            , AM_NATIONPEN
+            , AM_HEALTHINSUR
+            , MN_2_1_1
+            , NO_SOCIAL
+            , MN_REDUCTION
+        FROM SAEMPINFO
+        WHERE 1=1
+        <if test="searchEmpCd       != null and searchEmpCd       != ''">   and CD_EMP       = #{searchUseYn}      </if>
+        <if test="searchDeptCd      != null and searchDeptCd      != ''">   and CD_DEPT      = #{searchDeptCd}     </if>
+        <if test="searchRankNo      != null and searchRankNo      != ''">   and RANK_NO      = #{searchRankNo}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   and CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchCdField     != null and searchCdField     != ''">   and CD_FIELD     = #{searchCdField}    </if>
+        <if test="searchCdProject   != null and searchCdProject   != ''">   and CD_PROJECT   = #{searchCdProject}  </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   and YN_UNIT      = #{searchYnUnit}     </if>
+        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   and YN_FORLABOR  = #{searchYnForlabor} </if>
+    </select>
+
+    <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
+        /* 사원 상세 조회 */
+        SELECT *
+        FROM SAEMPINFO
+        WHERE CD_EMP = #{cdEmp}
+    </select>
+
+    <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
+        /* 사원 삭제 */
+        delete
+        from SAEMPINFO
+        where CD_EMP = #{cdEmp}
+    </delete>
+
+    <update id="updateEmpInfo" parameterType="SaEmpInfo">
+        /* 사원 수정 */
+        update SAEMPINFO
+        set CD_EMP = #{cdEmp}
+            <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>
+            <if test="daEnter                  != null">, DA_ENTER = #{daEnter}</if>
+            <if test="ynMateDed                != null">, YN_MATEDED = #{ynMateDed}</if>
+            <if test="num20Family              != null">, NUM_20FAMILY = #{num20Family}</if>
+            <if test="num60Family              != null">, NUM_60FAMILY = #{num60Family}</if>
+            <if test="numManyFamily            != null">, NUM_MANYFAMILY = #{numManyFamily}</if>
+            <if test="ynResident               != null">, YN_RESIDENT = #{ynResident}</if>
+            <if test="ynUnit                   != null">, YN_UNIT = #{ynUnit}</if>
+            <if test="ynForLabor               != null">, YN_FORLABOR = #{ynForLabor}</if>
+            <if test="ynOverwork               != null">, YN_OVERWORK = #{ynOverwork}</if>
+            <if test="cdOccup                  != null">, CD_OCCUP = #{cdOccup}</if>
+            <if test="rankNo                   != null">, RANK_NO = #{rankNo}</if>
+            <if test="cdDept                   != null">, CD_DEPT = #{cdDept}</if>
+            <if test="cdField                  != null">, CD_FIELD = #{cdField}</if>
+            <if test="cdProject                != null">, CD_PROJECT = #{cdProject}</if>
+            <if test="amNationPen              != null">, AM_NATIONPEN = #{amNationPen}</if>
+            <if test="amHealthInsur            != null">, AM_HEALTHINSUR = #{amHealthInsur}</if>
+            <if test="mn211                    != null">, MN_2_1_1 = #{mn211}</if>
+            <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
+        where CD_EMP = #{cdEmp}
+    </update>
+
+</mapper>

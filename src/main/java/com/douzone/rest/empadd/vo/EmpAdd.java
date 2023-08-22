@@ -43,4 +43,3 @@ public class EmpAdd {
     private String daEnter;
     private String daRetire;
 }
-

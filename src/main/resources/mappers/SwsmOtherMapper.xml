@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.swsm.dao.SwsmOtherDao">
+    <select id="getAllSwsmOther" resultType="SwsmOther">
+        SELECT
+        other_type, other_money
+        FROM SWSMOther
+    </select>
+
+    <insert id="insertSwsmOther" parameterType="SwsmOther">
+        insert into swsmother(other_type ,other_money)
+        values (#{otherType}, #{otherMoney})
+    </insert>
+
+</mapper>
