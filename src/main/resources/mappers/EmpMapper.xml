@@ -8,12 +8,17 @@
         FROM EMP
     </select>
 
-
     <select id="getOneEmpByCdEmp" parameterType="Emp">
         SELECT
             *
         FROM EMP
         WHERE cd_emp = #{cdEmp}
+    </select>
+    
+    <select id="getListEmpByVariable" parameterType="hashmap">
+        SELECT *
+        FROM EMP
+        WHERE ${columnName} = #{columnValue}
     </select>
 
     <insert id="insertEmp" parameterType="Emp">

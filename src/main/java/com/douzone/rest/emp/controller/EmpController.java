@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/emp")
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -24,11 +26,19 @@ public class EmpController {
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/getOne")
+    @PostMapping("/getOneByCdEmp")
     public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
         Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
+    }
+
+//    {columnName: 컬럼명, columnValue: 컬럼값} 으로 전달받아 검색하는 기능
+    @PostMapping("/getListByVariable")
+    public ResponseEntity<?> getListByVariable(@RequestBody Map<String, String> variable){
+        System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
+        List<Emp> result = empservice.getListEmpByVariable(variable);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("insert")
