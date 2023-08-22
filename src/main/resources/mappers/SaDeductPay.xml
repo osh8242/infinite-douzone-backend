@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPay">
+
+    <update id="updateSaDeductPay" parameterType="SaDeductPay">
+        /* 공제항목 수정 */
+        update SADEDUCTPAY
+        set ALLOW_PAY = #{allowPay}
+        where CD_EMP = #{cdEmp}
+        AND ALLOW_MONTH = #{allowMonth}
+        AND ALLOW_YEAR = #{allowYear}
+        AND CD_DEDUCT = #{cdDeduct}
+    </update>
+
+</mapper>
