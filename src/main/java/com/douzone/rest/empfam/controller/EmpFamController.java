@@ -11,40 +11,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empfam/*")
+@RequestMapping("/empFam")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpFamController {
     @Autowired
     private EmpFamService empFamService;
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List> getAllEmpFam() {
         System.out.println("empfam/getAll 컨트롤러 진입!");
         List<EmpFam> empfamList = empFamService.getAllEmpFam();
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
-    @PostMapping("getOne")
-    public ResponseEntity<?> getOneEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
-        System.out.println("empfam/getOne 컨트롤러 진입!");
-        EmpFam result = empFamService.getOneEmpFambyCdEmp(empfam);
+    @PostMapping("/getEmpFamListByCdEmp")
+    public ResponseEntity<List<EmpFam>> getEmpFamListByCdEmp(@RequestBody EmpFam empfam){
+        System.out.println("EmpFamController.getEmpFamListByCdEmp");
+        List<EmpFam> result = null;
+        result = empFamService.getEmpFamListByCdEmp(empfam);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("insert")
+    @PostMapping("/insert")
     public int insertEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empfam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);
         return result;
     }
 
-    @PostMapping("update")
+    @PostMapping("/update")
     public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
         int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);
         return result;
     }
 
-    @PostMapping("delete")
+    @PostMapping("/delete")
     public int deleteEmp(@RequestBody EmpFam empfam){
         System.out.println("empfam/delete 컨트롤러 진입!");
         int result = empFamService.deleteEmpFam(empfam);

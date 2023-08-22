@@ -20,10 +20,10 @@ public class EmpFamService {
         return empfamdao.getAllEmpFam();
     }
 
-    public EmpFam getOneEmpFambyCdEmp(EmpFam empfam) {
+    public List<EmpFam> getEmpFamListByCdEmp(EmpFam empfam) {
         System.out.println("getOneEmpFam Service 진입!");
         EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        return empfamdao.getOneEmpFambyCdEmp(empfam);
+        return empfamdao.getEmpFamListByCdEmp(empfam);
     }
 
     public int insertEmpFam(EmpFam empfam) {
