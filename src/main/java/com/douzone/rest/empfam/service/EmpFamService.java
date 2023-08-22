@@ -20,6 +20,11 @@ public class EmpFamService {
         return empfamdao.getAllEmpFam();
     }
 
+    public List<EmpFam> getAllEmpFamByCdEmp(String cdEmp) {
+        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
+        return empfamdao.getAllEmpFamByCdEmp(cdEmp);
+    }
+
     public EmpFam getOneEmpFambyCdEmp(EmpFam empfam) {
         System.out.println("getOneEmpFam Service 진입!");
         EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);

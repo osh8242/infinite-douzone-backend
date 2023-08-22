@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/empfam/*")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpFamController {
     @Autowired
     private EmpFamService empFamService;
@@ -20,6 +21,13 @@ public class EmpFamController {
     public ResponseEntity<List> getAllEmpFam() {
         System.out.println("empfam/getAll 컨트롤러 진입!");
         List<EmpFam> empfamList = empFamService.getAllEmpFam();
+        return new ResponseEntity<>(empfamList, HttpStatus.OK);
+    }
+
+    @PostMapping("getAllByCdEmp")
+    public ResponseEntity<List> getAllEmpFamByCdEmp(@RequestBody String cdEmp) {
+        System.out.println("getAllEmpFamByCdEmp 컨트롤러 --------------------------------");
+        List<EmpFam> empfamList = empFamService.getAllEmpFamByCdEmp(cdEmp);
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
