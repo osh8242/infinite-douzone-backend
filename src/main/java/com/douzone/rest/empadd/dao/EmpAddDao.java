@@ -9,11 +9,11 @@ import java.util.List;
 public interface EmpAddDao {
     public List<EmpAdd> getAllEmpAdd();
 
-    public EmpAdd getEmpAddByCD_EMP(EmpAdd empAdd);
+    public EmpAdd getEmpAddByCdEmp(EmpAdd empAdd);
 
-    public int deleteEmpByCD_EMP(EmpAdd empAdd);
+    public int deleteEmpByCdEmp(EmpAdd empAdd);
 
-    public int updateEmpAddByCD_EMP(EmpAdd empAdd);
+    public int updateEmpAddByCdEmp(EmpAdd empAdd);
 
     public int insertEmpAdd(EmpAdd empAdd);
 }
