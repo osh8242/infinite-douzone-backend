@@ -24,6 +24,14 @@ public class EmpController {
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
+    @PostMapping("/getEmpListEmployed")
+    public ResponseEntity<List<Emp>> getEmpListByEmploymentStatus(@RequestBody Emp emp){
+        System.out.println("EmpController.getEmpListByEmploymentStatus");
+        List<Emp> list = null;
+        list = empservice.getEmpListEmployed(emp);
+        return new ResponseEntity<List<Emp>>(list, HttpStatus.OK);
+    }
+
     @PostMapping("/getOne")
     public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
