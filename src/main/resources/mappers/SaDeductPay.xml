@@ -2,10 +2,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPay">
+<mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPayDao">
+
+    <select id="getSaDeductPayByCdEmp" parameterType="SaDeductPay" resultType="SaDeductPay">
+        SELECT CD_DEDUCT
+        , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = s.CD_DEDUCT) as NM_DEDUCT
+        , ALLOW_PAY
+        , CD_EMP
+        , ALLOW_MONTH
+        , ALLOW_YEAR
+        , PAYMENT_DATE
+        FROM SADEDUCTPAY s
+        WHERE CD_EMP = #{cdEmp}
+        AND ALLOW_MONTH = #{allowMonth}
+        <if test="cdDeduct                    != null"> AND CD_DEDUCT = #{cdDeduct} </if>
+    </select>
 
     <update id="updateSaDeductPay" parameterType="SaDeductPay">
-        /* 공제항목 수정 */
         update SADEDUCTPAY
         set ALLOW_PAY = #{allowPay}
         where CD_EMP = #{cdEmp}
