@@ -6,7 +6,7 @@
 
     <select id="getSaDeductPayByCdEmp" parameterType="SaDeductPay" resultType="SaDeductPay">
         SELECT CD_DEDUCT
-        , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = s.CD_DEDUCT) as NM_DEDUCT
+        , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT = s.CD_DEDUCT) as NM_DEDUCT
         , ALLOW_PAY
         , CD_EMP
         , ALLOW_MONTH

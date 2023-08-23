@@ -6,7 +6,7 @@
 
     <select id="getSaAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
         SELECT CD_ALLOW
-            , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = s.CD_ALLOW) as NM_ALLOW
+            , (SELECT NM_ALLOW FROM SAALLOW a WHERE a.CD_ALLOW = s.CD_ALLOW) as NM_ALLOW
             , ALLOW_PAY
             , CD_EMP
             , ALLOW_MONTH

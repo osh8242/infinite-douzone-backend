@@ -31,7 +31,7 @@ public class SaEmpInfo {
 
     /*  검색 파라미터 */
     private String searchEmpCd;		    // 검색 사원코드
-    private String earchDeptCd;		    // 검색 부서코드
+    private String searchDeptCd;		    // 검색 부서코드
     private String searchRankNo;		// 검색 직급코드
     private String searchCdOccup;		// 검색 직책코드
     private String searchCdField;		// 검색 현장코드
