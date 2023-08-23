@@ -1,5 +1,6 @@
 package com.douzone.rest.empfam.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.empfam.service.EmpFamService;
 import com.douzone.rest.empfam.vo.EmpFam;
 
@@ -25,9 +26,9 @@ public class EmpFamController {
     }
 
     @PostMapping("getAllByCdEmp")
-    public ResponseEntity<List> getAllEmpFamByCdEmp(@RequestBody String cdEmp) {
+    public ResponseEntity<List> getAllEmpFamByCdEmp(@RequestBody Emp emp) {
         System.out.println("getAllEmpFamByCdEmp 컨트롤러 --------------------------------");
-        List<EmpFam> empfamList = empFamService.getAllEmpFamByCdEmp(cdEmp);
+        List<EmpFam> empfamList = empFamService.getAllEmpFamByCdEmp(emp);
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 

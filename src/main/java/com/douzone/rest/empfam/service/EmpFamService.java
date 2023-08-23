@@ -1,5 +1,6 @@
 package com.douzone.rest.empfam.service;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.empfam.dao.EmpFamDao;
 import com.douzone.rest.empfam.vo.EmpFam;
 import org.apache.ibatis.session.SqlSession;
@@ -20,8 +21,9 @@ public class EmpFamService {
         return empfamdao.getAllEmpFam();
     }
 
-    public List<EmpFam> getAllEmpFamByCdEmp(String cdEmp) {
+    public List<EmpFam> getAllEmpFamByCdEmp(Emp emp) {
         EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
+        String cdEmp = emp.getCdEmp();
         return empfamdao.getAllEmpFamByCdEmp(cdEmp);
     }
 
