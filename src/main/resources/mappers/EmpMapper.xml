@@ -12,7 +12,7 @@
         SELECT *
         FROM EMP WHERE JOB_OK = #{emp.jobOk}
         <if test="emp.daRetire != null">
-            AND EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{emp.daRetire}
+            OR EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{emp.daRetire}
         </if>
         <if test="orderRef == 'cdEmp'">
             ORDER BY CD_EMP
@@ -31,7 +31,7 @@
     </select>
 
     <select id="getListEmpByVariable" parameterType="hashmap">
-        SELECT *
+        SELECT *,
         FROM EMP
         WHERE ${columnName} = #{columnValue}
     </select>
