@@ -12,47 +12,45 @@ import java.util.List;
 
 @Service
 public class EmpFamService {
+
+    private EmpFamDao empFamDao;
+
     @Autowired
-    private SqlSessionTemplate sqlSessionTemplate;
+    public EmpFamService(EmpFamDao empFamDao) {
+        this.empFamDao = empFamDao;
+    }
 
     public List<EmpFam> getAllEmpFam() {
         System.out.println("getAllEmpFam Service 진입!");
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        return empfamdao.getAllEmpFam();
+        return empFamDao.getAllEmpFam();
     }
 
-    public List<EmpFam> getAllEmpFamByCdEmp(Emp emp) {
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        String cdEmp = emp.getCdEmp();
-        return empfamdao.getAllEmpFamByCdEmp(cdEmp);
+    public List<EmpFam> getListEmpFamByCdEmp(Emp emp) {
+        return empFamDao.getListEmpFamByCdEmp(emp.getCdEmp());
     }
 
-    public EmpFam getOneEmpFambyCdEmp(EmpFam empfam) {
-        System.out.println("getOneEmpFam Service 진입!");
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        return empfamdao.getOneEmpFambyCdEmp(empfam);
+    public EmpFam getEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
+        System.out.println("getEmpFam Service 진입!");
+        return empFamDao.getEmpFamByCdEmpAndCdCalrel(empfam);
     }
 
     public int insertEmpFam(EmpFam empfam) {
         System.out.println("insertEmpFam Service 진입!");
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        int result = empfamdao.insertEmpFam(empfam);
+        int result = empFamDao.insertEmpFam(empfam);
         if(result != 0) System.out.println("insert 성공!");
         return result;
     }
 
     public int updateEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
         System.out.println("updateEmpFam Service 진입!");
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        int result = empfamdao.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamDao.updateEmpFamByCdEmpAndCdCalrel(empfam);
         if(result != 0) System.out.println("update 성공!");
         return result;
     }
 
     public int deleteEmpFam(EmpFam empfam) {
         System.out.println("deleteEmpFam Service 진입!");
-        EmpFamDao empfamdao = sqlSessionTemplate.getMapper(EmpFamDao.class);
-        int result = empfamdao.deleteEmpFam(empfam);
+        int result = empFamDao.deleteEmpFam(empfam);
         if(result != 0) System.out.println("delete 성공!");
         return result;
     }

@@ -8,13 +8,13 @@
         FROM EmpFam
     </select>
 
-    <select id="getAllEmpFamByCdEmp" resultType="EmpFam">
+    <select id="getListEmpFamByCdEmp" resultType="EmpFam">
         select *
         FROM EmpFam
         WHERE cd_emp = #{cdEmp}
     </select>
 
-    <select id="getOneEmpFambyCdEmp" parameterType="EmpFam">
+    <select id="getEmpFamByCdEmpAndCdCalrel" parameterType="EmpFam">
         SELECT
             *
         FROM EMPFAM

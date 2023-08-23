@@ -26,7 +26,7 @@ public class EmpController {
         return new ResponseEntity<List>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/getOneByCdEmp")
+    @PostMapping("/getEmpByCdEmp")
     public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
         Emp resultEmp = empservice.getOneEmpByCdEmp(emp);

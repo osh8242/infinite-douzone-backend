@@ -8,7 +8,7 @@
         FROM EMP
     </select>
 
-    <select id="getOneEmpByCdEmp" parameterType="Emp">
+    <select id="getEmpByCdEmp" parameterType="Emp">
         SELECT
             *
         FROM EMP
