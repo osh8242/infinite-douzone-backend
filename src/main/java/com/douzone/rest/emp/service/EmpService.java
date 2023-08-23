@@ -37,10 +37,9 @@ public class EmpService {
     }
 
     public List<Emp> getListEmpByVariable(Map<String, String> variable){
-        EmpDao empdao = sqlSessionTemplate.getMapper(EmpDao.class);
 //        String columnName1 =variable.get("columnName");
 //        String columnValue2 =variable.get("columnValue");
-        return empdao.getListEmpByVariable(variable);
+        return empDao.getListEmpByVariable(variable);
     }
 
     public int insertEmp(Emp emp){
