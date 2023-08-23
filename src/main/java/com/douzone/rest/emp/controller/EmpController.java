@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,27 +16,34 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
 
-    @Autowired
     private EmpService empservice;
+    @Autowired
+    public EmpController(EmpService empservice) {
+        this.empservice = empservice;
+    }
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAllEmp(){
+    public ResponseEntity<List<Emp>> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
         System.out.println("result = "+result);
-        return new ResponseEntity<List>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/getEmpListEmployed")
-    public ResponseEntity<List<Emp>> getEmpListByEmploymentStatus(@RequestBody Emp emp){
-        System.out.println("EmpController.getEmpListByEmploymentStatus");
+    @PostMapping("/getEmpListByJobOk")
+    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestBody Emp emp, @RequestParam("orderRef") String orderRef){
+        System.out.println("EmpController.getEmpListByJobOk");
+        System.out.println("orderRef = " + orderRef);
+        Map<String, Object> map = new HashMap<>();
+        map.put("emp", emp);
+        map.put("orderRef", orderRef);
         List<Emp> list = null;
-        list = empservice.getEmpListEmployed(emp);
-        return new ResponseEntity<List<Emp>>(list, HttpStatus.OK);
+        list = empservice.getEmpListByJobOk(map);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping("/getOne")
-    public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
+    public ResponseEntity<Emp> getOneEmpByCdEmp(@RequestBody Emp emp){
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
         Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
@@ -43,7 +51,7 @@ public class EmpController {
 
 //    {columnName: 컬럼명, columnValue: 컬럼값} 으로 전달받아 검색하는 기능
     @PostMapping("/getListByVariable")
-    public ResponseEntity<?> getListByVariable(@RequestBody Map<String, String> variable){
+    public ResponseEntity<List<Emp>> getListByVariable(@RequestBody Map<String, String> variable){
         System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
         List<Emp> result = empservice.getListEmpByVariable(variable);
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -8,9 +8,18 @@
         FROM EMP
     </select>
 
-    <select id="getEmpListEmployed" parameterType="Emp" resultType="Emp">
+    <select id="getEmpListByJobOk" parameterType="map" resultType="Emp">
         SELECT *
-        FROM EMP WHERE JOB_OK = 'Y'
+        FROM EMP WHERE JOB_OK = #{emp.jobOk}
+        <if test="emp.daRetire != null">
+            AND EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{emp.daRetire}
+        </if>
+        <if test="orderRef == 'cdEmp'">
+            ORDER BY CD_EMP
+        </if>
+        <if test="orderRef == 'nmKrname'">
+            ORDER BY NM_KRNAME
+        </if>
     </select>
 
 
