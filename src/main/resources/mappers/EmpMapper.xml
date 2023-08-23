@@ -8,6 +8,11 @@
         FROM EMP
     </select>
 
+    <select id="getEmpListEmployed" parameterType="Emp" resultType="Emp">
+        SELECT *
+        FROM EMP WHERE JOB_OK = 'Y'
+    </select>
+
 
     <select id="getOneEmpByCdEmp" parameterType="Emp">
         SELECT

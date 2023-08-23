@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface EmpDao {
     public List<Emp> getAllEmp();
+    public List<Emp> getEmpListEmployed(Emp emp);
     public Emp getOneEmpByCdEmp(Emp emp);
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);

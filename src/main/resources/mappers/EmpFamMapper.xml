@@ -8,12 +8,11 @@
         FROM EmpFam
     </select>
 
-    <select id="getOneEmpFambyCdEmp" parameterType="EmpFam">
+    <select id="getEmpFamListByCdEmp" parameterType="EmpFam">
         SELECT
             *
         FROM EMPFAM
         WHERE cd_emp = #{cdEmp}
-        AND cd_calrel = #{cdCalrel}
     </select>
 
     <insert id="insertEmpFam" parameterType="EmpFam">
