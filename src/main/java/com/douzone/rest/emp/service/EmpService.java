@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmpService {
@@ -33,6 +34,13 @@ public class EmpService {
         Emp resultEmp = empDao.getOneEmpByCdEmp(emp);
         System.out.println("resultEmp= "+ resultEmp);
         return resultEmp;
+    }
+
+    public List<Emp> getListEmpByVariable(Map<String, String> variable){
+        EmpDao empdao = sqlSessionTemplate.getMapper(EmpDao.class);
+//        String columnName1 =variable.get("columnName");
+//        String columnValue2 =variable.get("columnValue");
+        return empdao.getListEmpByVariable(variable);
     }
 
     public int insertEmp(Emp emp){
