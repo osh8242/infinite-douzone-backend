@@ -17,11 +17,13 @@ public class SwsmOtherController {
     @Autowired
     private SwsmOtherService swsmOtherService;
 
-    @GetMapping("/getAllSwsmOther")
+    @GetMapping("/getAll")
     public ResponseEntity<List<SwsmOther>> getAllSwsmOther() {
         List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
+
+
     @PostMapping("/insertSwsmOther")
     public ResponseEntity<Integer> insertSwsmOther(@RequestBody SwsmOther swsmOther) {
         int result = swsmOtherService.insertSwsmOther(swsmOther);

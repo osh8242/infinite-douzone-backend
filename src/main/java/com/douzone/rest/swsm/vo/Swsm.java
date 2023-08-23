@@ -1,8 +1,12 @@
 package com.douzone.rest.swsm.vo;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 public class Swsm {
     String incomeClassfication;
     String withholdingYear;

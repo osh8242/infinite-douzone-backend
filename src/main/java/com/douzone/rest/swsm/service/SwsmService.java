@@ -19,7 +19,9 @@ public class SwsmService {
 //    public SwsmService(SwsmDao swsmDao) {
 //        this.swsmDao = swsmDao;
 //    }
-
+ public Swsm  getSwsmByEmpCode(Swsm swsm){
+     return swsmDao.getSwsmByEmpCode(swsm);
+ }
     public int insertSwsmEmp(Swsm swsm) {
         return swsmDao.insertSwsmEmp(swsm);
     }

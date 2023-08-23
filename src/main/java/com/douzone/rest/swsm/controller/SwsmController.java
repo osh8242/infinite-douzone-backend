@@ -1,5 +1,9 @@
 package com.douzone.rest.swsm.controller;
 
+import com.douzone.rest.emp.service.EmpService;
+import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.empadd.service.EmpAddService;
+import com.douzone.rest.empadd.vo.EmpAdd;
 import com.douzone.rest.swsm.service.SwsmService;
 import com.douzone.rest.swsm.vo.Swsm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,19 +11,69 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/swsm")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class SwsmController {
 
     @Autowired
     private SwsmService swsmService;
 
-    @GetMapping("/getAllSwsm")
+    @Autowired
+    private EmpService empService;
+
+    @GetMapping("/getAll")
     public ResponseEntity<List<Swsm>> getAllSwsm() {
         List<Swsm> swsmList = swsmService.getAllSwsm();
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
+    }
+
+    @PostMapping("/getSwsmByEmpCode")
+    public ResponseEntity <Swsm> getSwsmByEmpCode(@RequestBody Swsm swsm) {
+        System.out.println("d"+swsm);
+       Swsm resultSwsm=null;
+//       System.out.println(resultSwsm);
+
+        List<Swsm> swsmList = swsmService.getAllSwsm();
+        for(Swsm s: swsmList){
+            if(s.getEmpCode().equals(swsm.getEmpCode()))
+                resultSwsm=s;
+        }
+        return ResponseEntity.ok(resultSwsm);
+    }
+
+    @GetMapping("/getAllByEmpCode")
+    public ResponseEntity<List<Swsm>> getAllByEmpCode(@RequestBody Swsm swsm) {
+        List<Swsm> swsmList = swsmService.getAllSwsm();
+        List<Emp> empList = empService.getAllEmp();
+        List<Swsm> resultList=new ArrayList<>();
+
+        System.out.println("test=================================");
+        for(Swsm s: swsmList) {        System.out.println(swsmList);
+            for(Emp e:empList){
+                System.out.println("emp------------"+empList);
+                if(s.getEmpCode().equals(e.getCdEmp()))
+                {
+                    resultList.add(s);
+                     System.out.println(s.getEmpCode()+", "+e.getCdEmp());
+                    System.out.println("result: "+resultList);
+                }
+            }
+        }
+
+        System.out.println(resultList);
+        System.out.println("===================================");
+
+
+
+
+
+
+//        return ResponseEntity.ok(empAdd);
+        return ResponseEntity.status(HttpStatus.OK).body(resultList);
     }
 
     // 원천년도 기준 select code, name, rrn
