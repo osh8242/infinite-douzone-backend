@@ -5,28 +5,24 @@
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
     <select id="getSaAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
-        /* 사원별 급여항목 리스트 */
-        SELECT
-            CD_ALLOW
+        SELECT CD_ALLOW
+            , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = s.CD_ALLOW) as NM_ALLOW
             , ALLOW_PAY
             , CD_EMP
             , ALLOW_MONTH
             , ALLOW_YEAR
             , PAYMENT_DATE
-        FROM SAALLOWPAY
+        FROM SAALLOWPAY s
         WHERE CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allow_month}
-            AND ALLOW_YEAR = #{allow_year}
+            AND ALLOW_MONTH = #{allowMonth}
         <if test="cdAllow                    != null"> AND CD_ALLOW = #{cdAllow} </if>
     </select>
 
     <update id="updateSaAllowPay" parameterType="SaAllowPay">
-        /* 급여항목 수정 */
         update SAALLOWPAY
             set ALLOW_PAY = #{allowPay}
         where CD_EMP = #{cdEmp}
             AND ALLOW_MONTH = #{allow_month}
-            AND ALLOW_YEAR = #{allow_year}
     </update>
 
 

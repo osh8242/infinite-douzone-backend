@@ -17,8 +17,8 @@ public class SaAllowPayService {
         this.saAllowPayMapper = saAllowPayMapper;
     }
 
-    public List<SaAllowPay> getSalLowPayList(SaAllowPay saAllowPay) {
-        return saAllowPayMapper.getSalLowPayList(saAllowPay);
+    public List<SaAllowPay> getSaAlLowPayList(SaAllowPay saAllowPay) {
+        return saAllowPayMapper.getSaAlLowPayList(saAllowPay);
     }
 
     public void updateSalowPay(SaAllowPay saAllowPay) {
