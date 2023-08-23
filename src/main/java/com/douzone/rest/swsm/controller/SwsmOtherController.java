@@ -12,14 +12,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/swsmOther")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class SwsmOtherController {
 
     @Autowired
     private SwsmOtherService swsmOtherService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllSwsmOther")
     public ResponseEntity<List<SwsmOther>> getAllSwsmOther() {
         List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();
+        System.out.println(swsmOtherList);
+        return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
+    }
+
+    @GetMapping("/getSwsmOtherListByEmpCode")
+    public ResponseEntity<List<SwsmOther>> getSwsmOtherListByEmpCode() {
+        List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();        System.out.println(swsmOtherList);
+
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
 
@@ -29,8 +38,6 @@ public class SwsmOtherController {
         int result = swsmOtherService.insertSwsmOther(swsmOther);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
-
 
 
 }

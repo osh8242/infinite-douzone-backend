@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Swsm {
     String incomeClassfication;
     String withholdingYear;
-    String datexOfCreation;
+    String dateOfCreation;
     String empCode;
     String otherBenefitsItem;
     String otherBenefitsAmount;
@@ -23,6 +23,7 @@ public class Swsm {
     String endEmpContractPeriod;
     String postCode;
     String address;
+    String addDetail;
     String jobDescription;
     String startBreakTime;
     String endBreakTime;

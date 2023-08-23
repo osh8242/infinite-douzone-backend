@@ -6,4 +6,5 @@ import lombok.Data;
 public class SwsmOther {
     String otherType;
     String otherMoney;
+    String empCode;
 }

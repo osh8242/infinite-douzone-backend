@@ -5,7 +5,7 @@
 
 <mapper namespace="com.douzone.rest.swsm.dao.SwsmDao">
     <select id="getSwsmByEmpCode" resultType="Swsm">
-        select * from Swsm where emp_code = 'hong'
+        select * from Swsm where emp_code = (#{empCode})
     </select>
 
     <select id="getAllSwsm" resultType="Swsm">
@@ -39,7 +39,8 @@
         EMP_INSURANCE,
         COMPENSATION_INSURANCE,
         NATIONAL_PENSION,
-        HEALTH_INSURANCE
+        HEALTH_INSURANCE,
+        ADD_DETAIL
         FROM SWSM
     </select>
 
@@ -86,7 +87,8 @@
         emp_insurance=(#{empInsurance}),
         compensation_insurance=(#{compensationInsurance}),
         national_pension=(#{nationalPension}),
-        health_insurance=(#{healthInsurance})
+        health_insurance=(#{healthInsurance}),
+        add_detail=(#{addDetail})
         where emp_code = (#{empCode})
     </update>
 
