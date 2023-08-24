@@ -28,7 +28,6 @@ public class SwsmOtherController {
     @GetMapping("/getSwsmOtherListByEmpCode")
     public ResponseEntity<List<SwsmOther>> getSwsmOtherListByEmpCode() {
         List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();        System.out.println(swsmOtherList);
-
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
 

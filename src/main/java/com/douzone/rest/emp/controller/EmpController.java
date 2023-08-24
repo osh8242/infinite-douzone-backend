@@ -16,7 +16,7 @@ public class EmpController {
     @Autowired
     private EmpService empservice;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmp")
     public ResponseEntity<?> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
