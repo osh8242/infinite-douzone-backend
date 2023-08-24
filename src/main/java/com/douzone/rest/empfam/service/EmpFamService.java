@@ -25,8 +25,8 @@ public class EmpFamService {
         return empFamDao.getAllEmpFam();
     }
 
-    public List<EmpFam> getListEmpFamByCdEmp(Emp emp) {
-        return empFamDao.getListEmpFamByCdEmp(emp.getCdEmp());
+    public List<EmpFam> getListByCdEmp(Emp emp) {
+        return empFamDao.getListByCdEmp(emp.getCdEmp());
     }
 
     public EmpFam getEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {

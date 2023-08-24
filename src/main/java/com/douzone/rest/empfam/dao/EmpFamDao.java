@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface EmpFamDao {
     public List<EmpFam> getAllEmpFam();
-    public List<EmpFam> getListEmpFamByCdEmp(String cdEmp);
+    public List<EmpFam> getListByCdEmp(String cdEmp);
     public EmpFam getEmpFamByCdEmpAndCdCalrel(EmpFam empfam);
     public int insertEmpFam(EmpFam empfam);
     public int updateEmpFamByCdEmpAndCdCalrel(EmpFam empFam);

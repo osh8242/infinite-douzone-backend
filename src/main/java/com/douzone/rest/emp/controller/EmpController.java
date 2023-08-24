@@ -18,7 +18,7 @@ public class EmpController {
     @Autowired
     private EmpService empservice;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmp")
     public ResponseEntity<?> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
@@ -27,9 +27,9 @@ public class EmpController {
     }
 
     @PostMapping("/getEmpByCdEmp")
-    public ResponseEntity<?> getOneEmpByCdEmp(@RequestBody Emp emp){
-        System.out.println("Emp getOneEmpByCdEmp Controller -----");
-        Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
+    public ResponseEntity<?> getEmpByCdEmp(@RequestBody Emp emp){
+        System.out.println("Emp getEmpByCdEmp Controller -----");
+        Emp resultEmp = empservice.getEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
     }
 
@@ -37,25 +37,25 @@ public class EmpController {
     @PostMapping("/getListByVariable")
     public ResponseEntity<?> getListByVariable(@RequestBody Map<String, String> variable){
         System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
-        List<Emp> result = empservice.getListEmpByVariable(variable);
+        List<Emp> result = empservice.getListByVariable(variable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("insert")
+    @PostMapping("insertEmp")
     public int insertEmp(@RequestBody Emp emp){
         System.out.println("Emp insert Controller -----");
         int result = empservice.insertEmp(emp);
         return result;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/updateEmp")
     public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
         return result;
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/deleteEmp")
     public int deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
         int result =empservice.deleteEmp(emp);

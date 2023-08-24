@@ -15,7 +15,7 @@
         WHERE cd_emp = #{cdEmp}
     </select>
     
-    <select id="getListEmpByVariable" parameterType="hashmap">
+    <select id="getListByVariable" parameterType="hashmap">
         SELECT *
         FROM EMP
         WHERE ${columnName} = #{columnValue}
