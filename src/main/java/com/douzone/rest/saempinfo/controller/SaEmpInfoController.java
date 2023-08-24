@@ -19,8 +19,8 @@ public class SaEmpInfoController {
     }
     
     //전체조회
-    @GetMapping("/getAllSaEmpInfo")
-    public List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo) {
+    @PostMapping("/getAllSaEmpInfo")
+    public List<SaEmpInfo> getSaEmpInfoList(@RequestBody SaEmpInfo saEmpInfo) {
 
         List<SaEmpInfo> getAllEmpInfo = null;
         try {
@@ -33,7 +33,7 @@ public class SaEmpInfoController {
     }
 
     //조건조회
-    @GetMapping("/getSaEmpInfoByCdEmp")
+    @PostMapping("/getSaEmpInfoByCdEmp")
     public SaEmpInfo getSaEmpInfoByCdEmp(SaEmpInfo saEmpInfo) {
 
         SaEmpInfo getSaEmpInfoByCdEmp = null;

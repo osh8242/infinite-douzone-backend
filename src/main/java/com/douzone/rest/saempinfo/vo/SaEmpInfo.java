@@ -26,12 +26,12 @@ public class SaEmpInfo {
     private String noSocial;            // 주민번호
     private String MnReduction;         // 감면율(임시 칼럼)
 
-
     private String nmEmp;               // 사원이름
 
     /*  검색 파라미터 */
+    private String allowMonth;          // 귀속년월
     private String searchEmpCd;		    // 검색 사원코드
-    private String searchDeptCd;		    // 검색 부서코드
+    private String searchDeptCd;		// 검색 부서코드
     private String searchRankNo;		// 검색 직급코드
     private String searchCdOccup;		// 검색 직책코드
     private String searchCdField;		// 검색 현장코드
