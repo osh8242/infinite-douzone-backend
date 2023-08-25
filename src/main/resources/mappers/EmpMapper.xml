@@ -187,77 +187,79 @@
     <update id="updateEmp" parameterType="Emp">
         UPDATE EMP
         SET
-            nm_krname = #{nmKrname, jdbcType=VARCHAR},
-            yn_for = #{ynFor, jdbcType=VARCHAR},
-            no_social = #{noSocial, jdbcType=VARCHAR},
-            job_ok = #{jobOk, jdbcType=VARCHAR},
-            da_enter = #{daEnter, jdbcType=VARCHAR},
-            fg_sex = #{fgSex, jdbcType=VARCHAR},
-            abb_nation = #{abbNation, jdbcType=VARCHAR},
-            yn_resident = #{ynResident, jdbcType=VARCHAR},
-            str_39_1_1 = #{str3911, jdbcType=VARCHAR},
-            str_40_1_1 = #{str4011, jdbcType=VARCHAR},
-            cd_nation = #{cdNation, jdbcType=VARCHAR},
-            zip_home = #{zipHome, jdbcType=VARCHAR},
-            add_home1 = #{addHome1, jdbcType=VARCHAR},
-            add_home2 = #{addHome2, jdbcType=VARCHAR},
-            tel_home1 = #{telHome1, jdbcType=VARCHAR},
-            tel_home2 = #{telHome2, jdbcType=VARCHAR},
-            tel_home3 = #{telHome3, jdbcType=VARCHAR},
-            cel_emp1 = #{celEmp1, jdbcType=VARCHAR},
-            cel_emp2 = #{celEmp2, jdbcType=VARCHAR},
-            cel_emp3 = #{celEmp3, jdbcType=VARCHAR},
-            em_emp = #{emEmp, jdbcType=VARCHAR},
-            id_msn = #{idMsn, jdbcType=VARCHAR},
-            cd_dept = #{cdDept, jdbcType=VARCHAR},
-            cd_occup = #{cdOccup, jdbcType=VARCHAR},
-            rank_no = #{rankNo, jdbcType=VARCHAR},
-            cd_salcls = #{cdSalcls, jdbcType=VARCHAR},
-            cd_field = #{cdField, jdbcType=VARCHAR},
-            cd_project = #{cdProject, jdbcType=VARCHAR},
-            da_retire = #{daRetire, jdbcType=VARCHAR},
-            cd_bank = #{cdBank, jdbcType=VARCHAR},
-            no_bnkacct = #{noBnkacct, jdbcType=VARCHAR},
-            nm_bnkowner = #{nmBnkowner, jdbcType=VARCHAR},
-            mn_6_1_1 = #{mn611, jdbcType=VARCHAR},
-            cd_acctit1 = #{cdAcctit1, jdbcType=VARCHAR},
-            cd_acctit2 = #{cdAcctit2, jdbcType=VARCHAR},
-            fg_paysupply = #{fgPaysupply, jdbcType=VARCHAR},
-            mn_mmaverage = #{mnMmaverage, jdbcType=VARCHAR},
-            mn_natptarget = #{mnNatptarget, jdbcType=VARCHAR},
-            mn_natpslev = #{mnNatpslev, jdbcType=VARCHAR},
-            mn_hostarget = #{mnHostarget, jdbcType=VARCHAR},
-            mn_hos = #{mnHos, jdbcType=VARCHAR},
-            no_health = #{noHealth, jdbcType=VARCHAR},
-            mn_emptarget = #{mnEmptarget, jdbcType=VARCHAR},
-            mn_emp = #{mnEmp, jdbcType=VARCHAR},
-            yn_employ = #{ynEmploy, jdbcType=VARCHAR},
-            yn_ceo = #{ynCeo, jdbcType=VARCHAR},
-            yn_sanjae = #{ynSanjae, jdbcType=VARCHAR},
-            yn_longinsur = #{ynLonginsur, jdbcType=VARCHAR},
-            str_32_1_1 = #{str3211, jdbcType=VARCHAR},
-            str_33_1_1 = #{str3311, jdbcType=VARCHAR},
-            str_35_1_1 = #{str3511, jdbcType=VARCHAR},
-            mn_2_1_1 = #{mn2111, jdbcType=VARCHAR},
-            mn_3_1_1 = #{mn3111, jdbcType=VARCHAR},
-            str_1_1_1 = #{str1111, jdbcType=VARCHAR},
-            str_45_1_1 = #{str4511, jdbcType=VARCHAR},
-            str_46_1_1 = #{str4611, jdbcType=VARCHAR},
-            str_47_1_1 = #{str4711, jdbcType=VARCHAR},
-            mn_1_1_1 = #{mn1111, jdbcType=VARCHAR},
-            yn_danil = #{ynDanil, jdbcType=VARCHAR},
-            yn_iclman = #{ynIclman, jdbcType=VARCHAR},
-            str_43_1_1 = #{str4311, jdbcType=VARCHAR},
-            str_44_1_1 = #{str4411, jdbcType=VARCHAR},
-            mn_iclpay = #{mnIclpay, jdbcType=VARCHAR},
-            str_34_1_1 = #{str3411, jdbcType=VARCHAR},
-            yn_forlabor = #{ynForlabor, jdbcType=VARCHAR},
-            yn_unit = #{ynUnit, jdbcType=VARCHAR},
-            yn_overwork = #{ynOverwork, jdbcType=VARCHAR},
-            str_42_1_1 = #{str4211, jdbcType=VARCHAR},
-            mn_4_1_1 = #{mn4111, jdbcType=VARCHAR}
+        <if test="nmKrname != null">nm_krname = #{nmKrname, jdbcType=VARCHAR},</if>
+        <if test="ynFor != null">yn_for = #{ynFor, jdbcType=VARCHAR},</if>
+        <if test="noSocial != null">no_social = #{noSocial, jdbcType=VARCHAR},</if>
+        <if test="jobOk != null">job_ok = #{jobOk, jdbcType=VARCHAR},</if>
+        <if test="daEnter != null">da_enter = #{daEnter, jdbcType=VARCHAR},</if>
+        <if test="fgSex != null">fg_sex = #{fgSex, jdbcType=VARCHAR},</if>
+        <if test="abbNation != null">abb_nation = #{abbNation, jdbcType=VARCHAR},</if>
+        <if test="ynResident != null">yn_resident = #{ynResident, jdbcType=VARCHAR},</if>
+        <if test="str3911 != null">str_39_1_1 = #{str3911, jdbcType=VARCHAR},</if>
+        <if test="str4011 != null">str_40_1_1 = #{str4011, jdbcType=VARCHAR},</if>
+        <if test="cdNation != null">cd_nation = #{cdNation, jdbcType=VARCHAR},</if>
+        <if test="zipHome != null">zip_home = #{zipHome, jdbcType=VARCHAR},</if>
+        <if test="addHome1 != null">add_home1 = #{addHome1, jdbcType=VARCHAR},</if>
+        <if test="addHome2 != null">add_home2 = #{addHome2, jdbcType=VARCHAR},</if>
+        <if test="telHome1 != null">tel_home1 = #{telHome1, jdbcType=VARCHAR},</if>
+        <if test="telHome2 != null">tel_home2 = #{telHome2, jdbcType=VARCHAR},</if>
+        <if test="telHome3 != null">tel_home3 = #{telHome3, jdbcType=VARCHAR},</if>
+        <if test="celEmp1 != null">cel_emp1 = #{celEmp1, jdbcType=VARCHAR},</if>
+        <if test="celEmp2 != null">cel_emp2 = #{celEmp2, jdbcType=VARCHAR},</if>
+        <if test="celEmp3 != null">cel_emp3 = #{celEmp3, jdbcType=VARCHAR},</if>
+        <if test="emEmp != null">em_emp = #{emEmp, jdbcType=VARCHAR},</if>
+        <if test="idMsn != null">id_msn = #{idMsn, jdbcType=VARCHAR},</if>
+        <if test="cdDept != null">cd_dept = #{cdDept, jdbcType=VARCHAR},</if>
+        <if test="cdOccup != null">cd_occup = #{cdOccup, jdbcType=VARCHAR},</if>
+        <if test="rankNo != null">rank_no = #{rankNo, jdbcType=VARCHAR},</if>
+        <if test="cdSalcls != null">cd_salcls = #{cdSalcls, jdbcType=VARCHAR},</if>
+        <if test="cdField != null">cd_field = #{cdField, jdbcType=VARCHAR},</if>
+        <if test="cdProject != null">cd_project = #{cdProject, jdbcType=VARCHAR},</if>
+        <if test="daRetire != null">da_retire = #{daRetire, jdbcType=VARCHAR},</if>
+        <if test="cdBank != null">cd_bank = #{cdBank, jdbcType=VARCHAR},</if>
+        <if test="noBnkacct != null">no_bnkacct = #{noBnkacct, jdbcType=VARCHAR},</if>
+        <if test="nmBnkowner != null">nm_bnkowner = #{nmBnkowner, jdbcType=VARCHAR},</if>
+        <if test="mn611 != null">mn_6_1_1 = #{mn611, jdbcType=VARCHAR},</if>
+        <if test="cdAcctit1 != null">cd_acctit1 = #{cdAcctit1, jdbcType=VARCHAR},</if>
+        <if test="cdAcctit2 != null">cd_acctit2 = #{cdAcctit2, jdbcType=VARCHAR},</if>
+        <if test="fgPaysupply != null">fg_paysupply = #{fgPaysupply, jdbcType=VARCHAR},</if>
+        <if test="mnMmaverage != null">mn_mmaverage = #{mnMmaverage, jdbcType=VARCHAR},</if>
+        <if test="mnNatptarget != null">mn_natptarget = #{mnNatptarget, jdbcType=VARCHAR},</if>
+        <if test="mnNatpslev != null">mn_natpslev = #{mnNatpslev, jdbcType=VARCHAR},</if>
+        <if test="mnHostarget != null">mn_hostarget = #{mnHostarget, jdbcType=VARCHAR},</if>
+        <if test="mnHos != null">mn_hos = #{mnHos, jdbcType=VARCHAR},</if>
+        <if test="noHealth != null">no_health = #{noHealth, jdbcType=VARCHAR},</if>
+        <if test="mnEmptarget != null">mn_emptarget = #{mnEmptarget, jdbcType=VARCHAR},</if>
+        <if test="mnEmp != null">mn_emp = #{mnEmp, jdbcType=VARCHAR},</if>
+        <if test="ynEmploy != null">yn_employ = #{ynEmploy, jdbcType=VARCHAR},</if>
+        <if test="ynCeo != null">yn_ceo = #{ynCeo, jdbcType=VARCHAR},</if>
+        <if test="ynSanjae != null">yn_sanjae = #{ynSanjae, jdbcType=VARCHAR},</if>
+        <if test="ynLonginsur != null">yn_longinsur = #{ynLonginsur, jdbcType=VARCHAR},</if>
+        <if test="str3211 != null">str_32_1_1 = #{str3211, jdbcType=VARCHAR},</if>
+        <if test="str3311 != null">str_33_1_1 = #{str3311, jdbcType=VARCHAR},</if>
+        <if test="str3511 != null">str_35_1_1 = #{str3511, jdbcType=VARCHAR},</if>
+        <if test="mn2111 != null">mn_2_1_1 = #{mn2111, jdbcType=VARCHAR},</if>
+        <if test="mn3111 != null">mn_3_1_1 = #{mn3111, jdbcType=VARCHAR},</if>
+        <if test="str1111 != null">str_1_1_1 = #{str1111, jdbcType=VARCHAR},</if>
+        <if test="str4511 != null">str_45_1_1 = #{str4511, jdbcType=VARCHAR},</if>
+        <if test="str4611 != null">str_46_1_1 = #{str4611, jdbcType=VARCHAR},</if>
+        <if test="str4711 != null">str_47_1_1 = #{str4711, jdbcType=VARCHAR},</if>
+        <if test="mn1111 != null">mn_1_1_1 = #{mn1111, jdbcType=VARCHAR},</if>
+        <if test="ynDanil != null">yn_danil = #{ynDanil, jdbcType=VARCHAR},</if>
+        <if test="ynIclman != null">yn_iclman = #{ynIclman, jdbcType=VARCHAR},</if>
+        <if test="str4311 != null">str_43_1_1 = #{str4311, jdbcType=VARCHAR},</if>
+        <if test="str4411 != null">str_44_1_1 = #{str4411, jdbcType=VARCHAR},</if>
+        <if test="mnIclpay != null">mn_iclpay = #{mnIclpay, jdbcType=VARCHAR},</if>
+        <if test="str3411 != null">str_34_1_1 = #{str3411, jdbcType=VARCHAR},</if>
+        <if test="ynForlabor != null">yn_forlabor = #{ynForlabor, jdbcType=VARCHAR},</if>
+        <if test="ynUnit != null">yn_unit = #{ynUnit, jdbcType=VARCHAR},</if>
+        <if test="ynOverwork != null">yn_overwork = #{ynOverwork, jdbcType=VARCHAR},</if>
+        <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>
+        <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>
+        cd_emp = #{cdEmp}
         WHERE cd_emp = #{cdEmp}
     </update>
+
 
 
     <delete id="deleteEmp" parameterType="Emp">
