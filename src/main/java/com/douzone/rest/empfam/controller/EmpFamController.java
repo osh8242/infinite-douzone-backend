@@ -40,7 +40,7 @@ public class EmpFamController {
         return result;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/updateEmpFam")
     public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
         int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);

@@ -57,7 +57,7 @@ public class EmpController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("insert")
+    @PostMapping("insertEmp")
     public int insertEmp(@RequestBody Emp emp){
         System.out.println("Emp insert Controller -----");
         int result = empservice.insertEmp(emp);
