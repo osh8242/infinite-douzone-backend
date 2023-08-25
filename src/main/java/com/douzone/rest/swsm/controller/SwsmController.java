@@ -67,11 +67,6 @@ public class SwsmController {
         System.out.println(resultList);
         System.out.println("===================================");
 
-
-
-
-
-
 //        return ResponseEntity.ok(empAdd);
         return ResponseEntity.status(HttpStatus.OK).body(resultList);
     }
