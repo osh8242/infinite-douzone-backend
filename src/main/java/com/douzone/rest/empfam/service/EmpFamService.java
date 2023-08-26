@@ -36,9 +36,9 @@ public class EmpFamService {
         return result;
     }
 
-    public int updateEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
+    public int updateEmpFamBySeqValAndCdEmp(EmpFam empfam) {
         System.out.println("updateEmpFam Service 진입!");
-        int result = empFamDao.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamDao.updateEmpFamBySeqValAndCdEmp(empfam);
         if(result != 0) System.out.println("update 성공!");
         return result;
     }

@@ -40,10 +40,10 @@ public class EmpFamController {
         return result;
     }
 
-    @PostMapping("/updateEmpFam")
-    public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
+    @PutMapping("/updateEmpFamBySeqValAndCdEmp")
+    public int updateEmpFamBySeqValAndCdEmp(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
-        int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamService.updateEmpFamBySeqValAndCdEmp(empfam);
         return result;
     }
 
