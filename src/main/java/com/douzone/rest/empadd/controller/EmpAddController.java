@@ -20,7 +20,7 @@ public class EmpAddController {
         this.empAddService = empAddService;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmpAdd")
     public ResponseEntity<List<EmpAdd>> getAllEmpAdd() {
         List<EmpAdd> empAdds = null;
         empAdds = empAddService.getAllEmpAdd();

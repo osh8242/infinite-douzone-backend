@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/empFam")
 @CrossOrigin(origins = "http://localhost:3000/")
 public class EmpFamController {
+
     @Autowired
     private EmpFamService empFamService;
 

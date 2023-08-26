@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmpService {
@@ -22,9 +23,9 @@ public class EmpService {
         return result;
     }
 
-    public List<Emp> getEmpListEmployed(Emp emp){
-        System.out.println("EmpService.getEmpListEmployed");
-        List<Emp> result = empDao.getAllEmp();
+    public List<Emp> getEmpListByJobOk(Map<String, Object> map){
+        System.out.println("EmpService.getEmpListByJobOk");
+        List<Emp> result = empDao.getEmpListByJobOk(map);
         return result;
     }
 
@@ -33,6 +34,12 @@ public class EmpService {
         Emp resultEmp = empDao.getOneEmpByCdEmp(emp);
         System.out.println("resultEmp= "+ resultEmp);
         return resultEmp;
+    }
+
+    public List<Emp> getListEmpByVariable(Map<String, String> variable){
+//        String columnName1 =variable.get("columnName");
+//        String columnValue2 =variable.get("columnValue");
+        return empDao.getListEmpByVariable(variable);
     }
 
     public int insertEmp(Emp emp){
