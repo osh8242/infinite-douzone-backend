@@ -33,7 +33,7 @@ public class EmpFamController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/insertEmpFam")
     public int insertEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empfam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);

@@ -50,11 +50,12 @@
     </insert>
 
 
-    <update id="updateEmpFam" parameterType="EmpFam">
+    <update id="updateEmpFamBySeqValAndCdEmp" parameterType="EmpFam">
         UPDATE EMPFAM
         SET
             cd_famrel = #{cdFamrel, jdbcType=VARCHAR},
             nm_krname = #{nmKrname, jdbcType=VARCHAR},
+            no_social = #{noSocial, jdbcType=VARCHAR},
             yn_for = #{ynFor, jdbcType=VARCHAR},
             fg_school = #{fgSchool, jdbcType=VARCHAR},
             fg_graduation = #{fgGraduation, jdbcType=VARCHAR},
@@ -65,7 +66,7 @@
             nm_krcom = #{nmKrcom, jdbcType=VARCHAR},
             cd_offpos = #{cdOffpos, jdbcType=VARCHAR}
         WHERE
-            no_social = #{noSocial, jdbcType=VARCHAR}
+            cd_emp = #{cdEmp} AND seq_val = #{seqVal}
     </update>
 
 
