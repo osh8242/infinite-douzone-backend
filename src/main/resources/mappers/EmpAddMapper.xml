@@ -72,7 +72,7 @@
             <if test="strMltDisch != null">STR_MLTDISCH = #{strMltDisch},</if>
             <if test="cdMltRank != null">CD_MLTRANK = #{cdMltRank},</if>
             <if test="noSocial != null">NO_SOCIAL = #{noSocial},</if>
-            <if test="fgSex != null">NO_SOCIAL = #{fgSex},</if>
+            <if test="fgSex != null">FG_SEX = #{fgSex},</if>
             <if test="cdDept != null">CD_DEPT = #{cdDept},</if>
             <if test="rankNo != null">RANK_NO = #{rankNo},</if>
             <if test="daEnter != null">DA_ENTER = #{daEnter},</if>
