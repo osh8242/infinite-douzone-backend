@@ -34,7 +34,7 @@ public class SaEmpInfoController {
 
     //조건조회
     @PostMapping("/getSaEmpInfoByCdEmp")
-    public SaEmpInfo getSaEmpInfoByCdEmp(SaEmpInfo saEmpInfo) {
+    public SaEmpInfo getSaEmpInfoByCdEmp(@RequestBody SaEmpInfo saEmpInfo) {
 
         SaEmpInfo getSaEmpInfoByCdEmp = null;
         try {

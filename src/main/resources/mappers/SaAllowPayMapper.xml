@@ -5,14 +5,16 @@
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
     <select id="getSaAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
-        SELECT CD_ALLOW
-            , (SELECT NM_ALLOW FROM SAALLOW a WHERE a.CD_ALLOW = s.CD_ALLOW) as NM_ALLOW
-            , ALLOW_PAY
-            , CD_EMP
-            , ALLOW_MONTH
-            , ALLOW_YEAR
-            , PAYMENT_DATE
-        FROM SAALLOWPAY s
+        SELECT s.CD_ALLOW,
+            a.NM_ALLOW,
+            a.YN_TAX AS YN_TAX_ALLOW,
+            nvl(s.ALLOW_PAY,0) AS ALLOW_PAY,
+            s.CD_EMP,
+            s.ALLOW_MONTH,
+            s.ALLOW_YEAR,
+            s.PAYMENT_DATE
+        FROM SAALLOWPAY s LEFT OUTER JOIN SAALLOW a
+            ON s.CD_ALLOW = a.CD_ALLOW
         WHERE CD_EMP = #{cdEmp}
             AND ALLOW_MONTH = #{allowMonth}
         <if test="cdAllow                    != null"> AND CD_ALLOW = #{cdAllow} </if>

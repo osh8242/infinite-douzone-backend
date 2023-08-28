@@ -11,5 +11,7 @@ public class SaAllowPay {
     private String allowYear;   //귀속년
     private String paymentDate; //지급일
 
+    private String ynTax;       //과세여부
+
     private String nmAllow;     //급여항목 이름
 }
