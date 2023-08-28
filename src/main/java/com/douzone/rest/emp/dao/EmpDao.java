@@ -10,7 +10,7 @@ import java.util.Map;
 public interface EmpDao {
     public List<Emp> getAllEmp();
     public Emp getEmpByCdEmp(Emp emp);
-    public List<Emp> getListByVariable(Map<String, String> variable);
+    public List<Emp> getEmpListByVariable(Map<String, String> variable);
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);

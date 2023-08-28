@@ -19,11 +19,11 @@ public class EmpService {
     public EmpService(EmpDao empDao) {
         this.empDao = empDao;
     }
-    private SqlSessionTemplate sqlSessionTemplate;
 
     public List<Emp> getAllEmp(){
         System.out.println("EmpService 진입");
         List<Emp> result = empDao.getAllEmp();
+        System.out.println(result);
         return result;
     }
 
@@ -34,10 +34,10 @@ public class EmpService {
         return resultEmp;
     }
 
-    public List<Emp> getListByVariable(Map<String, String> variable){
+    public List<Emp> getEmpListByVariable(Map<String, String> variable){
 //        String columnName1 =variable.get("columnName");
 //        String columnValue2 =variable.get("columnValue");
-        return empDao.getListByVariable(variable);
+        return empDao.getEmpListByVariable(variable);
     }
 
     public int insertEmp(Emp emp){

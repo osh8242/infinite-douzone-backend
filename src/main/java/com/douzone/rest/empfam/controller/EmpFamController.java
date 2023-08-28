@@ -25,10 +25,10 @@ public class EmpFamController {
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
-    @PostMapping("/getListByCdEmp")
-    public ResponseEntity<List> getListByCdEmp(@RequestBody Emp emp) {
-        System.out.println("getListEmpFamByCdEmp 컨트롤러 --------------------------------");
-        List<EmpFam> empfamList = empFamService.getListByCdEmp(emp);
+    @PostMapping("/getEmpFamListByCdEmp")
+    public ResponseEntity<List> getEmpFamListByCdEmp(@RequestBody Emp emp) {
+        System.out.println("getEmpFamListByCdEmp 컨트롤러 --------------------------------");
+        List<EmpFam> empfamList = empFamService.getEmpFamListByCdEmp(emp);
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
