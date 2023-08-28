@@ -15,12 +15,14 @@ public class Swsm {
     String nmKrname; // "성명"
     String residentState; // "거주구분"
     String noSocial; // "주민번호"
-    String startEmpContractPeriod; // "시작근로계약기간"
+     String startEmpContractPeriod; // "시작근로계약기간"
     String endEmpContractPeriod; // "종료근로계약기간"
     String postCode; // "우편번호"
     String address; // "주소"
     String addDetail; // "상세주소"
     String jobDescription; // "업무의 내용"
+    String startWorktime; // 시작근로시간
+    String endWorktime; // 종료근로시간
     String startBreakTime; // "시작휴게시간"
     String endBreakTime; // "종료휴게시간"
     String workingDay; // "근무일"
