@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface SwsmDao {
-    Swsm getSwsmByEmpCode(Swsm swsm);
+    Swsm getSwsmByCdEmp(Swsm swsm);
     List<Swsm> getAllSwsm();
     List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm);
 

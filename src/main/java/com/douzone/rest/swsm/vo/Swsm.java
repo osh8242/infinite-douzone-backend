@@ -11,10 +11,10 @@ public class Swsm {
     String withholdingYear; // "원천년도"
     String dateOfCreation; // "작성년월"
     String incomeClassfication; // "소득구분"
-    String empCode; // "사원코드"
-    String name; // "성명"
+    String cdEmp; // "사원코드"
+    String nmKrname; // "성명"
     String residentState; // "거주구분"
-    String rrn; // "주민번호"
+    String noSocial; // "주민번호"
     String startEmpContractPeriod; // "시작근로계약기간"
     String endEmpContractPeriod; // "종료근로계약기간"
     String postCode; // "우편번호"
@@ -39,36 +39,4 @@ public class Swsm {
     String compensationInsurance; // "산재보험"
     String nationalPension; // "국민연금"
     String healthInsurance; // "건강보험"
-
-//    String incomeClassfication;
-//    String withholdingYear;
-//    String dateOfCreation;
-//    String empCode;
-//    String otherBenefitsItem;
-//    String otherBenefitsAmount;
-//    String name;
-//    String residentState;
-//    String rrn;
-//    String salaryAmount;
-//    String bonusAmount;
-//    String startEmpContractPeriod;
-//    String endEmpContractPeriod;
-//    String postCode;
-//    String address;
-//    String addDetail;
-//    String jobDescription;
-//    String startBreakTime;
-//    String endBreakTime;
-//    String workingDay;
-//    String dayOff;
-//    String salaryType;
-//    String otherBenefits;
-//    String bonusPaymentStatus;
-//    String salaryPaymentDateType;
-//    String paymentDate;
-//    String paymentMethod;
-//    String empInsurance;
-//    String compensationInsurance;
-//    String nationalPension;
-//    String healthInsurance;
 }

@@ -4,116 +4,118 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.rest.swsm.dao.SwsmDao">
-    <select id="getSwsmByEmpCode" resultType="Swsm">
-        select * from Swsm where emp_code = (#{empCode})
+    <select id="getSwsmByCdEmp" resultType="Swsm">
+        select * from Swsm where CD_EMP = #{cdEmp}
     </select>
 
     <select id="getAllSwsm" resultType="Swsm">
-        SELECT
-        INCOME_CLASSFICATION,
-        WITHHOLDING_YEAR,
-        DATE_OF_CREATION,
-        EMP_CODE,
-        OTHER_BENEFITS_ITEM,
-        OTHER_BENEFITS_AMOUNT,
-        NAME,
-        RESIDENT_STATE,
-        RRN,
-        SALARY_AMOUNT,
-        BONUS_AMOUNT,
-        START_EMP_CONTRACT_PERIOD,
-        END_EMP_CONTRACT_PERIOD,
-        POST_CODE,
-        ADDRESS,
-        JOB_DESCRIPTION,
-        START_BREAK_TIME,
-        END_BREAK_TIME,
-        WORKING_DAY,
-        DAY_OFF,
-        SALARY_TYPE,
-        OTHER_BENEFITS,
-        BONUS_PAYMENT_STATUS,
-        SALARY_PAYMENT_DATE_TYPE,
-        PAYMENT_DATE,
-        PAYMENT_METHOD,
-        EMP_INSURANCE,
-        COMPENSATION_INSURANCE,
-        NATIONAL_PENSION,
-        HEALTH_INSURANCE,
-        ADD_DETAIL
+        Select *
         FROM SWSM
     </select>
 
-    <select id="getCodeNameRrnByWithholdingYear" resultType="Swsm">
-        SELECT emp_code, name, rrn
-        where withholding_year=#{withholdingYear}
-        FROM SWSM
-    </select>
+<!--    <select id="getCodeNameRrnByWithholdingYear" resultType="Swsm">-->
+<!--        SELECT cd_emp, name, no_Social-->
+<!--        where withholding_year=#{withholdingYear}-->
+<!--        FROM SWSM-->
+<!--    </select>-->
 
-    <insert id="insertSwsmEmp" parameterType="Swsm">
-        insert into swsm(emp_code
-        ,withholding_year, rrn)
-        values (#{empCode},#{withholdingYear},#{rrn})
-    </insert>
+<!--    <insert id="insertSwsmEmp" parameterType="Swsm">-->
+<!--        insert into swsm(cd_emp-->
+<!--        ,withholding_year, no_Social)-->
+<!--        values (#{cdEmp},#{withholdingYear},#{noSocial})-->
+<!--    </insert>-->
 
-    <update id="updateSwsmByEmp">
-        update swsm set
-        income_classfication=(#{incomeClassfication}),
-        withholding_year=(#{withholdingYear}),
-        date_of_creation=(#{dateOfCreation}),
-        emp_code=(#{empCode}),
-        other_benefits_item=(#{otherBenefitsItem}),
-        other_benefits_amount=(#{otherBenefitsAmount}),
-        name=(#{name}),
-        resident_state=(#{residentState}),
-        rrn=(#{rrn}),
-        salary_amount=(#{salaryAmount}),
-        bonus_amount=(#{bonusAmount}),
-        start_emp_contract_period=(#{startEmpContractPeriod}),
-        end_emp_contract_period=(#{endEmpContractPeriod}),
-        post_code=(#{postCode}),
-        address=(#{address}),
-        job_description=(#{jobDescription}),
-        start_break_time=(#{startBreakTime}),
-        end_break_time=(#{endBreakTime}),
-        working_day=(#{workingDay}),
-        day_off=(#{dayOff}),
-        salary_type=(#{salaryType}),
-        other_benefits=(#{otherBenefits}),
-        bonus_payment_status=(#{bonusPaymentStatus}),
-        salary_payment_date_type=(#{salaryPaymentDateType}),
-        payment_date=(#{paymentDate}),
-        payment_method=(#{paymentMethod}),
-        emp_insurance=(#{empInsurance}),
-        compensation_insurance=(#{compensationInsurance}),
-        national_pension=(#{nationalPension}),
-        health_insurance=(#{healthInsurance}),
-        add_detail=(#{addDetail})
-        where emp_code = (#{empCode})
-    </update>
+<!--    <update id="updateSwsmByEmp">-->
+<!--        update swsm set-->
+<!--        income_classfication=(#{incomeClassfication}),-->
+<!--        withholding_year=(#{withholdingYear}),-->
+<!--        date_of_creation=(#{dateOfCreation}),-->
+<!--        cd_emp=(#{cdEmp}),-->
+<!--        other_benefits_item=(#{otherBenefitsItem}),-->
+<!--        other_benefits_amount=(#{otherBenefitsAmount}),-->
+<!--        name=(#{name}),-->
+<!--        resident_state=(#{residentState}),-->
+<!--        no_Social=(#{noSocial}),-->
+<!--        salary_amount=(#{salaryAmount}),-->
+<!--        bonus_amount=(#{bonusAmount}),-->
+<!--        start_emp_contract_period=(#{startEmpContractPeriod}),-->
+<!--        end_emp_contract_period=(#{endEmpContractPeriod}),-->
+<!--        post_code=(#{postCode}),-->
+<!--        address=(#{address}),-->
+<!--        job_description=(#{jobDescription}),-->
+<!--        start_break_time=(#{startBreakTime}),-->
+<!--        end_break_time=(#{endBreakTime}),-->
+<!--        working_day=(#{workingDay}),-->
+<!--        day_off=(#{dayOff}),-->
+<!--        salary_type=(#{salaryType}),-->
+<!--        other_benefits=(#{otherBenefits}),-->
+<!--        bonus_payment_status=(#{bonusPaymentStatus}),-->
+<!--        salary_payment_date_type=(#{salaryPaymentDateType}),-->
+<!--        payment_date=(#{paymentDate}),-->
+<!--        payment_method=(#{paymentMethod}),-->
+<!--        emp_insurance=(#{empInsurance}),-->
+<!--        compensation_insurance=(#{compensationInsurance}),-->
+<!--        national_pension=(#{nationalPension}),-->
+<!--        health_insurance=(#{healthInsurance}),-->
+<!--        add_detail=(#{addDetail})-->
+<!--        where cd_emp = (#{cdEmp})-->
+<!--    </update>-->
 
 
 
-    <update id="updateSwsm">
-        update swsm set
-        name='lee' where emp_code = (#{empCode})
-    </update>
+<!--    <update id="updateSwsm">-->
+<!--        update swsm set-->
+<!--        name='lee' where cd_emp = (#{cdEmp})-->
+<!--    </update>-->
 
+
+<!--    SELECT-->
+<!--    INCOME_CLASSFICATION,-->
+<!--    WITHHOLDING_YEAR,-->
+<!--    DATE_OF_CREATION,-->
+<!--    CD_EMP,-->
+<!--    OTHER_BENEFITS_ITEM,-->
+<!--    OTHER_BENEFITS_AMOUNT,-->
+<!--    nm_krname,-->
+<!--    RESIDENT_STATE,-->
+<!--    no_Social,-->
+<!--    SALARY_AMOUNT,-->
+<!--    BONUS_AMOUNT,-->
+<!--    START_EMP_CONTRACT_PERIOD,-->
+<!--    END_EMP_CONTRACT_PERIOD,-->
+<!--    POST_CODE,-->
+<!--    ADDRESS,-->
+<!--    JOB_DESCRIPTION,-->
+<!--    START_BREAK_TIME,-->
+<!--    END_BREAK_TIME,-->
+<!--    WORKING_DAY,-->
+<!--    DAY_OFF,-->
+<!--    SALARY_TYPE,-->
+<!--    OTHER_BENEFITS,-->
+<!--    BONUS_PAYMENT_STATUS,-->
+<!--    SALARY_PAYMENT_DATE_TYPE,-->
+<!--    PAYMENT_DATE,-->
+<!--    PAYMENT_METHOD,-->
+<!--    EMP_INSURANCE,-->
+<!--    COMPENSATION_INSURANCE,-->
+<!--    NATIONAL_PENSION,-->
+<!--    HEALTH_INSURANCE,-->
+<!--    ADD_DETAIL-->
 
 
 <!--    <insert id="insertSwsm" parameterType="Swsm">-->
-<!--        insert into swsm(emp_code)-->
-<!--        values (#{empCode})-->
+<!--        insert into swsm(cd_emp)-->
+<!--        values (#{cdEmp})-->
 <!--    </insert>-->
 <!--    <delete id="deleteSwsm">-->
-<!--        delete from swsm where emp_code=(#{empCode})-->
+<!--        delete from swsm where cd_emp=(#{cdEmp})-->
 <!--    </delete>-->
 
 <!--    <insert id="insertSwsmByEmp" parameterType="Swsm">-->
 <!--        insert into swsm(income_classfication-->
 <!--        ,withholding_year-->
 <!--        ,date_of_creation-->
-<!--        ,emp_code-->
+<!--        ,cd_emp-->
 <!--        ,other_benefits_item-->
 <!--        ,other_benefits_amount-->
 <!--        ,name-->
@@ -143,7 +145,7 @@
 <!--        values (#{incomeClassfication}-->
 <!--        ,#{withholdingYear}-->
 <!--        ,#{dateOfCreation}-->
-<!--        ,#{empCode}-->
+<!--        ,#{cdEmp}-->
 <!--        ,#{otherBenefitsItem}-->
 <!--        ,#{otherBenefitsAmount}-->
 <!--        ,#{name}-->

@@ -6,13 +6,21 @@
 <mapper namespace="com.douzone.rest.swsm.dao.SwsmOtherDao">
     <select id="getAllSwsmOther" resultType="SwsmOther">
         SELECT
-        other_type, other_money, other_code
+       *
         FROM SWSMOther
     </select>
 
-    <insert id="insertSwsmOther" parameterType="SwsmOther">
-        insert into swsmother(other_type ,other_money, emp_code)
-        values (#{otherType}, #{otherMoney}, #{empCode)
-    </insert>
+<!--    <select id="getSwsmOtherListByCdEmp" parameterType="SwsmOther">-->
+<!--        SELECT-->
+<!--        *-->
+<!--        FROM SwsmOther-->
+<!--        WHERE cd_emp = #{cdEmp}-->
+<!--    </select>-->
+
+
+<!--    <insert id="insertSwsmOther" parameterType="SwsmOther">-->
+<!--        insert into swsmother(other_type ,other_money, cd_emp)-->
+<!--        values (#{otherType}, #{otherMoney}, #{cdEmp)-->
+<!--    </insert>-->
 
 </mapper>

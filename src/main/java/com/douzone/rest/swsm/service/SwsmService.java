@@ -14,14 +14,31 @@ import java.util.List;
 public class SwsmService {
     @Autowired
     private SwsmDao swsmDao;
-//    private SwsmDao swsmDao;
+
+    //    private SwsmDao swsmDao;
 //    @Autowired
 //    public SwsmService(SwsmDao swsmDao) {
 //        this.swsmDao = swsmDao;
 //    }
- public Swsm  getSwsmByEmpCode(Swsm swsm){
-     return swsmDao.getSwsmByEmpCode(swsm);
- }
+//    public Swsm getSwsmByCdEmp(Swsm swsm) {
+//        return swsmDao.getSwsmByCdEmp(swsm);
+//    }
+
+    public Swsm getSwsmByCdEmp(Swsm swsm){
+//        Swsm r=null;
+//        try {
+            System.out.println("service: swsmByCdEmp parameter"+swsm.getCdEmp() );
+        Swsm r=swsmDao.getSwsmByCdEmp(swsm);
+            System.out.println("service: swsmByCdEmp result"+r );
+            System.out.println("getSwsmByCdEmp: "+r);
+
+//        }catch (Exception e){
+//            System.out.println("e message: "+e.getMessage());
+//        }
+
+        return r;
+    }
+
     public int insertSwsmEmp(Swsm swsm) {
         return swsmDao.insertSwsmEmp(swsm);
     }
@@ -33,6 +50,7 @@ public class SwsmService {
     public List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm) {
         return swsmDao.getCodeNameRrnByWithholdingYear(swsm);
     }
+
     public List<Swsm> getAllSwsm() {
         return swsmDao.getAllSwsm();
     }

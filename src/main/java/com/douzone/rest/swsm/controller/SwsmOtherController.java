@@ -20,24 +20,25 @@ public class SwsmOtherController {
 
     @GetMapping("/getAllSwsmOther")
     public ResponseEntity<List<SwsmOther>> getAllSwsmOther() {
+        System.out.println("swsmOther get");
         List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();
         System.out.println(swsmOtherList);
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
 
-    @GetMapping("/getSwsmOtherListByEmpCode")
-    public ResponseEntity<List<SwsmOther>> getSwsmOtherListByEmpCode() {
-        List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();
-        System.out.println(swsmOtherList);
-        return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
-    }
+//    @PostMapping("/getSwsmOtherListByCdEmp")
+//    public ResponseEntity<List<SwsmOther>> getSwsmOtherListByCdEmp(@RequestBody SwsmOther swsmOther) {
+//        List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherListByCdEmp(swsmOther);
+//        System.out.println(swsmOtherList);
+//        return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
+//    }
 
 
-    @PostMapping("/insertSwsmOther")
-    public ResponseEntity<Integer> insertSwsmOther(@RequestBody SwsmOther swsmOther) {
-        int result = swsmOtherService.insertSwsmOther(swsmOther);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
+//    @PostMapping("/insertSwsmOther")
+//    public ResponseEntity<Integer> insertSwsmOther(@RequestBody SwsmOther swsmOther) {
+//        int result = swsmOtherService.insertSwsmOther(swsmOther);
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
+//
 
 }
