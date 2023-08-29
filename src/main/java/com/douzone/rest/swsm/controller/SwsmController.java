@@ -74,7 +74,9 @@ public class SwsmController {
         System.out.println("controller update : parameter"+swsm);
         int result = swsmService.updateSwsm(swsm);
 
-        System.out.println("result contoorlller: "+result);
+        System.out.println("result contoorlller row: "+result);
+        System.out.println(result);
+
         return result;
     }
 

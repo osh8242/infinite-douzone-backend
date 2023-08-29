@@ -15,7 +15,7 @@ public class Swsm {
     String nmKrname; // "성명"
     String residentState; // "거주구분"
     String noSocial; // "주민번호"
-     String startEmpContractPeriod; // "시작근로계약기간"
+    String startEmpContractPeriod; // "시작근로계약기간"
     String endEmpContractPeriod; // "종료근로계약기간"
     String postCode; // "우편번호"
     String address; // "주소"
@@ -27,7 +27,7 @@ public class Swsm {
     String endBreakTime; // "종료휴게시간"
     String workingDay; // "근무일"
     String dayOff; // "주휴일"
-    String salaryType; // "임금유형"
+    String salaryType; // "임금유형" -- 임금
     String salaryAmount; // "임금액"
     String otherBenefits; // "기타급여"
     String otherBenefitsItem; // "기타급여항목"
