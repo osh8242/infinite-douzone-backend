@@ -26,6 +26,16 @@ public class SwsmOtherController {
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
 
+
+    @PostMapping("/getSwsmOtherByCdEmp")
+    public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(SwsmOther swsmOther){
+        System.out.println("==============================================");
+        System.out.println("SOController parameter: ");
+        System.out.println(swsmOther);
+        List<SwsmOther> SOList =swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
+        System.out.println("contoller result: "+SOList);
+        return ResponseEntity.status(HttpStatus.OK).body(SOList);
+    }
 //    @PostMapping("/getSwsmOtherListByCdEmp")
 //    public ResponseEntity<List<SwsmOther>> getSwsmOtherListByCdEmp(@RequestBody SwsmOther swsmOther) {
 //        List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherListByCdEmp(swsmOther);

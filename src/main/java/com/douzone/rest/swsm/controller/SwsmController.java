@@ -40,18 +40,42 @@ public class SwsmController {
         return ResponseEntity.status(HttpStatus.OK).body(swsmList);
     }
 
+//    @PostMapping("/getSwsmByCdEmp")
+//    public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
+//        System.out.println("================================================");
+////        Swsm reswsm = null;
+////        try {
+//            System.out.println("controller : parameter " + swsm.getCdEmp());
+//            Swsm reswsm = swsmService.getSwsmByCdEmp(swsm);
+//            System.out.println("controller : swsmByCdemp " + reswsm);
+////        } catch (Exception e) {
+////            System.out.println("e messgae: "+e.getMessage());
+////        }
+//        return ResponseEntity.status(HttpStatus.OK).body(reswsm);
+//    }
+
     @PostMapping("/getSwsmByCdEmp")
     public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
-        System.out.println("================================================");
-//        Swsm reswsm = null;
-//        try {
-            System.out.println("controller : parameter " + swsm.getCdEmp());
+        if (swsm.getCdEmp() == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        try {
             Swsm reswsm = swsmService.getSwsmByCdEmp(swsm);
-            System.out.println("controller : swsmByCdemp " + reswsm);
-//        } catch (Exception e) {
-//            System.out.println("e messgae: "+e.getMessage());
-//        }
-        return ResponseEntity.status(HttpStatus.OK).body(reswsm);
+            return ResponseEntity.status(HttpStatus.OK).body(reswsm);
+        } catch (Exception e) {
+            System.out.println("e message: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    @PutMapping("/updateSwsm")
+    public int updateSwsm(@RequestBody Swsm swsm){
+        System.out.println("controller update : parameter"+swsm);
+        int result = swsmService.updateSwsm(swsm);
+
+        System.out.println("result contoorlller: "+result);
+        return result;
     }
 
 

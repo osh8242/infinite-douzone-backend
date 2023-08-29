@@ -9,7 +9,10 @@ import java.util.List;
 @Mapper
 public interface SwsmOtherDao {
     List<SwsmOther> getAllSwsmOther();
-    List<SwsmOther>  getSwsmOtherListByCdEmp(SwsmOther swsmOther);
+
+    List<SwsmOther> getAllSwsmOther(SwsmOther swsmOther);
+
+    List<SwsmOther>  getSwsmOtherByCdEmp(SwsmOther swsmOther);
     int insertSwsmOther(SwsmOther swsmOther);
 
 }

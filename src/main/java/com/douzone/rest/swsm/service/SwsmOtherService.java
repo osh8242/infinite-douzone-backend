@@ -23,9 +23,17 @@ public class SwsmOtherService {
         return swsmOtherDao.getAllSwsmOther();
     }
 
-    public List<SwsmOther> getSwsmOtherListByCdEmp(SwsmOther swsmOther) {
-        return swsmOtherDao.getSwsmOtherListByCdEmp(swsmOther);
+    public List<SwsmOther> getSwsmOtherByCdEmp(SwsmOther swsmOther) {
+        System.out.println("==============================================");
+        System.out.println("service: ");
+        System.out.println("parameter: "+swsmOther);
+        return swsmOtherDao.getSwsmOtherByCdEmp(swsmOther);
     }
+
+
+//    public List<SwsmOther> getSwsmOtherListByCdEmp(SwsmOther swsmOther) {
+//        return swsmOtherDao.getSwsmOtherListByCdEmp(swsmOther);
+//    }
 
     public int insertSwsmOther(SwsmOther swsmOther) {
         return swsmOtherDao.insertSwsmOther(swsmOther);
