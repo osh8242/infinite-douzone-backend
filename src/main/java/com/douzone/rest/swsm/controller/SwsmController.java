@@ -56,16 +56,20 @@ public class SwsmController {
 
     @PostMapping("/getSwsmByCdEmp")
     public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
-        if (swsm.getCdEmp() == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        try {
+        if(swsm.getCdEmp()==null){
+            
+        }
+//        if (swsm.getCdEmp() == null)
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//
+//        try {
             Swsm reswsm = swsmService.getSwsmByCdEmp(swsm);
             return ResponseEntity.status(HttpStatus.OK).body(reswsm);
-        } catch (Exception e) {
-            System.out.println("e message: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+//        } catch (Exception e) {
+//            System.out.println("e message: " + e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
     }
 
 
