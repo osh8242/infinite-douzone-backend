@@ -1,5 +1,6 @@
 package com.douzone.rest.swsm.controller;
 
+import com.douzone.rest.empadd.vo.EmpAdd;
 import com.douzone.rest.swsm.service.SwsmOtherService;
 import com.douzone.rest.swsm.vo.Swsm;
 import com.douzone.rest.swsm.vo.SwsmOther;
@@ -30,7 +31,14 @@ public class SwsmOtherController {
     public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(@RequestBody SwsmOther swsmOther) {
         List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
+    }
 
+
+    @PostMapping("/insertSwsmOther")
+    public ResponseEntity<Integer> insertSwsmOther(@RequestBody SwsmOther swsmOther) {
+        int result = 0;
+        result = swsmOtherService.insertSwsmOther(swsmOther);
+        return ResponseEntity.ok(result);
     }
 
 //    @PostMapping("/getSwsmOtherByCdEmp")

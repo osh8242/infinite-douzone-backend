@@ -18,6 +18,15 @@
         where CD_EMP = #{cdEmp}
     </select>
 
+
+    <insert id="insertSwsmOther" parameterType="SwsmOther">
+        INSERT INTO SWSMOTHER(
+        cd_emp, other_type, other_money)
+        values(
+        #{cdEmp}, #{otherType}, #{otherMoney})
+    </insert>
+
+
 <!--    <select id="getSwsmOtherListByCdEmp" parameterType="SwsmOther">-->
 <!--        SELECT-->
 <!--        *-->
