@@ -74,6 +74,7 @@
             <if test="noSocial != null">NO_SOCIAL = #{noSocial},</if>
             <if test="fgSex != null">FG_SEX = #{fgSex},</if>
             <if test="cdDept != null">CD_DEPT = #{cdDept},</if>
+            <if test="cdOffduty != null">CD_OFFDUTY = #{cdOffduty},</if>
             <if test="rankNo != null">RANK_NO = #{rankNo},</if>
             <if test="daEnter != null">DA_ENTER = #{daEnter},</if>
             <if test="daRetire != null">DA_RETIRE = #{daRetire},</if>

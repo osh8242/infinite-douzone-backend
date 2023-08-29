@@ -47,9 +47,9 @@ public class EmpFamController {
         return result;
     }
 
-    @PostMapping("/delete")
-    public int deleteEmp(@RequestBody EmpFam empfam){
-        System.out.println("empfam/delete 컨트롤러 진입!");
+    @DeleteMapping("/deleteEmpFam")
+    public int deleteEmpFam(@RequestBody EmpFam empfam){
+        System.out.println("empfam/deleteEmpFam 컨트롤러 진입!");
         int result = empFamService.deleteEmpFam(empfam);
         return result;
     }
