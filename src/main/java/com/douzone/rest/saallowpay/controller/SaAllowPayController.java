@@ -30,14 +30,31 @@ public class SaAllowPayController {
         }
         return saAllowPayList;
     }
-    @PutMapping("/updateSalowPay")
-    public void updateSalowPay(SaAllowPay saAllowPay) {
+    @PutMapping("/updateSaAllowPay")
+    public int updateSaAllowPay(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
         try {
-            saAllowPayService.updateSalowPay(saAllowPay);
+            result = saAllowPayService.updateSaAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
+
+    @PostMapping("/getSalAllowPaySum")
+    public List<SaAllowPay> getSalAllowPaySum(@RequestBody SaAllowPay saAllowPay) {
+
+        List<SaAllowPay> salAllowPaySum = null;
+        try {
+            salAllowPaySum = saAllowPayService.getSalAllowPaySum(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return salAllowPaySum;
+    }
+
+
+
 //
 //
 //    //삭제

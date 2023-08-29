@@ -14,4 +14,6 @@ public class SaAllowPay {
     private String ynTax;       //과세여부
 
     private String nmAllow;     //급여항목 이름
+    private String sumAllowPay; //지급금액 합계
+
 }

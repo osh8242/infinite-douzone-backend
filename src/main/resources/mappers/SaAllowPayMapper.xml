@@ -5,14 +5,14 @@
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
     <select id="getSaAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
-        SELECT s.CD_ALLOW,
-            a.NM_ALLOW,
-            a.YN_TAX AS YN_TAX_ALLOW,
-            nvl(s.ALLOW_PAY,0) AS ALLOW_PAY,
-            s.CD_EMP,
-            s.ALLOW_MONTH,
-            s.ALLOW_YEAR,
-            s.PAYMENT_DATE
+        SELECT s.CD_ALLOW
+            , a.NM_ALLOW
+            , a.YN_TAX AS YN_TAX_ALLOW
+            , s.ALLOW_PAY
+            , s.CD_EMP
+            , s.ALLOW_MONTH
+            , s.ALLOW_YEAR
+            , s.PAYMENT_DATE
         FROM SAALLOWPAY s LEFT OUTER JOIN SAALLOW a
             ON s.CD_ALLOW = a.CD_ALLOW
         WHERE CD_EMP = #{cdEmp}
@@ -24,8 +24,26 @@
         update SAALLOWPAY
             set ALLOW_PAY = #{allowPay}
         where CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allow_month}
+            AND CD_ALLOW = #{cdAllow}
+            AND ALLOW_MONTH = #{allowMonth}
     </update>
 
+    <!-- 합계 데이터 조회-->
+    <select id="getSalAllowPaySum" parameterType="SaAllowPay" resultType="SaAllowPay">
+        SELECT
+            s.CD_ALLOW
+            , (SELECT NM_ALLOW  FROM SAALLOW s2 WHERE s2.CD_ALLOW=s.CD_ALLOW) AS NM_ALLOW
+            , a.YN_TAX AS YN_TAX
+            , sum(s.ALLOW_PAY) AS SUM_ALLOW_PAY
+        FROM
+            SAALLOWPAY s
+        LEFT OUTER JOIN SAALLOW a
+            ON s.CD_ALLOW = a.CD_ALLOW
+        WHERE 1=1
+        <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
+        <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
+        <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
+        GROUP BY s.CD_ALLOW,YN_TAX
+    </select>
 
 </mapper>

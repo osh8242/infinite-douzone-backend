@@ -21,13 +21,18 @@ public class SaAllowPayService {
         return saAllowPayMapper.getSaAlLowPayList(saAllowPay);
     }
 
-    public void updateSalowPay(SaAllowPay saAllowPay) {
+    public int updateSaAllowPay(SaAllowPay saAllowPay) {
+        int result = 0;
         try {
-            saAllowPayMapper.updateSalowPay(saAllowPay);
+            System.out.println(saAllowPay.toString());
+            result = saAllowPayMapper.updateSaAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
 
-
+    public List<SaAllowPay> getSalAllowPaySum(SaAllowPay saAllowPay) {
+        return saAllowPayMapper.getSalAllowPaySum(saAllowPay);
+    }
 }
