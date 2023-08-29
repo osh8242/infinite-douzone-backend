@@ -10,11 +10,12 @@
         FROM SWSMOther
     </select>
 
+
     <select id="getSwsmOtherByCdEmp" resultType="SwsmOther">
         SELECT
         *
         FROM SWSMOther
-        where cd_emp =#{cdEmp}
+        where CD_EMP = #{cdEmp}
     </select>
 
 <!--    <select id="getSwsmOtherListByCdEmp" parameterType="SwsmOther">-->

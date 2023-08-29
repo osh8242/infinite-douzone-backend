@@ -58,7 +58,7 @@ public class SwsmController {
     public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
 
         if(swsm.getCdEmp()==null){
-            
+
         }
 //        if (swsm.getCdEmp() == null)
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

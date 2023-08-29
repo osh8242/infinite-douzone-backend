@@ -24,20 +24,21 @@ public class SwsmService {
 //    public Swsm getSwsmByCdEmp(Swsm swsm) {
 //        return swsmDao.getSwsmByCdEmp(swsm);
 //    }
-    public int updateSwsm(Swsm swsm){
+    public int updateSwsm(Swsm swsm) {
         System.out.println("Swsm swsm service update -----");
         System.out.println(swsm);
         int result = swsmDao.updateSwsm(swsm);
-        System.out.println("result= service"+result);
+        System.out.println("result= service" + result);
         return result;
     }
-    public Swsm getSwsmByCdEmp(Swsm swsm){
+
+    public Swsm getSwsmByCdEmp(Swsm swsm) {
 //        Swsm r=null;
 //        try {
-            System.out.println("service: swsmByCdEmp parameter"+swsm.getCdEmp() );
-        Swsm r=swsmDao.getSwsmByCdEmp(swsm);
-            System.out.println("service: swsmByCdEmp result"+r );
-            System.out.println("getSwsmByCdEmp: "+r);
+        System.out.println("service: swsmByCdEmp parameter" + swsm.getCdEmp());
+        Swsm r = swsmDao.getSwsmByCdEmp(swsm);
+        System.out.println("service: swsmByCdEmp result" + r);
+        System.out.println("getSwsmByCdEmp: " + r);
 
 //        }catch (Exception e){
 //            System.out.println("e message: "+e.getMessage());

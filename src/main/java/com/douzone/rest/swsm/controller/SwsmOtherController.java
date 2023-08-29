@@ -20,22 +20,28 @@ public class SwsmOtherController {
 
     @GetMapping("/getAllSwsmOther")
     public ResponseEntity<List<SwsmOther>> getAllSwsmOther() {
-        System.out.println("swsmOther get");
+        System.out.println("swsmOther get All");
         List<SwsmOther> swsmOtherList = swsmOtherService.getAllSwsmOther();
         System.out.println(swsmOtherList);
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
 
-
     @PostMapping("/getSwsmOtherByCdEmp")
-    public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(SwsmOther swsmOther){
-        System.out.println("==============================================");
-        System.out.println("SOController parameter: ");
-        System.out.println(swsmOther);
-        List<SwsmOther> SOList =swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
-        System.out.println("contoller result: "+SOList);
-        return ResponseEntity.status(HttpStatus.OK).body(SOList);
+    public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(@RequestBody SwsmOther swsmOther) {
+        List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
+        return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
+
     }
+
+//    @PostMapping("/getSwsmOtherByCdEmp")
+//    public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(SwsmOther swsmOther){
+//        System.out.println("==============================================");
+//        System.out.println("SOController parameter: ");
+//        System.out.println(swsmOther);
+//        List<SwsmOther> SOList =swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
+//        System.out.println("contoller result: "+SOList);
+//        return ResponseEntity.status(HttpStatus.OK).body(SOList);
+//    }
 //    @PostMapping("/getSwsmOtherListByCdEmp")
 //    public ResponseEntity<List<SwsmOther>> getSwsmOtherListByCdEmp(@RequestBody SwsmOther swsmOther) {
 //        List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherListByCdEmp(swsmOther);

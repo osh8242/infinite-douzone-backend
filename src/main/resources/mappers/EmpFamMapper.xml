@@ -50,13 +50,13 @@
     </insert>
 
 
-    <update id="updateEmpFamByCdEmpAndCdCalrel" parameterType="EmpFam">
+    <update id="updateEmpFamBySeqValAndCdEmp" parameterType="EmpFam">
         UPDATE EMPFAM
         SET
             cd_famrel = #{cdFamrel, jdbcType=VARCHAR},
             nm_krname = #{nmKrname, jdbcType=VARCHAR},
-            yn_for = #{ynFor, jdbcType=VARCHAR},
             no_social = #{noSocial, jdbcType=VARCHAR},
+            yn_for = #{ynFor, jdbcType=VARCHAR},
             fg_school = #{fgSchool, jdbcType=VARCHAR},
             fg_graduation = #{fgGraduation, jdbcType=VARCHAR},
             yn_together = #{ynTogether, jdbcType=VARCHAR},
@@ -66,9 +66,7 @@
             nm_krcom = #{nmKrcom, jdbcType=VARCHAR},
             cd_offpos = #{cdOffpos, jdbcType=VARCHAR}
         WHERE
-            cd_emp = #{cdEmp, jdbcType=VARCHAR}
-        AND
-            cd_calrel = #{cdCalrel, jdbcType=VARCHAR}
+            cd_emp = #{cdEmp} AND seq_val = #{seqVal}
     </update>
 
 
@@ -76,6 +74,6 @@
         DELETE
         FROM EMPFAM
         WHERE cd_emp = #{cdEmp}
-          AND cd_calrel = #{cdCalrel}
+          AND seq_val = #{seqVal}
     </delete>
 </mapper>

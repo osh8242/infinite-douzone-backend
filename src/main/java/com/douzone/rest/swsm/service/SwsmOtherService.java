@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 public class SwsmOtherService {
-
     @Autowired
     private SwsmOtherDao swsmOtherDao;
+
 //    private SwsmOtherDao swsmOtherDao;
 //
 //    @Autowired
@@ -20,14 +20,13 @@ public class SwsmOtherService {
 //    }
 
     public List<SwsmOther> getAllSwsmOther() {
+        System.out.println(swsmOtherDao.getAllSwsmOther());
         return swsmOtherDao.getAllSwsmOther();
     }
 
     public List<SwsmOther> getSwsmOtherByCdEmp(SwsmOther swsmOther) {
-        System.out.println("==============================================");
-        System.out.println("service: ");
-        System.out.println("parameter: "+swsmOther);
-        return swsmOtherDao.getSwsmOtherByCdEmp(swsmOther);
+        List<SwsmOther> swsmOtherList = swsmOtherDao.getSwsmOtherByCdEmp(swsmOther);
+        return swsmOtherList;
     }
 
 

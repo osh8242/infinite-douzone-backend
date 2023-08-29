@@ -54,9 +54,5 @@ public class EmpAddController {
         result = empAddService.updateEmpAddByCdEmp(empAdd);
         return ResponseEntity.ok(result);
     }
-//    public EmpAdd getEmpAddByCD_EMP(EmpAdd empAdd);
-//    public int deleteEmpByCD_EMP(EmpAdd empAdd);
-//    public int updateEmpAddByCD_EMP(EmpAdd empAdd);
-//    public int insertEmpAdd(EmpAdd empAdd);
 
 }

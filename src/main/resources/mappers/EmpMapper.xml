@@ -186,7 +186,7 @@
 
     <update id="updateEmp" parameterType="Emp">
         UPDATE EMP
-        SET
+        <set>
         <if test="nmKrname != null">nm_krname = #{nmKrname, jdbcType=VARCHAR},</if>
         <if test="ynFor != null">yn_for = #{ynFor, jdbcType=VARCHAR},</if>
         <if test="noSocial != null">no_social = #{noSocial, jdbcType=VARCHAR},</if>
@@ -256,10 +256,9 @@
         <if test="ynOverwork != null">yn_overwork = #{ynOverwork, jdbcType=VARCHAR},</if>
         <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>
         <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>
-        cd_emp = #{cdEmp}
+        </set>
         WHERE cd_emp = #{cdEmp}
     </update>
-
 
 
     <delete id="deleteEmp" parameterType="Emp">
