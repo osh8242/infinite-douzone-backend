@@ -5,17 +5,23 @@
 <mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPayDao">
 
     <select id="getSaDeductPayByCdEmp" parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT CD_DEDUCT
-        , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT = s.CD_DEDUCT) as NM_DEDUCT
-        , ALLOW_PAY
-        , CD_EMP
-        , ALLOW_MONTH
-        , ALLOW_YEAR
-        , PAYMENT_DATE
-        FROM SADEDUCTPAY s
-        WHERE CD_EMP = #{cdEmp}
-        AND ALLOW_MONTH = #{allowMonth}
-        <if test="cdDeduct                    != null"> AND CD_DEDUCT = #{cdDeduct} </if>
+        SELECT d.CD_DEDUCT,d.NM_DEDUCT, p.*
+        FROM SADEDUCT d LEFT OUTER JOIN
+        (
+            SELECT CD_DEDUCT
+            , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT = s.CD_DEDUCT) as NM_DEDUCT
+            , ALLOW_PAY
+            , CD_EMP
+            , ALLOW_MONTH
+            , ALLOW_YEAR
+            , PAYMENT_DATE
+            FROM SADEDUCTPAY s
+            WHERE CD_EMP = #{cdEmp}
+            AND ALLOW_MONTH = #{allowMonth}
+            <if test="cdDeduct                    != null"> AND CD_DEDUCT = #{cdDeduct} </if>
+        )p
+        ON d.CD_DEDUCT = p.CD_DEDUCT
+        ORDER BY d.NM_DEDUCT asc
     </select>
 
     <update id="updateSaDeductPay" parameterType="java.util.Map">
