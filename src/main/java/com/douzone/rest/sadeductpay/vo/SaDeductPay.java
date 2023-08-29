@@ -12,4 +12,5 @@ public class SaDeductPay {
     private String paymentDate;     //지급일
 
     private String nmDeduct;        //공제항목 이름
+    private String sumDeductPay;    //공제항목 합계
 }
