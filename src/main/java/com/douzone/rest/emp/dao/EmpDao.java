@@ -9,8 +9,9 @@ import java.util.Map;
 @Mapper
 public interface EmpDao {
     public List<Emp> getAllEmp();
-    public Emp getEmpByCdEmp(Emp emp);
-    public List<Emp> getEmpListByVariable(Map<String, String> variable);
+    public List<Emp> getEmpListByJobOk(Map<String, Object> map);
+    public Emp getOneEmpByCdEmp(Emp emp);
+    public List<Emp> getListEmpByVariable(Map<String, String> variable);
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);

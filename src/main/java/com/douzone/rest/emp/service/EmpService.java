@@ -2,8 +2,6 @@ package com.douzone.rest.emp.service;
 
 import com.douzone.rest.emp.dao.EmpDao;
 import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.empfam.dao.EmpFamDao;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,6 @@ import java.util.Map;
 public class EmpService {
 
     private EmpDao empDao;
-
     @Autowired
     public EmpService(EmpDao empDao) {
         this.empDao = empDao;
@@ -23,21 +20,26 @@ public class EmpService {
     public List<Emp> getAllEmp(){
         System.out.println("EmpService 진입");
         List<Emp> result = empDao.getAllEmp();
-        System.out.println(result);
+        return result;
+    }
+
+    public List<Emp> getEmpListByJobOk(Map<String, Object> map){
+        System.out.println("EmpService.getEmpListByJobOk");
+        List<Emp> result = empDao.getEmpListByJobOk(map);
         return result;
     }
 
     public Emp getEmpByCdEmp(Emp emp){
         System.out.println("Emp Service -----");
-        Emp resultEmp = empDao.getEmpByCdEmp(emp);
+        Emp resultEmp = empDao.getOneEmpByCdEmp(emp);
         System.out.println("resultEmp= "+ resultEmp);
         return resultEmp;
     }
 
-    public List<Emp> getEmpListByVariable(Map<String, String> variable){
+    public List<Emp> getListEmpByVariable(Map<String, String> variable){
 //        String columnName1 =variable.get("columnName");
 //        String columnValue2 =variable.get("columnValue");
-        return empDao.getEmpListByVariable(variable);
+        return empDao.getListEmpByVariable(variable);
     }
 
     public int insertEmp(Emp emp){

@@ -1,6 +1,6 @@
 package com.douzone.rest.empfam.service;
 
-import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.dao.EmpDao;
 import com.douzone.rest.empfam.dao.EmpFamDao;
 import com.douzone.rest.empfam.vo.EmpFam;
 import org.apache.ibatis.session.SqlSession;
@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 public class EmpFamService {
-
     private EmpFamDao empFamDao;
 
     @Autowired
@@ -25,13 +24,9 @@ public class EmpFamService {
         return empFamDao.getAllEmpFam();
     }
 
-    public List<EmpFam> getEmpFamListByCdEmp(Emp emp) {
-        return empFamDao.getEmpFamListByCdEmp(emp.getCdEmp());
-    }
-
-    public EmpFam getEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
-        System.out.println("getEmpFam Service 진입!");
-        return empFamDao.getEmpFamByCdEmpAndCdCalrel(empfam);
+    public List<EmpFam> getEmpFamListByCdEmp(EmpFam empfam) {
+        System.out.println("getOneEmpFam Service 진입!");
+        return empFamDao.getEmpFamListByCdEmp(empfam);
     }
 
     public int insertEmpFam(EmpFam empfam) {
@@ -41,9 +36,9 @@ public class EmpFamService {
         return result;
     }
 
-    public int updateEmpFamByCdEmpAndCdCalrel(EmpFam empfam) {
+    public int updateEmpFamBySeqValAndCdEmp(EmpFam empfam) {
         System.out.println("updateEmpFam Service 진입!");
-        int result = empFamDao.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamDao.updateEmpFamBySeqValAndCdEmp(empfam);
         if(result != 0) System.out.println("update 성공!");
         return result;
     }
