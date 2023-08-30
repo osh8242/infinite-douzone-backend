@@ -22,7 +22,7 @@ public class EmpController {
         this.empservice = empservice;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmp")
     public ResponseEntity<List<Emp>> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
@@ -43,17 +43,17 @@ public class EmpController {
     }
 
     @PostMapping("/getOne")
-    public ResponseEntity<Emp> getOneEmpByCdEmp(@RequestBody Emp emp){
-        System.out.println("Emp getOneEmpByCdEmp Controller -----");
-        Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
+    public ResponseEntity<Emp> getEmpByCdEmp(@RequestBody Emp emp){
+        System.out.println("Emp getEmpByCdEmp Controller -----");
+        Emp resultEmp = empservice.getEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
     }
 
 //    {columnName: 컬럼명, columnValue: 컬럼값} 으로 전달받아 검색하는 기능
-    @PostMapping("/getListByVariable")
-    public ResponseEntity<List<Emp>> getListByVariable(@RequestBody Map<String, String> variable){
-        System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
-        List<Emp> result = empservice.getListEmpByVariable(variable);
+    @PostMapping("/getEmpListByVariable")
+    public ResponseEntity<List<Emp>> getEmpListByVariable(@RequestBody Map<String, String> variable){
+        System.out.println("---------- Emp getEmpListByVariable Controller 시작 ----------");
+        List<Emp> result = empservice.getEmpListByVariable(variable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
