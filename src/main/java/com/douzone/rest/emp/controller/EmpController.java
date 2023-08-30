@@ -74,7 +74,7 @@ public class EmpController {
         return result;
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/deleteEmp")
     public int deleteEmp(@RequestBody Emp emp) {
         System.out.println("Emp delete Controller -----");
         int result = empservice.deleteEmp(emp);
