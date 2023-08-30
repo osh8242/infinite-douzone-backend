@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/empFam")
 @CrossOrigin(origins = "http://localhost:3000/")
 public class EmpFamController {
+
     @Autowired
     private EmpFamService empFamService;
 
@@ -32,23 +33,23 @@ public class EmpFamController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/insertEmpFam")
     public int insertEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empfam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);
         return result;
     }
 
-    @PostMapping("/update")
-    public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
+    @PutMapping("/updateEmpFamBySeqValAndCdEmp")
+    public int updateEmpFamBySeqValAndCdEmp(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
-        int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamService.updateEmpFamBySeqValAndCdEmp(empfam);
         return result;
     }
 
-    @PostMapping("/delete")
-    public int deleteEmp(@RequestBody EmpFam empfam){
-        System.out.println("empfam/delete 컨트롤러 진입!");
+    @DeleteMapping("/deleteEmpFam")
+    public int deleteEmpFam(@RequestBody EmpFam empfam){
+        System.out.println("empfam/deleteEmpFam 컨트롤러 진입!");
         int result = empFamService.deleteEmpFam(empfam);
         return result;
     }

@@ -10,6 +10,6 @@ public interface EmpFamDao {
     public List<EmpFam> getAllEmpFam();
     public List<EmpFam> getEmpFamListByCdEmp(EmpFam empfam);
     public int insertEmpFam(EmpFam empfam);
-    public int updateEmpFamByCdEmpAndCdCalrel(EmpFam empFam);
+    public int updateEmpFamBySeqValAndCdEmp(EmpFam empFam);
     public int deleteEmpFam(EmpFam empfam);
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class EmpFam {
+    private Integer seqVal;
     private String cdEmp;
     private String cdCalrel;
     private String cdFamrel;
