@@ -5,23 +5,28 @@
 <mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
 
     <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
-        SELECT
-            DISTINCT  s.CD_EMP
-            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
-            , s.RANK_NO
-            , s.MN_REDUCTION
-        FROM SAEMPINFO s , SAALLOWPAY a
-        WHERE 1=1
-            AND s.CD_EMP  = a.CD_EMP
-            AND a.ALLOW_MONTH = #{allowMonth}
-        <if test="searchEmpCd       != null and searchEmpCd       != ''">   AND s.CD_EMP       = #{searchEmpCd}      </if>
-        <if test="searchDeptCd      != null and searchDeptCd       != ''">  AND s.CD_DEPT      = #{searchDeptCd}     </if>
-        <if test="searchRankNo      != null and searchRankNo      != ''">   AND s.RANK_NO      = #{searchRankNo}     </if>
-        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND s.CD_OCCUP     = #{searchCdOccup}    </if>
-        <if test="searchCdField     != null and searchCdField     != ''">   AND s.CD_FIELD     = #{searchCdField}    </if>
-        <if test="searchCdProject   != null and searchCdProject   != ''">   AND s.CD_PROJECT   = #{searchCdProject}  </if>
-        <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND s.YN_UNIT      = #{searchYnUnit}     </if>
-        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND s.YN_FORLABOR  = #{searchYnForlabor} </if>
+        SELECT i.CD_EMP
+            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = i.CD_EMP) as NM_EMP
+            , i.RANK_NO
+            , i.MN_REDUCTION
+        FROM SAEMPINFO i
+        WHERE i.CD_EMP IN (
+            SELECT DISTINCT p.CD_EMP
+                FROM SAALLOW s , SAALLOWPAY p
+            WHERE 1=1
+            AND s.CD_ALLOW = p.CD_ALLOW
+            AND s.SAL_DIVISION = #{salDivision}
+            AND p.ALLOW_MONTH = #{allowMonth}
+            AND p.PAYMENT_DATE = #{paymentDate}
+        )
+        <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND i.CD_EMP       = #{searchCdEmp}      </if>
+        <if test="searchCdDept      != null and searchCdDept      != ''">   AND i.CD_DEPT      = #{searchCdDept}     </if>
+        <if test="searchRankNo      != null and searchRankNo      != ''">   AND i.RANK_NO      = #{searchRankNo}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND i.CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchCdField     != null and searchCdField     != ''">   AND i.CD_FIELD     = #{searchCdField}    </if>
+        <if test="searchCdProject   != null and searchCdProject   != ''">   AND i.CD_PROJECT   = #{searchCdProject}  </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND i.YN_UNIT      = #{searchYnUnit}     </if>
+        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND i.YN_FORLABOR  = #{searchYnForlabor} </if>
     </select>
 
     <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
