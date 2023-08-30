@@ -7,8 +7,10 @@ import java.util.List;
 
 @Mapper
 public interface SaAllowPayMapper {
-    List<SaAllowPay> getSaAlLowPayList(SaAllowPay saAllowPay);   // 급여항목 리스트 조회
-    int updateSaAllowPay(SaAllowPay saAllowPay);   // 급여항목 수정
+    List<SaAllowPay> getSalAlLowPayList(SaAllowPay saAllowPay);   // 급여항목 리스트 조회
+    int insertSalAllowPay(SaAllowPay saAllowPay);   //급여자료 입력
+    int updateSalAllowPay(SaAllowPay saAllowPay);   // 급여항목 수정
+
     List<SaAllowPay> getSalAllowPaySum(SaAllowPay saAllowPay);
 
 //    List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo);//리스트조회

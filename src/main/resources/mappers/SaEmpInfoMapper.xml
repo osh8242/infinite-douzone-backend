@@ -26,41 +26,41 @@
 
     <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
         SELECT CD_EMP
-        , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
-        , MN_1_1_1
-        , DA_ENTER
-        , YN_MATEDED
-        , NUM_20FAMILY
-        , NUM_60FAMILY
-        , NUM_MANYFAMILY
-        , YN_RESIDENT
-        , YN_UNIT
-        , YN_FORLABOR
-        , YN_OVERWORK
-        , DA_RETIRE
-        , CD_OCCUP
-        , RANK_NO
-        , CD_DEPT
-        , CD_FIELD
-        , CD_PROJECT
-        , AM_NATIONPEN
-        , AM_HEALTHINSUR
-        , MN_2_1_1
-        , NO_SOCIAL
-        , MN_REDUCTION
+            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
+            , MN_1_1_1
+            , DA_ENTER
+            , YN_MATEDED
+            , NUM_20FAMILY
+            , NUM_60FAMILY
+            , NUM_MANYFAMILY
+            , YN_RESIDENT
+            , YN_UNIT
+            , YN_FORLABOR
+            , YN_OVERWORK
+            , DA_RETIRE
+            , CD_OCCUP
+            , RANK_NO
+            , CD_DEPT
+            , CD_FIELD
+            , CD_PROJECT
+            , AM_NATIONPEN
+            , AM_HEALTHINSUR
+            , MN_2_1_1
+            , NO_SOCIAL
+            , MN_REDUCTION
         FROM SAEMPINFO s
         WHERE CD_EMP = #{cdEmp}
     </select>
 
     <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
-        delete
-        from SAEMPINFO
-        where CD_EMP = #{cdEmp}
+        DELETE
+        FROM SAEMPINFO
+        WHERE CD_EMP = #{cdEmp}
     </delete>
 
     <update id="updateEmpInfo" parameterType="SaEmpInfo">
-        update SAEMPINFO
-        set CD_EMP = #{cdEmp}
+        UPDATE SAEMPINFO
+        SET CD_EMP = #{cdEmp}
             <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>
             <if test="daEnter                  != null">, DA_ENTER = #{daEnter}</if>
             <if test="ynMateDed                != null">, YN_MATEDED = #{ynMateDed}</if>
@@ -80,7 +80,7 @@
             <if test="amHealthInsur            != null">, AM_HEALTHINSUR = #{amHealthInsur}</if>
             <if test="mn211                    != null">, MN_2_1_1 = #{mn211}</if>
             <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
-        where CD_EMP = #{cdEmp}
+        WHERE CD_EMP = #{cdEmp}
     </update>
 
 </mapper>

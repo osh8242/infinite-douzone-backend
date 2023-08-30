@@ -4,7 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
-    <select id="getSaAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
+    <!-- 급여리스트 -->
+    <select id="getSalAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
         SELECT s.CD_ALLOW
             , a.NM_ALLOW
             , a.YN_TAX AS YN_TAX_ALLOW
@@ -20,10 +21,25 @@
         <if test="cdAllow                    != null"> AND CD_ALLOW = #{cdAllow} </if>
     </select>
 
-    <update id="updateSaAllowPay" parameterType="SaAllowPay">
-        update SAALLOWPAY
-            set ALLOW_PAY = #{allowPay}
-        where CD_EMP = #{cdEmp}
+    <!-- 급여자료 입력 -->
+    <insert id="insertSalAllowPay" parameterType="SaAllowPay">
+        INSERT INTO SAALLOWPAY(
+          CD_ALLOW , ALLOW_PAY , CD_EMP , ALLOW_MONTH , ALLOW_YEAR , PAYMENT_DATE)
+        VALUES (
+            #{cdAllow}
+            , #{allowPay}
+            , #{cdEmp}
+            , #{allowMonth}
+            , #{allowYear}
+            , #{paymentDate}
+        )
+    </insert>
+
+    <!-- 급여자료 수정 -->
+    <update id="updateSalAllowPay" parameterType="SaAllowPay">
+        UPDATE SAALLOWPAY
+            SET ALLOW_PAY = #{allowPay}
+        WHERE CD_EMP = #{cdEmp}
             AND CD_ALLOW = #{cdAllow}
             AND ALLOW_MONTH = #{allowMonth}
     </update>
@@ -45,5 +61,7 @@
         <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
         GROUP BY s.CD_ALLOW,YN_TAX
     </select>
+
+
 
 </mapper>

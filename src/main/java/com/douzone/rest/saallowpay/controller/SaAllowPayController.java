@@ -19,22 +19,33 @@ public class SaAllowPayController {
 
     //사원별 급여항목 리스트
     @PostMapping("/getSaAllowPayByCdEmp")
-    public List<SaAllowPay> getSaAlLowPayList(@RequestBody SaAllowPay saAllowPay) {
+    public List<SaAllowPay> getSalAlLowPayList(@RequestBody SaAllowPay saAllowPay) {
 
         List<SaAllowPay> saAllowPayList = null;
 
         try {
-            saAllowPayList = saAllowPayService.getSaAlLowPayList(saAllowPay);
+            saAllowPayList = saAllowPayService.getSalAlLowPayList(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return saAllowPayList;
     }
-    @PutMapping("/updateSaAllowPay")
-    public int updateSaAllowPay(@RequestBody SaAllowPay saAllowPay) {
+    @PostMapping("/insertSalAllowPay")
+    public int insertSalAllowPay(@RequestBody SaAllowPay saAllowPay){
         int result = 0;
         try {
-            result = saAllowPayService.updateSaAllowPay(saAllowPay);
+            result = saAllowPayService.insertSalAllowPay(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return  result;
+    }
+
+    @PutMapping("/updateSalAllowPay")
+    public int updateSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayService.updateSalAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }

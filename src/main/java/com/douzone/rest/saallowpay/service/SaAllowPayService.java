@@ -17,15 +17,24 @@ public class SaAllowPayService {
         this.saAllowPayMapper = saAllowPayMapper;
     }
 
-    public List<SaAllowPay> getSaAlLowPayList(SaAllowPay saAllowPay) {
-        return saAllowPayMapper.getSaAlLowPayList(saAllowPay);
+    public List<SaAllowPay> getSalAlLowPayList(SaAllowPay saAllowPay) {
+        return saAllowPayMapper.getSalAlLowPayList(saAllowPay);
     }
 
-    public int updateSaAllowPay(SaAllowPay saAllowPay) {
+    public int insertSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            System.out.println(saAllowPay.toString());
-            result = saAllowPayMapper.updateSaAllowPay(saAllowPay);
+            result = saAllowPayMapper.insertSalAllowPay(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int updateSalAllowPay(SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.updateSalAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }

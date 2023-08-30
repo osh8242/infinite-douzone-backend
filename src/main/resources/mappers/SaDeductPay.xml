@@ -18,8 +18,8 @@
             FROM SADEDUCTPAY s
             WHERE CD_EMP = #{cdEmp}
             AND ALLOW_MONTH = #{allowMonth}
-            <if test="cdDeduct                    != null"> AND CD_DEDUCT = #{cdDeduct} </if>
-        )p
+            <if test="cdDeduct                         != null"> AND CD_DEDUCT = #{cdDeduct} </if>
+        ) p
         ON d.CD_DEDUCT = p.CD_DEDUCT
         ORDER BY d.NM_DEDUCT asc
     </select>
@@ -41,10 +41,9 @@
         FROM
             SADEDUCTPAY s
         WHERE 1=1
-        AND s.ALLOW_MONTH = '2023-08'
-            <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp, jdbcType=VARCHAR} </if>
-            <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth, jdbcType=VARCHAR} </if>
-            <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear, jdbcType=VARCHAR} </if>
+            <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
+            <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
+            <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
         GROUP BY s.CD_DEDUCT
     </select>
 </mapper>
