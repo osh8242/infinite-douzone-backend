@@ -31,6 +31,11 @@
         WHERE cd_emp = #{cdEmp} AND seq_val=#{seqVal}
     </update>
 
+    <delete id="deleteSwsmOther" parameterType="SwsmOther">
+        delete
+        from SwsmOther
+        where cd_emp=#{cdEmp} And seq_val=#{seqVal}
+    </delete>
 
     <!--    <insert id="insertSwsmOther" parameterType="SwsmOther">-->
     <!--        INSERT INTO SWSMOTHER(-->
@@ -47,12 +52,6 @@
     <!--&lt;!&ndash;        CD_EMP = #{cdEmp} AND seq_val=#{seqVal}&ndash;&gt;-->
     <!--        WHERE cd_emp = #{cdEmp} AND seq_val=#{seqVal}-->
     <!--    </update>-->
-
-    <!--    <delete id="deleteSwsmOther" parameterType="SwsmOther">-->
-    <!--        delete-->
-    <!--        from SwsmOther-->
-    <!--        where cd_emp=#{cdEmp} And seq_val=#{seqVal}-->
-    <!--    </delete>-->
 
 
     <!--    <select id="getSwsmOtherListByCdEmp" parameterType="SwsmOther">-->
