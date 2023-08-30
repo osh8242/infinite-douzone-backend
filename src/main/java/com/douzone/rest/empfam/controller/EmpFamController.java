@@ -19,7 +19,7 @@ public class EmpFamController {
     @Autowired
     private EmpFamService empFamService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmpFam")
     public ResponseEntity<List> getAllEmpFam() {
         System.out.println("empFam/getAllEmpFam 컨트롤러 진입!");
         List<EmpFam> empfamList = empFamService.getAllEmpFam();

@@ -31,15 +31,15 @@ public class EmpService {
 
     public Emp getEmpByCdEmp(Emp emp){
         System.out.println("Emp Service -----");
-        Emp resultEmp = empDao.getOneEmpByCdEmp(emp);
+        Emp resultEmp = empDao.getEmpByCdEmp(emp);
         System.out.println("resultEmp= "+ resultEmp);
         return resultEmp;
     }
 
-    public List<Emp> getListEmpByVariable(Map<String, String> variable){
+    public List<Emp> getEmpListByVariable(Map<String, String> variable){
 //        String columnName1 =variable.get("columnName");
 //        String columnValue2 =variable.get("columnValue");
-        return empDao.getListEmpByVariable(variable);
+        return empDao.getEmpListByVariable(variable);
     }
 
     public int insertEmp(Emp emp){
