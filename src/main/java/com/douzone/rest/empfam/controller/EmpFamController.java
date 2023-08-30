@@ -1,5 +1,6 @@
 package com.douzone.rest.empfam.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.empfam.service.EmpFamService;
 import com.douzone.rest.empfam.vo.EmpFam;
 
@@ -18,9 +19,9 @@ public class EmpFamController {
     @Autowired
     private EmpFamService empFamService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllEmpFam")
     public ResponseEntity<List> getAllEmpFam() {
-        System.out.println("empfam/getAll 컨트롤러 진입!");
+        System.out.println("empFam/getAllEmpFam 컨트롤러 진입!");
         List<EmpFam> empfamList = empFamService.getAllEmpFam();
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
@@ -35,7 +36,7 @@ public class EmpFamController {
 
     @PostMapping("/insertEmpFam")
     public int insertEmpFam(@RequestBody EmpFam empfam){
-        System.out.println("empfam/insert 컨트롤러 진입!");
+        System.out.println("empFam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);
         return result;
     }
