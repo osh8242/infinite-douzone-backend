@@ -41,6 +41,21 @@ public class SwsmOtherController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/updateSwsmOtherByCdEmp")
+    public ResponseEntity<Integer> updateSwsmOther(@RequestBody SwsmOther swsmOther) {
+        System.out.println("update pararmeter");
+        System.out.println(swsmOther);
+        int result = 0;
+        result = swsmOtherService.updateSwsmOther(swsmOther);
+        System.out.println("update swsomtoehr result: "+result);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/deleteSwsmOther")
+    public int deleteSwsmOther(@RequestBody SwsmOther swsmOther){
+        return swsmOtherService.deleteSwsmOther(swsmOther);
+    }
+
 //    @PostMapping("/getSwsmOtherByCdEmp")
 //    public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(SwsmOther swsmOther){
 //        System.out.println("==============================================");

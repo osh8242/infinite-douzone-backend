@@ -38,4 +38,14 @@ public class SwsmOtherService {
         return swsmOtherDao.insertSwsmOther(swsmOther);
     }
 
+    public int updateSwsmOther(SwsmOther swsmOther){
+        System.out.println("service sowowtoehre"+ swsmOtherDao.updateSwsmOther(swsmOther));
+        return swsmOtherDao.updateSwsmOther(swsmOther);
+    }
+
+    public int deleteSwsmOther(SwsmOther swsmOther){
+        return swsmOtherDao.deleteSwsmOther(swsmOther);
+    }
+
+
 }

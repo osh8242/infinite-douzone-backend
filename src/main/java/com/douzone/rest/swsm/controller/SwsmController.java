@@ -19,6 +19,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000/")
 public class SwsmController {
 
+    @Autowired
     private SwsmService swsmService;
 
     @Autowired
