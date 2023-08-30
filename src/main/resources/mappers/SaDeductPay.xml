@@ -34,16 +34,22 @@
 
     <!-- 합계 데이터 조회-->
     <select id="getSalDeductPaySum"  parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT
-            s.CD_DEDUCT
-            , (SELECT NM_DEDUCT FROM SADEDUCT s2 WHERE s2.CD_DEDUCT=s.CD_DEDUCT) AS NM_DEDUCT
-            , sum(s.ALLOW_PAY) AS SUM_DEDUCT_PAY
-        FROM
-            SADEDUCTPAY s
-        WHERE 1=1
-            <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
-            <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
-            <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
-        GROUP BY s.CD_DEDUCT
+        SELECT d.CD_DEDUCT,d.NM_DEDUCT, p.*
+        FROM SADEDUCT d LEFT OUTER JOIN
+        (
+            SELECT
+                s.CD_DEDUCT
+                , (SELECT NM_DEDUCT FROM SADEDUCT s2 WHERE s2.CD_DEDUCT=s.CD_DEDUCT) AS NM_DEDUCT
+                , sum(s.ALLOW_PAY) AS SUM_DEDUCT_PAY
+            FROM
+                SADEDUCTPAY s
+            WHERE 1=1
+                <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
+                <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
+                <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
+            GROUP BY s.CD_DEDUCT
+        ) p
+        ON d.CD_DEDUCT = p.CD_DEDUCT
+        ORDER BY d.NM_DEDUCT asc
     </select>
 </mapper>
