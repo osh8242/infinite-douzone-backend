@@ -62,4 +62,9 @@ public class EmpService {
         System.out.println("result= "+result);
         return result;
     }
+
+    public List<Emp> getEmpListForCodeHelper(Map<String, String> map){
+        return empDao.getEmpListForCodeHelper(map);
+    }
+
 }

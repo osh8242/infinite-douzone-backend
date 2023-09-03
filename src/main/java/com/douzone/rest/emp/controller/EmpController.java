@@ -48,7 +48,7 @@ public class EmpController {
     @PostMapping("/getOne")
     public ResponseEntity<Emp> getOneEmpByCdEmp(@RequestBody Emp emp) {
         System.out.println("Emp getOneEmpByCdEmp Controller -----");
-        Emp resultEmp = empservice.getOneEmpByCdEmp(emp);
+        Emp resultEmp = empservice.getEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class EmpController {
     @PostMapping("/getListByVariable")
     public ResponseEntity<List<Emp>> getListByVariable(@RequestBody Map<String, String> variable) {
         System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
-        List<Emp> result = empservice.getListEmpByVariable(variable);
+        List<Emp> result = empservice.getEmpListByVariable(variable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -79,5 +79,11 @@ public class EmpController {
         System.out.println("Emp delete Controller -----");
         int result = empservice.deleteEmp(emp);
         return result;
+    }
+
+    @PostMapping("/getEmpListForCodeHelper")
+    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestBody Map<String, String> reqestMap) {
+        List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -46,6 +46,12 @@ public class SaEmpInfoController {
         return getSaEmpInfoByCdEmp;
     }
 
+    //삽입
+//    @PostMapping("/getEmpAddByCdEmp")
+//    public ResponseEntity<EmpAdd> getAllEmpAdd(@RequestBody EmpAdd empAdd) {
+//        empAdd = empAddService.getEmpAddByCdEmp(empAdd);
+//        return ResponseEntity.ok(empAdd);
+//    }
 
     //삭제
     @DeleteMapping("/deleteSaEmpInfo")
