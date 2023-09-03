@@ -37,7 +37,7 @@ public class EmpController {
         System.out.println("EmpController.getEmpListByJobOk");
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
-        map.put("refYear", refYear.trim());
+        if(refYear != null ) map.put("refYear", refYear.trim());
         map.put("orderRef", orderRef.trim());
         List<Emp> list = null;
         list = empservice.getEmpListByJobOk(map);
