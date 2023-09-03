@@ -23,14 +23,14 @@
     </select>
 
 
-    <select id="getOneEmpByCdEmp" parameterType="Emp">
+    <select id="getEmpByCdEmp" parameterType="Emp">
         SELECT
             *
         FROM EMP
         WHERE cd_emp = #{cdEmp}
     </select>
 
-    <select id="getListEmpByVariable" parameterType="hashmap">
+    <select id="getEmpListByVariable" parameterType="hashmap">
         SELECT *,
         FROM EMP
         WHERE ${columnName} = #{columnValue}
