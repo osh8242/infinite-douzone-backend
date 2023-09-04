@@ -5,51 +5,33 @@
 <mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPayDao">
 
     <select id="getSaDeductPayByCdEmp" parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT d.CD_DEDUCT,d.NM_DEDUCT, p.*
-        FROM SADEDUCT d LEFT OUTER JOIN
-        (
-            SELECT CD_DEDUCT
-            , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT = s.CD_DEDUCT) as NM_DEDUCT
-            , ALLOW_PAY
-            , CD_EMP
-            , ALLOW_MONTH
-            , ALLOW_YEAR
-            , PAYMENT_DATE
-            FROM SADEDUCTPAY s
-            WHERE CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allowMonth}
-            <if test="cdDeduct                         != null"> AND CD_DEDUCT = #{cdDeduct} </if>
-        ) p
-        ON d.CD_DEDUCT = p.CD_DEDUCT
-        ORDER BY d.NM_DEDUCT asc
+        SELECT p.CD_DEDUCT ,d.NM_DEDUCT , p.ALLOW_PAY , p.CD_EMP ,p.PAYMENT_DATE , d2."YEAR" AS "ALLOW_YEAR" , d2."MONTH" AS "ALLOW_MONTH"
+            FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
+                ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d2
+                ON d2."DATE" = p.PAYMENT_DATE
+        WHERE p.CD_EMP = #{cdEmp}
+            AND  p.PAYMENT_DATE = #{paymentDate}
+        <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
     </select>
 
     <update id="updateSaDeductPay" parameterType="java.util.Map">
         UPDATE SADEDUCTPAY
             set ALLOW_PAY = #{allowPay}
         WHERE CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allowMonth}
+            AND PAYMENT_DATE = #{paymentDate}
             AND CD_DEDUCT = #{cdDeduct}
     </update>
 
     <!-- 합계 데이터 조회-->
     <select id="getSalDeductPaySum"  parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT d.CD_DEDUCT,d.NM_DEDUCT, p.*
-        FROM SADEDUCT d LEFT OUTER JOIN
-        (
-            SELECT
-                s.CD_DEDUCT
-                , (SELECT NM_DEDUCT FROM SADEDUCT s2 WHERE s2.CD_DEDUCT=s.CD_DEDUCT) AS NM_DEDUCT
-                , sum(s.ALLOW_PAY) AS SUM_DEDUCT_PAY
-            FROM
-                SADEDUCTPAY s
-            WHERE 1=1
-                <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
-                <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
-                <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
-            GROUP BY s.CD_DEDUCT
-        ) p
-        ON d.CD_DEDUCT = p.CD_DEDUCT
-        ORDER BY d.NM_DEDUCT asc
+        SELECT p.CD_DEDUCT
+        , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT=p.CD_DEDUCT) AS NM_DEDUCT
+        , sum(p.ALLOW_PAY) AS SUM_DEDUCT_PAY
+            FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
+                ON p.CD_DEDUCT = d.CD_DEDUCT
+        WHERE 1=1
+        <if test="cdEmp                         != null"> AND p.CD_EMP  = #{cdEmp} </if>
+        <if test="paymentDate                   != null"> AND p.PAYMENT_DATE  = #{paymentDate} </if>
+            GROUP BY p.CD_DEDUCT
     </select>
 </mapper>

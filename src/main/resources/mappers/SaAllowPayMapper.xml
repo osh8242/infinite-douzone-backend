@@ -6,31 +6,25 @@
 
     <!-- 급여리스트 -->
     <select id="getSalAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
-        SELECT s.CD_ALLOW
-            , a.NM_ALLOW
-            , a.YN_TAX AS YN_TAX_ALLOW
-            , s.ALLOW_PAY
-            , s.CD_EMP
-            , s.ALLOW_MONTH
-            , s.ALLOW_YEAR
-            , s.PAYMENT_DATE
-        FROM SAALLOWPAY s LEFT OUTER JOIN SAALLOW a
-            ON s.CD_ALLOW = a.CD_ALLOW
-        WHERE CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allowMonth}
-        <if test="cdAllow                    != null"> AND CD_ALLOW = #{cdAllow} </if>
+        SELECT d."YEAR" AS "ALLOW_YEAR", d."MONTH" AS "ALLOW_MONTH", p.PAYMENT_DATE, s.YN_TAX AS "YN_TAX_ALLOW", p.ALLOW_PAY, s.CD_ALLOW , s.NM_ALLOW , e.CD_EMP
+            FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
+                ON s.CD_ALLOW = p.CD_ALLOW LEFT OUTER JOIN EMP e
+                ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
+                ON d."DATE" = p.PAYMENT_DATE
+        WHERE 1=1
+            AND p.PAYMENT_DATE = #{paymentDate}
+            AND e.CD_EMP = #{cdEmp}
+        <if test="cdAllow                    != null"> AND s.CD_ALLOW = #{cdAllow} </if>
     </select>
 
     <!-- 급여자료 입력 -->
     <insert id="insertSalAllowPay" parameterType="SaAllowPay">
         INSERT INTO SAALLOWPAY(
-          CD_ALLOW , ALLOW_PAY , CD_EMP , ALLOW_MONTH , ALLOW_YEAR , PAYMENT_DATE)
+          CD_ALLOW , ALLOW_PAY , CD_EMP  , PAYMENT_DATE)
         VALUES (
             #{cdAllow}
             , #{allowPay}
             , #{cdEmp}
-            , #{allowMonth}
-            , #{allowYear}
             , #{paymentDate}
         )
     </insert>
@@ -41,7 +35,7 @@
             SET ALLOW_PAY = #{allowPay}
         WHERE CD_EMP = #{cdEmp}
             AND CD_ALLOW = #{cdAllow}
-            AND ALLOW_MONTH = #{allowMonth}
+            AND PAYMENT_DATE = #{paymentDate}
     </update>
 
     <!-- 합계 데이터 조회-->
@@ -49,16 +43,15 @@
         SELECT
             s.CD_ALLOW
             , (SELECT NM_ALLOW  FROM SAALLOW s2 WHERE s2.CD_ALLOW=s.CD_ALLOW) AS NM_ALLOW
-            , a.YN_TAX AS YN_TAX
+            , a.YN_TAX
             , sum(s.ALLOW_PAY) AS SUM_ALLOW_PAY
         FROM
             SAALLOWPAY s
         LEFT OUTER JOIN SAALLOW a
             ON s.CD_ALLOW = a.CD_ALLOW
         WHERE 1=1
-        <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
-        <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
-        <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
+        <if test="cdEmp                         != null"> AND p.CD_EMP  = #{cdEmp} </if>
+        <if test="paymentDate                    != null"> AND p.PAYMENT_DATE  = #{paymentDate} </if>
         GROUP BY s.CD_ALLOW,YN_TAX
     </select>
 
