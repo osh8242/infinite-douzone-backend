@@ -81,8 +81,9 @@ public class EmpController {
         return result;
     }
 
-    @PostMapping("/getEmpListForCodeHelper")
-    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestBody Map<String, String> reqestMap) {
+    @GetMapping("/getEmpListForCodeHelper")
+    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
+        System.out.println(reqestMap.toString());
         List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
