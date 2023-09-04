@@ -25,7 +25,7 @@ public class EmpFamService {
     }
 
     public List<EmpFam> getEmpFamListByCdEmp(EmpFam empfam) {
-        System.out.println("getOneEmpFam Service 진입!");
+        System.out.println("EmpFamService.getEmpFamListByCdEmp");
         return empFamDao.getEmpFamListByCdEmp(empfam);
     }
 
