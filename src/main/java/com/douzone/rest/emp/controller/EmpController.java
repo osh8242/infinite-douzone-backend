@@ -71,10 +71,11 @@ public class EmpController {
         return result;
     }
 
-    @PostMapping("/deleteEmp")
+    @DeleteMapping("/deleteEmp")
     public int deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
-        int result =empservice.deleteEmp(emp);
-        return result;
+        Map<Integer, Object> result =empservice.deleteEmp(emp);
+        System.out.println(result);
+        return 0;
     }
 }

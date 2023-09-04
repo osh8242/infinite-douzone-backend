@@ -1,6 +1,7 @@
 package com.douzone.rest.emp.dao;
 
 import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface EmpDao {
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);
+    public List<EmpMenuUsage> getUndeletedEmpListByCdEmp(Emp emp);
 }
