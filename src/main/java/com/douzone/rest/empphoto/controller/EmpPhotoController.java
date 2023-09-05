@@ -19,8 +19,9 @@ import java.io.IOException;
 public class EmpPhotoController {
     @GetMapping("/image")
     public ResponseEntity<byte[]> getImage() throws IOException {
+        System.out.println("EmpPhotoController.getImage");
         // resources/images 폴더에서 이미지를 로드합니다.
-        ClassPathResource imgFile = new ClassPathResource("images/hsh.jpg");
+        ClassPathResource imgFile = new ClassPathResource("images/osh.jpg");
         byte[] imageBytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
         HttpHeaders headers = new HttpHeaders();
