@@ -58,16 +58,14 @@ public class EmpService {
         return result;
     }
 
-    public Map<Integer,Object> deleteEmp(Emp emp){
+    public EmpMenuUsage deleteEmp(Emp emp){
         System.out.println("Emp delete -----");
+
         int deleteRows = empDao.deleteEmp(emp);
-//        System.out.println("result= "+result);
-        List<EmpMenuUsage> empMenuUsageList = empDao.getUndeletedEmpListByCdEmp(emp);
-        Map<Integer, Object> result = null;
+        EmpMenuUsage empMenuUsage = empDao.getUndeletedEmpByCdEmp(emp);
+
         System.out.println("삭제된 row의 수: " + deleteRows);
-//        result.put(1, deleteRows);
-        System.out.println("삭제되지 않은 데이터: " + empMenuUsageList);
-//        result.put(2, (empMenuUsageList == null) ? "" : empMenuUsageList);
-        return null;
+        System.out.println("삭제되지 않은 데이터: " + empMenuUsage);
+        return empMenuUsage;
     }
 }

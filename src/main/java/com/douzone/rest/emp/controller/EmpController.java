@@ -2,6 +2,7 @@ package com.douzone.rest.emp.controller;
 
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,10 +73,10 @@ public class EmpController {
     }
 
     @DeleteMapping("/deleteEmp")
-    public int deleteEmp(@RequestBody Emp emp){
+    public ResponseEntity<EmpMenuUsage> deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
-        Map<Integer, Object> result =empservice.deleteEmp(emp);
-        System.out.println(result);
-        return 0;
+        EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
+        System.out.println(empMenuUsage);
+        return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
     }
 }

@@ -342,7 +342,7 @@
         WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
     </delete>
 
-    <select id="getUndeletedEmpListByCdEmp" parameterType="Emp">
+    <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
         SELECT e.cd_emp, e.nm_krname, em.use_menuList
         FROM emp e
             RIGHT JOIN empMenuUsage em
