@@ -31,7 +31,7 @@ public class EmpController {
     }
 
     @GetMapping("/getEmpListByJobOk")
-    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestParam(name = "jobOk", required = false) String jobOk,
+    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestParam(name = "jobOk") String jobOk,
                                                        @RequestParam(name = "orderRef", required = false) String orderRef,
                                                        @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
