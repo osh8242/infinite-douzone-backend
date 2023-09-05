@@ -27,17 +27,19 @@ public class EmpController {
     public ResponseEntity<List<Emp>> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
-        System.out.println("result = "+result);
+        System.out.println("result = " + result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/getEmpListByJobOk")
-    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestBody Emp emp, @RequestParam("orderRef") String orderRef){
+    @GetMapping("/getEmpListByJobOk")
+    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestParam(name = "jobOk", required = false) String jobOk,
+                                                       @RequestParam(name = "orderRef", required = false) String orderRef,
+                                                       @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
-        System.out.println("orderRef = " + orderRef);
         Map<String, Object> map = new HashMap<>();
-        map.put("emp", emp);
-        map.put("orderRef", orderRef);
+        map.put("jobOk", jobOk.trim());
+        if(refYear != null ) map.put("refYear", refYear.trim());
+        map.put("orderRef", orderRef.trim());
         List<Emp> list = null;
         list = empservice.getEmpListByJobOk(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -59,14 +61,14 @@ public class EmpController {
     }
 
     @PostMapping("insertEmp")
-    public int insertEmp(@RequestBody Emp emp){
+    public int insertEmp(@RequestBody Emp emp) {
         System.out.println("Emp insert Controller -----");
         int result = empservice.insertEmp(emp);
         return result;
     }
 
     @PutMapping("/updateEmp")
-    public int updateEmp(@RequestBody Emp emp){
+    public int updateEmp(@RequestBody Emp emp) {
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
         return result;

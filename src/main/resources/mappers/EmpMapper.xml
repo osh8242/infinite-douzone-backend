@@ -10,9 +10,9 @@
 
     <select id="getEmpListByJobOk" parameterType="map" resultType="Emp">
         SELECT *
-        FROM EMP WHERE JOB_OK = #{emp.jobOk}
-        <if test="emp.daRetire != null">
-            OR EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{emp.daRetire}
+        FROM EMP WHERE JOB_OK = #{jobOk}
+        <if test="refYear != null">
+            OR EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{refYear}
         </if>
         <if test="orderRef == 'cdEmp'">
             ORDER BY CD_EMP
@@ -36,232 +36,158 @@
         WHERE ${columnName} = #{columnValue}
     </select>
 
-    <update id="insertEmp" parameterType="Emp">
+    <insert id="insertEmp" parameterType="Emp">
         INSERT ALL
-            INTO EMP(
-            cd_emp,
-            nm_krname,
-            yn_for,
-            no_social,
-            job_ok,
-            da_enter,
-            fg_sex,
-            abb_nation,
-            yn_resident,
-            str_39_1_1,
-            str_40_1_1,
-            cd_nation,
-            zip_home,
-            add_home1,
-            add_home2,
-            tel_home1,
-            tel_home2,
-            tel_home3,
-            cel_emp1,
-            cel_emp2,
-            cel_emp3,
-            em_emp,
-            id_msn,
-            cd_dept,
-            cd_occup,
-            rank_no,
-            cd_salcls,
-            cd_field,
-            cd_project,
-            da_retire,
-            cd_bank,
-            no_bnkacct,
-            nm_bnkowner,
-            mn_6_1_1,
-            cd_acctit1,
-            cd_acctit2,
-            fg_paysupply,
-            mn_mmaverage,
-            mn_natptarget,
-            mn_natpslev,
-            mn_hostarget,
-            mn_hos,
-            no_health,
-            mn_emptarget,
-            mn_emp,
-            yn_employ,
-            yn_ceo,
-            yn_sanjae,
-            yn_longinsur,
-            str_32_1_1,
-            str_33_1_1,
-            str_35_1_1,
-            mn_2_1_1,
-            mn_3_1_1,
-            str_1_1_1,
-            str_45_1_1,
-            str_46_1_1,
-            str_47_1_1,
-            mn_1_1_1,
-            yn_danil,
-            yn_iclman,
-            str_43_1_1,
-            str_44_1_1,
-            mn_iclpay,
-            str_34_1_1,
-            yn_forlabor,
-            yn_unit,
-            yn_overwork,
-            str_42_1_1,
-            mn_4_1_1
+        INTO EMP(
+        cd_emp,
+        nm_krname,
+        yn_for,
+        no_social,
+        <if test="jobOk != null">jobOk,</if>
+        <if test="daEnter != null">daEnter,</if>
+        fg_sex,
+        abb_nation,
+        yn_resident,
+        str_39_1_1,
+        str_40_1_1,
+        cd_nation,
+        zip_home,
+        add_home1,
+        add_home2,
+        tel_home1,
+        tel_home2,
+        tel_home3,
+        cel_emp1,
+        cel_emp2,
+        cel_emp3,
+        em_emp,
+        id_msn,
+        cd_dept,
+        cd_occup,
+        rank_no,
+        cd_salcls,
+        cd_field,
+        cd_project,
+        da_retire,
+        cd_bank,
+        no_bnkacct,
+        nm_bnkowner,
+        mn_6_1_1,
+        cd_acctit1,
+        cd_acctit2,
+        fg_paysupply,
+        mn_mmaverage,
+        mn_natptarget,
+        mn_natpslev,
+        mn_hostarget,
+        mn_hos,
+        no_health,
+        mn_emptarget,
+        mn_emp,
+        yn_employ,
+        yn_ceo,
+        yn_sanjae,
+        yn_longinsur,
+        str_32_1_1,
+        str_33_1_1,
+        str_35_1_1,
+        mn_2_1_1,
+        mn_3_1_1,
+        str_1_1_1,
+        str_45_1_1,
+        str_46_1_1,
+        str_47_1_1,
+        mn_1_1_1,
+        yn_danil,
+        yn_iclman,
+        str_43_1_1,
+        str_44_1_1,
+        mn_iclpay,
+        str_34_1_1,
+        yn_forlabor,
+        yn_unit,
+        yn_overwork,
+        str_42_1_1,
+        mn_4_1_1
         ) VALUES (
-             #{cdEmp, jdbcType=VARCHAR},
-             #{nmKrname, jdbcType=VARCHAR},
-             #{ynFor, jdbcType=VARCHAR},
-             #{noSocial, jdbcType=VARCHAR},
-             #{jobOk, jdbcType=VARCHAR},
-             #{daEnter, jdbcType=VARCHAR},
-             #{fgSex, jdbcType=VARCHAR},
-             #{abbNation, jdbcType=VARCHAR},
-             #{ynResident, jdbcType=VARCHAR},
-             #{str3911, jdbcType=VARCHAR},
-             #{str4011, jdbcType=VARCHAR},
-             #{cdNation, jdbcType=VARCHAR},
-             #{zipHome, jdbcType=VARCHAR},
-             #{addHome1, jdbcType=VARCHAR},
-             #{addHome2, jdbcType=VARCHAR},
-             #{telHome1, jdbcType=VARCHAR},
-             #{telHome2, jdbcType=VARCHAR},
-             #{telHome3, jdbcType=VARCHAR},
-             #{celEmp1, jdbcType=VARCHAR},
-             #{celEmp2, jdbcType=VARCHAR},
-             #{celEmp3, jdbcType=VARCHAR},
-             #{emEmp, jdbcType=VARCHAR},
-             #{idMsn, jdbcType=VARCHAR},
-             #{cdDept, jdbcType=VARCHAR},
-             #{cdOccup, jdbcType=VARCHAR},
-             #{rankNo, jdbcType=VARCHAR},
-             #{cdSalcls, jdbcType=VARCHAR},
-             #{cdField, jdbcType=VARCHAR},
-             #{cdProject, jdbcType=VARCHAR},
-             #{daRetire, jdbcType=VARCHAR},
-             #{cdBank, jdbcType=VARCHAR},
-             #{noBnkacct, jdbcType=VARCHAR},
-             #{nmBnkowner, jdbcType=VARCHAR},
-             #{mn611, jdbcType=VARCHAR},
-             #{cdAcctit1, jdbcType=VARCHAR},
-             #{cdAcctit2, jdbcType=VARCHAR},
-             #{fgPaysupply, jdbcType=VARCHAR},
-             #{mnMmaverage, jdbcType=VARCHAR},
-             #{mnNatptarget, jdbcType=VARCHAR},
-             #{mnNatpslev, jdbcType=VARCHAR},
-             #{mnHostarget, jdbcType=VARCHAR},
-             #{mnHos, jdbcType=VARCHAR},
-             #{noHealth, jdbcType=VARCHAR},
-             #{mnEmptarget, jdbcType=VARCHAR},
-             #{mnEmp, jdbcType=VARCHAR},
-             #{ynEmploy, jdbcType=VARCHAR},
-             #{ynCeo, jdbcType=VARCHAR},
-             #{ynSanjae, jdbcType=VARCHAR},
-             #{ynLonginsur, jdbcType=VARCHAR},
-             #{str3211, jdbcType=VARCHAR},
-             #{str3311, jdbcType=VARCHAR},
-             #{str3511, jdbcType=VARCHAR},
-             #{mn2111, jdbcType=VARCHAR},
-             #{mn3111, jdbcType=VARCHAR},
-             #{str1111, jdbcType=VARCHAR},
-             #{str4511, jdbcType=VARCHAR},
-             #{str4611, jdbcType=VARCHAR},
-             #{str4711, jdbcType=VARCHAR},
-             #{mn1111, jdbcType=VARCHAR},
-             #{ynDanil, jdbcType=VARCHAR},
-             #{ynIclman, jdbcType=VARCHAR},
-             #{str4311, jdbcType=VARCHAR},
-             #{str4411, jdbcType=VARCHAR},
-             #{mnIclpay, jdbcType=VARCHAR},
-             #{str3411, jdbcType=VARCHAR},
-             #{ynForlabor, jdbcType=VARCHAR},
-             #{ynUnit, jdbcType=VARCHAR},
-             #{ynOverwork, jdbcType=VARCHAR},
-             #{str4211, jdbcType=VARCHAR},
-             #{mn4111, jdbcType=VARCHAR}
-         )
+        #{cdEmp, jdbcType=VARCHAR},
+        #{nmKrname, jdbcType=VARCHAR},
+        #{ynFor, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR},
+        <if test="jobOk != null">#{jobOk, jdbcType=VARCHAR},</if>
+        <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
+        #{fgSex, jdbcType=VARCHAR},
+        #{abbNation, jdbcType=VARCHAR},
+        #{ynResident, jdbcType=VARCHAR},
+        #{str3911, jdbcType=VARCHAR},
+        #{str4011, jdbcType=VARCHAR},
+        #{cdNation, jdbcType=VARCHAR},
+        #{zipHome, jdbcType=VARCHAR},
+        #{addHome1, jdbcType=VARCHAR},
+        #{addHome2, jdbcType=VARCHAR},
+        #{telHome1, jdbcType=VARCHAR},
+        #{telHome2, jdbcType=VARCHAR},
+        #{telHome3, jdbcType=VARCHAR},
+        #{celEmp1, jdbcType=VARCHAR},
+        #{celEmp2, jdbcType=VARCHAR},
+        #{celEmp3, jdbcType=VARCHAR},
+        #{emEmp, jdbcType=VARCHAR},
+        #{idMsn, jdbcType=VARCHAR},
+        #{cdDept, jdbcType=VARCHAR},
+        #{cdOccup, jdbcType=VARCHAR},
+        #{rankNo, jdbcType=VARCHAR},
+        #{cdSalcls, jdbcType=VARCHAR},
+        #{cdField, jdbcType=VARCHAR},
+        #{cdProject, jdbcType=VARCHAR},
+        #{daRetire, jdbcType=VARCHAR},
+        #{cdBank, jdbcType=VARCHAR},
+        #{noBnkacct, jdbcType=VARCHAR},
+        #{nmBnkowner, jdbcType=VARCHAR},
+        #{mn611, jdbcType=VARCHAR},
+        #{cdAcctit1, jdbcType=VARCHAR},
+        #{cdAcctit2, jdbcType=VARCHAR},
+        #{fgPaysupply, jdbcType=VARCHAR},
+        #{mnMmaverage, jdbcType=VARCHAR},
+        #{mnNatptarget, jdbcType=VARCHAR},
+        #{mnNatpslev, jdbcType=VARCHAR},
+        #{mnHostarget, jdbcType=VARCHAR},
+        #{mnHos, jdbcType=VARCHAR},
+        #{noHealth, jdbcType=VARCHAR},
+        #{mnEmptarget, jdbcType=VARCHAR},
+        #{mnEmp, jdbcType=VARCHAR},
+        #{ynEmploy, jdbcType=VARCHAR},
+        #{ynCeo, jdbcType=VARCHAR},
+        #{ynSanjae, jdbcType=VARCHAR},
+        #{ynLonginsur, jdbcType=VARCHAR},
+        #{str3211, jdbcType=VARCHAR},
+        #{str3311, jdbcType=VARCHAR},
+        #{str3511, jdbcType=VARCHAR},
+        #{mn2111, jdbcType=VARCHAR},
+        #{mn3111, jdbcType=VARCHAR},
+        #{str1111, jdbcType=VARCHAR},
+        #{str4511, jdbcType=VARCHAR},
+        #{str4611, jdbcType=VARCHAR},
+        #{str4711, jdbcType=VARCHAR},
+        #{mn1111, jdbcType=VARCHAR},
+        #{ynDanil, jdbcType=VARCHAR},
+        #{ynIclman, jdbcType=VARCHAR},
+        #{str4311, jdbcType=VARCHAR},
+        #{str4411, jdbcType=VARCHAR},
+        #{mnIclpay, jdbcType=VARCHAR},
+        #{str3411, jdbcType=VARCHAR},
+        #{ynForlabor, jdbcType=VARCHAR},
+        #{ynUnit, jdbcType=VARCHAR},
+        #{ynOverwork, jdbcType=VARCHAR},
+        #{str4211, jdbcType=VARCHAR},
+        #{mn4111, jdbcType=VARCHAR}
+        )
         INTO EmpMenuUsage
         VALUES (#{cdEmp}, null)
         SELECT 1 FROM DUAL
-    </update>
+    </insert>
 
 
 
-<!--    <update id="updateEmp" parameterType="Emp">-->
-<!--        UPDATE EMP-->
-<!--        SET-->
-<!--            nm_krname = #{nmKrname, jdbcType=VARCHAR},-->
-<!--            yn_for = #{ynFor, jdbcType=VARCHAR},-->
-<!--            no_social = #{noSocial, jdbcType=VARCHAR},-->
-<!--            job_ok = #{jobOk, jdbcType=VARCHAR},-->
-<!--            da_enter = #{daEnter, jdbcType=VARCHAR},-->
-<!--            fg_sex = #{fgSex, jdbcType=VARCHAR},-->
-<!--            abb_nation = #{abbNation, jdbcType=VARCHAR},-->
-<!--            yn_resident = #{ynResident, jdbcType=VARCHAR},-->
-<!--            str_39_1_1 = #{str3911, jdbcType=VARCHAR},-->
-<!--            str_40_1_1 = #{str4011, jdbcType=VARCHAR},-->
-<!--            cd_nation = #{cdNation, jdbcType=VARCHAR},-->
-<!--            zip_home = #{zipHome, jdbcType=VARCHAR},-->
-<!--            add_home1 = #{addHome1, jdbcType=VARCHAR},-->
-<!--            add_home2 = #{addHome2, jdbcType=VARCHAR},-->
-<!--            tel_home1 = #{telHome1, jdbcType=VARCHAR},-->
-<!--            tel_home2 = #{telHome2, jdbcType=VARCHAR},-->
-<!--            tel_home3 = #{telHome3, jdbcType=VARCHAR},-->
-<!--            cel_emp1 = #{celEmp1, jdbcType=VARCHAR},-->
-<!--            cel_emp2 = #{celEmp2, jdbcType=VARCHAR},-->
-<!--            cel_emp3 = #{celEmp3, jdbcType=VARCHAR},-->
-<!--            em_emp = #{emEmp, jdbcType=VARCHAR},-->
-<!--            id_msn = #{idMsn, jdbcType=VARCHAR},-->
-<!--            cd_dept = #{cdDept, jdbcType=VARCHAR},-->
-<!--            cd_occup = #{cdOccup, jdbcType=VARCHAR},-->
-<!--            rank_no = #{rankNo, jdbcType=VARCHAR},-->
-<!--            cd_salcls = #{cdSalcls, jdbcType=VARCHAR},-->
-<!--            cd_field = #{cdField, jdbcType=VARCHAR},-->
-<!--            cd_project = #{cdProject, jdbcType=VARCHAR},-->
-<!--            da_retire = #{daRetire, jdbcType=VARCHAR},-->
-<!--            cd_bank = #{cdBank, jdbcType=VARCHAR},-->
-<!--            no_bnkacct = #{noBnkacct, jdbcType=VARCHAR},-->
-<!--            nm_bnkowner = #{nmBnkowner, jdbcType=VARCHAR},-->
-<!--            mn_6_1_1 = #{mn611, jdbcType=VARCHAR},-->
-<!--            cd_acctit1 = #{cdAcctit1, jdbcType=VARCHAR},-->
-<!--            cd_acctit2 = #{cdAcctit2, jdbcType=VARCHAR},-->
-<!--            fg_paysupply = #{fgPaysupply, jdbcType=VARCHAR},-->
-<!--            mn_mmaverage = #{mnMmaverage, jdbcType=VARCHAR},-->
-<!--            mn_natptarget = #{mnNatptarget, jdbcType=VARCHAR},-->
-<!--            mn_natpslev = #{mnNatpslev, jdbcType=VARCHAR},-->
-<!--            mn_hostarget = #{mnHostarget, jdbcType=VARCHAR},-->
-<!--            mn_hos = #{mnHos, jdbcType=VARCHAR},-->
-<!--            no_health = #{noHealth, jdbcType=VARCHAR},-->
-<!--            mn_emptarget = #{mnEmptarget, jdbcType=VARCHAR},-->
-<!--            mn_emp = #{mnEmp, jdbcType=VARCHAR},-->
-<!--            yn_employ = #{ynEmploy, jdbcType=VARCHAR},-->
-<!--            yn_ceo = #{ynCeo, jdbcType=VARCHAR},-->
-<!--            yn_sanjae = #{ynSanjae, jdbcType=VARCHAR},-->
-<!--            yn_longinsur = #{ynLonginsur, jdbcType=VARCHAR},-->
-<!--            str_32_1_1 = #{str3211, jdbcType=VARCHAR},-->
-<!--            str_33_1_1 = #{str3311, jdbcType=VARCHAR},-->
-<!--            str_35_1_1 = #{str3511, jdbcType=VARCHAR},-->
-<!--            mn_2_1_1 = #{mn2111, jdbcType=VARCHAR},-->
-<!--            mn_3_1_1 = #{mn3111, jdbcType=VARCHAR},-->
-<!--            str_1_1_1 = #{str1111, jdbcType=VARCHAR},-->
-<!--            str_45_1_1 = #{str4511, jdbcType=VARCHAR},-->
-<!--            str_46_1_1 = #{str4611, jdbcType=VARCHAR},-->
-<!--            str_47_1_1 = #{str4711, jdbcType=VARCHAR},-->
-<!--            mn_1_1_1 = #{mn1111, jdbcType=VARCHAR},-->
-<!--            yn_danil = #{ynDanil, jdbcType=VARCHAR},-->
-<!--            yn_iclman = #{ynIclman, jdbcType=VARCHAR},-->
-<!--            str_43_1_1 = #{str4311, jdbcType=VARCHAR},-->
-<!--            str_44_1_1 = #{str4411, jdbcType=VARCHAR},-->
-<!--            mn_iclpay = #{mnIclpay, jdbcType=VARCHAR},-->
-<!--            str_34_1_1 = #{str3411, jdbcType=VARCHAR},-->
-<!--            yn_forlabor = #{ynForlabor, jdbcType=VARCHAR},-->
-<!--            yn_unit = #{ynUnit, jdbcType=VARCHAR},-->
-<!--            yn_overwork = #{ynOverwork, jdbcType=VARCHAR},-->
-<!--            str_42_1_1 = #{str4211, jdbcType=VARCHAR},-->
-<!--            mn_4_1_1 = #{mn4111, jdbcType=VARCHAR}-->
-<!--        WHERE cd_emp = #{cdEmp}-->
-<!--    </update>-->
     <update id="updateEmp" parameterType="Emp">
         UPDATE EMP
         <set>
