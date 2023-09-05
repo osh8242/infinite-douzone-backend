@@ -4,13 +4,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPayDao">
 
-    <select id="getSaDeductPayByCdEmp" parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT p.CD_DEDUCT ,d.NM_DEDUCT , p.ALLOW_PAY , p.CD_EMP ,p.PAYMENT_DATE , d2."YEAR" AS "ALLOW_YEAR" , d2."MONTH" AS "ALLOW_MONTH"
+    <select id="getSaDeductPayByCdEmp" parameterType="java.util.Map" resultType="SaDeductPay">
+        SELECT p.CD_DEDUCT ,d.NM_DEDUCT , p.ALLOW_PAY , p.CD_EMP ,d2."DATE" AS "PAYMENT_DATE" , d2.ALLOW_YEAR , d2."MONTH" AS "ALLOW_MONTH"
             FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
                 ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d2
-                ON d2."DATE" = p.PAYMENT_DATE
+                ON d2."DATE_ID" = p.DATE_ID
         WHERE p.CD_EMP = #{cdEmp}
-            AND  p.PAYMENT_DATE = #{paymentDate}
+            AND  d2.DATE_ID = #{dateId}
         <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
     </select>
 
@@ -18,20 +18,24 @@
         UPDATE SADEDUCTPAY
             set ALLOW_PAY = #{allowPay}
         WHERE CD_EMP = #{cdEmp}
-            AND PAYMENT_DATE = #{paymentDate}
+            AND DATE_ID = #{dateId}
             AND CD_DEDUCT = #{cdDeduct}
     </update>
 
     <!-- 합계 데이터 조회-->
-    <select id="getSalDeductPaySum"  parameterType="SaDeductPay" resultType="SaDeductPay">
-        SELECT p.CD_DEDUCT
-        , (SELECT NM_DEDUCT FROM SADEDUCT d WHERE d.CD_DEDUCT=p.CD_DEDUCT) AS NM_DEDUCT
-        , sum(p.ALLOW_PAY) AS SUM_DEDUCT_PAY
-            FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
-                ON p.CD_DEDUCT = d.CD_DEDUCT
-        WHERE 1=1
-        <if test="cdEmp                         != null"> AND p.CD_EMP  = #{cdEmp} </if>
-        <if test="paymentDate                   != null"> AND p.PAYMENT_DATE  = #{paymentDate} </if>
-            GROUP BY p.CD_DEDUCT
+    <select id="getSalDeductPaySum"  parameterType="java.util.Map" resultType="map">
+        SELECT
+            p.CD_DEDUCT AS "cdDeduct"
+            , (SELECT s.NM_DEDUCT FROM SADEDUCT s WHERE s.CD_DEDUCT = p.CD_DEDUCT) AS "nmDeduct"
+            , TO_CHAR(sum(p.ALLOW_PAY)) AS "sumDeductPay"
+        FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
+            ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d
+            ON p.DATE_ID = d.DATE_ID LEFT OUTER JOIN EMP e
+            ON e.CD_EMP = p.CD_EMP
+            <if test="paymentDate                   != null"> AND d."DATE" = #{paymentDate}</if>
+            <if test="allowMonth                    != null"> AND d."MONTH" = #{allowMonth}</if>
+            <if test="allowYear                     != null"> AND d.ALLOW_YEAR = #{allowYear}</if>
+            <if test="now                           != null"> AND e.DA_RETIRE &lt; SYSDATE</if>
+        GROUP BY p.CD_DEDUCT
     </select>
 </mapper>
