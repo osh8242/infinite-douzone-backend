@@ -8,6 +8,25 @@
         select * from empadd
     </select>
 
+    <select id="getEmpAddListForHrManagement" parameterType="map" resultType="EmpAdd">
+        SELECT empadd.cd_emp, emp.nm_krname, emp.job_ok
+        FROM empadd
+        INNER JOIN (
+        SELECT cd_emp, nm_krname, job_ok
+        FROM EMP
+        WHERE JOB_OK = #{jobOk}
+        <if test="refYear != null">
+            OR EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{refYear}
+        </if>
+        ) emp ON empadd.cd_emp = emp.cd_emp
+        <if test="orderRef == 'cdEmp'">
+            ORDER BY empadd.CD_EMP
+        </if>
+        <if test="orderRef == 'nmKrname'">
+            ORDER BY emp.nm_krname
+        </if>
+    </select>
+
     <select id="getEmpAddByCdEmp" resultType="EmpAdd">
         SELECT * FROM empadd WHERE CD_EMP = #{cdEmp}
     </select>
