@@ -36,15 +36,15 @@
         WHERE ${columnName} = #{columnValue}
     </select>
 
-    <insert id="insertEmp" parameterType="Emp">
+    <update id="insertEmp" parameterType="Emp">
         INSERT ALL
         INTO EMP(
         cd_emp,
         nm_krname,
         yn_for,
         no_social,
-        <if test="jobOk != null">jobOk,</if>
-        <if test="daEnter != null">daEnter,</if>
+        <if test="jobOk != null">job_ok,</if>
+        <if test="daEnter != null">da_enter,</if>
         fg_sex,
         abb_nation,
         yn_resident,
@@ -181,10 +181,13 @@
         #{str4211, jdbcType=VARCHAR},
         #{mn4111, jdbcType=VARCHAR}
         )
-        INTO EmpMenuUsage
-        VALUES (#{cdEmp}, null)
+        <if test="cdEmp != null">
+            INTO EmpMenuUsage
+            VALUES (#{cdEmp, jdbcType=VARCHAR}, null)
+        </if>
         SELECT 1 FROM DUAL
-    </insert>
+    </update>
+
 
 
 
