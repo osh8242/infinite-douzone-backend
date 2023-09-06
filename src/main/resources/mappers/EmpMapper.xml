@@ -8,7 +8,7 @@
         FROM EMP
     </select>
 
-    <select id="getEmpListByJobOk" parameterType="map" resultType="Emp">
+    <select id="getEmpListForHrManagement" parameterType="map" resultType="Emp">
         SELECT *
         FROM EMP WHERE JOB_OK = #{jobOk}
         <if test="refYear != null">

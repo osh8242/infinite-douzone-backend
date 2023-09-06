@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface EmpDao {
     public List<Emp> getAllEmp();
-    public List<Emp> getEmpListByJobOk(Map<String, Object> map);
+    public List<Emp> getEmpListForHrManagement(Map<String, Object> map);
     public Emp getEmpByCdEmp(Emp emp);
     public List<Emp> getEmpListByVariable(Map<String, String> variable);
     public int insertEmp(Emp emp);
