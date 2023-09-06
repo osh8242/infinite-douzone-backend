@@ -24,17 +24,17 @@ public class SaEmpInfoService {
     public Map<String, Object> getAll(Map<String, Object> reqestMap) {
 
         Map<String, Object> result = new HashMap<>();
-
         try {
             String dateId = saEmpInfoMapper.getDateId(reqestMap);
-            reqestMap.put("dateId",dateId);
-
-            result.put("dateId", dateId);
-            result.put("plist", saEmpInfoMapper.getSaEmpInfoList(reqestMap));
-
+            if(dateId!=null) {
+                reqestMap.put("dateId", dateId);
+                result.put("dateId", dateId);
+                result.put("plist", saEmpInfoMapper.getSaEmpInfoList(reqestMap));
+            }
         }catch (Exception e){
             e.getStackTrace();
         }
+
         return result;
     }
 
@@ -42,12 +42,24 @@ public class SaEmpInfoService {
         return saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap);
     }
 
-    public void deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+    public int insertSaEmpInfo(SaEmpInfo saEmpInfo) {
+        int result = 0;
+        try{
+            result = saEmpInfoMapper.insertSaEmpInfo(saEmpInfo);
+        } catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+        int result = 0;
         try {
             saEmpInfoMapper.deleteSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
 
     public void updateEmpInfo(SaEmpInfo saEmpInfo) {

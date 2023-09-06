@@ -59,6 +59,14 @@
         WHERE CD_EMP = #{cdEmp}
     </select>
 
+    <insert id="insertSaEmpInfo" parameterType="SaEmpInfo">
+        INSERT INTO SAEMPINFO (
+            
+        ) VALUES (
+
+        )
+    </insert>
+
     <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
         DELETE
         FROM SAEMPINFO

@@ -11,8 +11,10 @@ public interface SaEmpInfoMapper {
     List<SaEmpInfo> getSaEmpInfoList(Map<String, Object> reqestMap);//리스트조회
 
     SaEmpInfo getSaEmpInfoByCdEmp(Map<String, String> requestMap);//하나조회
-    
-    void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
+
+    int insertSaEmpInfo(SaEmpInfo saEmpInfo);//삽입
+
+    int deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
 
     void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
 

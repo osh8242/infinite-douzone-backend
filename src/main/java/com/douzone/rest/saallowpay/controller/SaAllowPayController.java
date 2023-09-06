@@ -1,11 +1,15 @@
 package com.douzone.rest.saallowpay.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.service.SaDeductPayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +76,17 @@ public class SaAllowPayController {
         return result;
     }
 
+    @GetMapping("/getPaymentDateList")
+    public List<Map<String, String>> getPaymentDateList(@RequestParam Map<String, String> reqestMap) {
 
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            saAllowPayService.getPaymentDateList(reqestMap);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
 
 //
 //

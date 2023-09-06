@@ -49,20 +49,28 @@ public class SaEmpInfoController {
 //    }
 
     //삽입
-//    @PostMapping("/getEmpAddByCdEmp")
-//    public ResponseEntity<EmpAdd> getAllEmpAdd(@RequestBody EmpAdd empAdd) {
-//        empAdd = empAddService.getEmpAddByCdEmp(empAdd);
-//        return ResponseEntity.ok(empAdd);
-//    }
+    @PostMapping("/insertSaEmpInfo")
+    public int insertSaEmpInfo(@RequestBody SaEmpInfo saEmpInfo){
+        int result = 0;
+        try {
+            result = saEmpInfoService.insertSaEmpInfo(saEmpInfo);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return  result;
+    }
 
     //삭제
     @DeleteMapping("/deleteSaEmpInfo")
-    public void deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+    public int deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+        int result = 0;
+
         try {
             saEmpInfoService.deleteSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
     
     //수정

@@ -31,9 +31,10 @@ public class SaAllowPayService {
     }
 
 
-    public Map<String, Object> getSaPayByCdEmp( Map<String, String> requestMap) {
+    public Map<String, Object> getSaPayByCdEmp(Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
+
         try {
             result.put("saAllowPayList", saAllowPayMapper.getSalAlLowPayListByEmp(requestMap));  // 급여항목 리스트
             result.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));    // 공제항목 리스트
@@ -48,7 +49,9 @@ public class SaAllowPayService {
     public int insertSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
+            //result = SaAllowPayMapper.updateSalAllowPay(saAllowPay);
             result = saAllowPayMapper.insertSalAllowPay(saAllowPay);
+
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -85,4 +88,16 @@ public class SaAllowPayService {
         }
         return result;
     }
+
+    public List<Map<String, String>> getPaymentDateList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayMapper.getPaymentDateList(map);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
 }
