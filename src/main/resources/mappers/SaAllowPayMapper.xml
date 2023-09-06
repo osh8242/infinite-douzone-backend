@@ -57,44 +57,44 @@
     </select>
 
     <!-- 급여자료 입력-->
-    <insert id="insertSalAllowPay" parameterType="SaAllowPay">
-        <selectKey keyProperty="dateId" resultType="String" order="BEFORE">
-            SELECT DATE_ID
-            FROM "DATE"
-            WHERE allow_year = #{allowYear}
-            AND "MONTH" = #{allowMonth}
-            AND "DATE" = #{paymentDate}
-        </selectKey>
-        <if test="dateId == null">
-            <insert id="insertDate" parameterType="SaAllowPay">
-                INSERT INTO "DATE" (allow_year, "MONTH", "DATE", DATE_ID)
-                VALUES (
-                    #{allowYear}
-                    , #{allowMonth}
-                    , #{paymentDate}
-                    , #{allowYear}#{allowMonth}#{paymentDate}
-                )
-                <selectKey keyProperty="dateId" resultType="String" order="AFTER">
-                    RETURNING DATE_ID INTO #{dateId}
-                </selectKey>
-            </insert>
-        </if>
-        INSERT INTO SAALLOWPAY(
-            CD_ALLOW
-            , ALLOW_PAY
-            , CD_EMP
-            , DATE_ID
-        ) VALUES (
-            #{cdAllow}
-            , #{allowPay}
-            , #{cdEmp}
-            , #{dateId}
-        )
-    </insert>
+<!--    <insert id="insertSalAllowPay" parameterType="SaAllowPay">-->
+<!--        <selectKey keyProperty="dateId" resultType="String" order="BEFORE">-->
+<!--            SELECT DATE_ID-->
+<!--            FROM "DATE"-->
+<!--            WHERE allow_year = #{allowYear}-->
+<!--            AND "MONTH" = #{allowMonth}-->
+<!--            AND "DATE" = #{paymentDate}-->
+<!--        </selectKey>-->
+<!--        <if test="dateId == null">-->
+<!--            <insert id="insertDate" parameterType="SaAllowPay">-->
+<!--                INSERT INTO "DATE" (allow_year, "MONTH", "DATE", DATE_ID)-->
+<!--                VALUES (-->
+<!--                    #{allowYear}-->
+<!--                    , #{allowMonth}-->
+<!--                    , #{paymentDate}-->
+<!--                    , #{allowYear}#{allowMonth}#{paymentDate}-->
+<!--                )-->
+<!--                <selectKey keyProperty="dateId" resultType="String" order="AFTER">-->
+<!--                    RETURNING DATE_ID INTO #{dateId}-->
+<!--                </selectKey>-->
+<!--            </insert>-->
+<!--        </if>-->
+<!--        INSERT INTO SAALLOWPAY(-->
+<!--            CD_ALLOW-->
+<!--            , ALLOW_PAY-->
+<!--            , CD_EMP-->
+<!--            , DATE_ID-->
+<!--        ) VALUES (-->
+<!--            #{cdAllow}-->
+<!--            , #{allowPay}-->
+<!--            , #{cdEmp}-->
+<!--            , #{dateId}-->
+<!--        )-->
+<!--    </insert>-->
 
     <!--지급일 리스트(코드도움창) -->
     <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
-        SELECT "DATE" AS "paymentdate" ,  DATE_ID AS "dateId"
+        SELECT "DATE" AS "paymentDate" ,  DATE_ID AS "dateId"
             FROM "DATE" d
         WHERE d.ALLOW_YEAR = #{allowYear}
             AND d."MONTH" = #{allowMonth}

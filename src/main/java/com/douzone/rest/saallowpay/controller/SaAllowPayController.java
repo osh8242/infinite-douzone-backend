@@ -81,8 +81,8 @@ public class SaAllowPayController {
 
         List<Map<String, String>> result = new ArrayList<>();
         try {
-            saAllowPayService.getPaymentDateList(reqestMap);
-        }catch (Exception e){
+            result = saAllowPayService.getPaymentDateList(reqestMap);
+        }catch (Exception e) {
             e.getStackTrace();
         }
         return result;
