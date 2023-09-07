@@ -42,6 +42,7 @@ public class EmpController {
         List<Emp> list = null;
         list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
+
     }
 
     @PostMapping("/getEmpByCdEmp")
