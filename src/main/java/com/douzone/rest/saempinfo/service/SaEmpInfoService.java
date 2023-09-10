@@ -30,6 +30,8 @@ public class SaEmpInfoService {
                 reqestMap.put("dateId", dateId);
                 result.put("dateId", dateId);
                 result.put("plist", saEmpInfoMapper.getSaEmpInfoList(reqestMap));
+                //result.put("totalSalPaydata",saEmpInfoMapper.getSaEmpInfoList(reqestMap))
+                //내일 합시다
             }
         }catch (Exception e){
             e.getStackTrace();
