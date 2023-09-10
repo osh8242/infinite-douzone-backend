@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.empphoto.dao.EmpPhotoDao">
+
+    <select id="getAllEmpAdd" resultType="EmpAdd">
+        select * from empadd
+    </select>
+
+    <select id="getEmpAddByCdEmp" resultType="EmpAdd">
+        SELECT * FROM empadd WHERE CD_EMP = #{cdEmp}
+    </select>
+
+    <insert id="insertEmpPhoto" parameterType="EmpAdd">
+        INSERT INTO empphoto VALUES (
+        #{cdEmp, jdbcType=VARCHAR},          #{nmPhoto, jdbcType=VARCHAR},
+        #{filePath, jdbcType=VARCHAR},       #{uuid, jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
+        DELETE FROM empadd WHERE CD_EMP = #{cdEmp}
+    </delete>
+
+    <update id="updateEmpAddByCdEmp" parameterType="EmpAdd">
+        UPDATE empadd
+        <set>
+            <if test="nmChName != null">NM_CHNAME = #{nmChName},</if>
+            <if test="nmEnName != null">NM_ENNAME = #{nmEnName},</if>
+        </set>
+        WHERE CD_EMP = #{cdEmp}
+    </update>
+
+
+</mapper>

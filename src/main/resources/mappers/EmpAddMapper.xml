@@ -51,7 +51,7 @@
         #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
         #{noSocial, jdbcType=VARCHAR},      #{fgSex, jdbcType=VARCHAR},
         #{cdDept, jdbcType=VARCHAR},      #{rankNo, jdbcType=VARCHAR},
-        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR}
+        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR})
     </insert>
 
     <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
