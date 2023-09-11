@@ -38,11 +38,6 @@ public class EmpPhotoController {
         EmpPhoto empPhoto = empPhotoService.getEmpPhotoByCdEmp(cdEmp);
         System.out.println("empPhoto = " + empPhoto);
 
-        if (empPhoto.getNmPhoto() == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("해당 직원의 사진 정보를 찾을 수 없습니다.".getBytes(StandardCharsets.UTF_8));
-        }
-
         byte[] imageBytes = null;
         Path path = null;
         String filePath = null;
@@ -51,23 +46,15 @@ public class EmpPhotoController {
         try {
             // 조회된 사진 정보를 사용하여 사진 파일의 전체 경로를 구성
             filePath = UPLOAD_DIRECTORY + empPhoto.getUuid() + "." + empPhoto.getNmPhoto().split("\\.")[1];
-            path = Paths.get(filePath);
-            // 사진 파일을 로드
-            imageBytes = Files.readAllBytes(path);
-            //새로운 헤더 설정
-            //headers = new HttpHeaders();
-            //헤더에 이미지 첨부
-            //headers.setContentType(MediaType.IMAGE_JPEG);
-        } catch (IOException e) {
+        } catch (Exception e) {
             filePath = UPLOAD_DIRECTORY + "defaultProfile.jpg";
+        } finally {
             path = Paths.get(filePath);
             // 사진 파일을 로드
             imageBytes = Files.readAllBytes(path);
+            //이미지 리턴
             return new ResponseEntity<>(imageBytes, HttpStatus.OK);
         }
-
-        //이미지 리턴
-        return new ResponseEntity<>(imageBytes, HttpStatus.OK);
     }
 
     @PutMapping("/updateEmpPhoto")
