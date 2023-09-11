@@ -55,16 +55,16 @@ public class EmpPhotoController {
             // 사진 파일을 로드
             imageBytes = Files.readAllBytes(path);
             //새로운 헤더 설정
-            headers = new HttpHeaders();
+            // headers = new HttpHeaders();
             //헤더에 이미지 첨부
-            headers.setContentType(MediaType.IMAGE_JPEG);
+            // headers.setContentType(MediaType.IMAGE_JPEG);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("해당 직원의 사진 정보를 찾을 수 없습니다.".getBytes(StandardCharsets.UTF_8));
         }
 
         //이미지 리턴
-        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        return new ResponseEntity<>(imageBytes, HttpStatus.OK);
     }
 
         @PutMapping("/updateEmpPhoto")
