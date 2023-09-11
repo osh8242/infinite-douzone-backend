@@ -59,59 +59,62 @@ public class EmpPhotoController {
             //헤더에 이미지 첨부
             //headers.setContentType(MediaType.IMAGE_JPEG);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("해당 직원의 사진 정보를 찾을 수 없습니다.".getBytes(StandardCharsets.UTF_8));
+            filePath = UPLOAD_DIRECTORY + "defaultProfile.jpg";
+            path = Paths.get(filePath);
+            // 사진 파일을 로드
+            imageBytes = Files.readAllBytes(path);
+            return new ResponseEntity<>(imageBytes, HttpStatus.OK);
         }
 
         //이미지 리턴
         return new ResponseEntity<>(imageBytes, HttpStatus.OK);
     }
 
-        @PutMapping("/updateEmpPhoto")
-        public ResponseEntity<String> updateEmpPhoto (@RequestParam("file") MultipartFile file,
-                @RequestParam("fileExtension") String fileExtension,
-                @RequestParam("pkValue") String pkValueJsonString){
-            ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println("EmpPhotoController.insertEmpPhoto");
-            EmpPhoto empPhoto = null;
-            try {
-                empPhoto = objectMapper.readValue(pkValueJsonString, EmpPhoto.class);
-                System.out.println(empPhoto.toString());
-            } catch (JsonProcessingException e) {
-                System.out.println("objectMapper 에러 발생 : " + e);
-            }
+    @PutMapping("/updateEmpPhoto")
+    public ResponseEntity<String> updateEmpPhoto(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("fileExtension") String fileExtension,
+                                                 @RequestParam("pkValue") String pkValueJsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("EmpPhotoController.insertEmpPhoto");
+        EmpPhoto empPhoto = null;
+        try {
+            empPhoto = objectMapper.readValue(pkValueJsonString, EmpPhoto.class);
+            System.out.println(empPhoto.toString());
+        } catch (JsonProcessingException e) {
+            System.out.println("objectMapper 에러 발생 : " + e);
+        }
 
-            if (file.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업로드할 파일이 없습니다.");
-            }
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("업로드할 파일이 없습니다.");
+        }
 
-            try {
-                // UUID 생성하여 파일명 결정
-                //originalFilename = 4조.jpg
-                String originalFilename = file.getOriginalFilename();
-                //FileExtension = .jpg
+        try {
+            // UUID 생성하여 파일명 결정
+            //originalFilename = 4조.jpg
+            String originalFilename = file.getOriginalFilename();
+            //FileExtension = .jpg
 
-                //uuid = ec41c727-f1de-43c4-a5c7-41182e581eee
-                String uuid = UUID.randomUUID().toString();
-                //newFilename = ec41c727-f1de-43c4-a5c7-41182e581eee.jpg
-                String newFilename = uuid + "." + fileExtension;
+            //uuid = ec41c727-f1de-43c4-a5c7-41182e581eee
+            String uuid = UUID.randomUUID().toString();
+            //newFilename = ec41c727-f1de-43c4-a5c7-41182e581eee.jpg
+            String newFilename = uuid + "." + fileExtension;
 
-                //filePath = src\main\resources\images\ec41c727-f1de-43c4-a5c7-41182e581eee.jpg
-                Path filePath = Paths.get(UPLOAD_DIRECTORY + newFilename);
-                Files.write(filePath, file.getBytes());
+            //filePath = src\main\resources\images\ec41c727-f1de-43c4-a5c7-41182e581eee.jpg
+            Path filePath = Paths.get(UPLOAD_DIRECTORY + newFilename);
+            Files.write(filePath, file.getBytes());
 
-                // 데이터베이스에 파일 정보 저장 (예: 파일 경로, 생성된 파일 이름 등)
-                empPhoto.setNmPhoto(originalFilename);
-                empPhoto.setFilePath(UPLOAD_DIRECTORY);
-                empPhoto.setUuid(uuid);
-                System.out.println("empPhoto = " + empPhoto);
+            // 데이터베이스에 파일 정보 저장 (예: 파일 경로, 생성된 파일 이름 등)
+            empPhoto.setNmPhoto(originalFilename);
+            empPhoto.setFilePath(UPLOAD_DIRECTORY);
+            empPhoto.setUuid(uuid);
+            System.out.println("empPhoto = " + empPhoto);
 
-                int result = empPhotoService.updateEmpPhoto(empPhoto);
+            int result = empPhotoService.updateEmpPhoto(empPhoto);
 
-                return ResponseEntity.ok("파일 업로드 성공 " + result + " : " + newFilename);
-            } catch (IOException e) {
-                System.out.println("파일 저장 중 에러 발생 : " + e);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 중 에러 발생");
-            }
+            return ResponseEntity.ok("파일 업로드 성공 " + result + " : " + newFilename);
+        } catch (IOException e) {
+            System.out.println("파일 저장 중 에러 발생 : " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 중 에러 발생");
         }
     }
+}
