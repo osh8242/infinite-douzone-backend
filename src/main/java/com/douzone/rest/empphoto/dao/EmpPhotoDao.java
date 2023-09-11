@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EmpPhotoDao {
-    public EmpPhoto getEmpPhotoByCdEmp(EmpPhoto empPhoto);
+    public EmpPhoto getEmpPhotoByCdEmp(String cdEmp);
     public int insertEmpPhoto(EmpPhoto empPhoto);
+    public int updateEmpPhoto(EmpPhoto empPhoto);
 }

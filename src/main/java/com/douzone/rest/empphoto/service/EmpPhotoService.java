@@ -16,15 +16,22 @@ public class EmpPhotoService {
 
 
 
-    public EmpPhoto getEmpPhotoByCdEmp (EmpPhoto empPhoto){
+    public EmpPhoto getEmpPhotoByCdEmp (String cdEmp){
         EmpPhoto result = null;
-        result = empPhotoDao.getEmpPhotoByCdEmp(empPhoto);
+        result = empPhotoDao.getEmpPhotoByCdEmp(cdEmp);
         return result;
     }
 
     public int insertEmpPhoto(EmpPhoto empPhoto){
         int result = 0;
         result = empPhotoDao.insertEmpPhoto(empPhoto);
+        return result;
+
+    }
+
+    public int updateEmpPhoto(EmpPhoto empPhoto){
+        int result = 0;
+        result = empPhotoDao.updateEmpPhoto(empPhoto);
         return result;
 
     }
