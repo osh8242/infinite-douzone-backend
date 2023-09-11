@@ -6,7 +6,9 @@ import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/saEmpInfo")
@@ -19,32 +21,32 @@ public class SaEmpInfoController {
     }
     
     //전체조회
-    @PostMapping("/getAllSaEmpInfo")
-    public List<SaEmpInfo> getSaEmpInfoList(@RequestBody SaEmpInfo saEmpInfo) {
+    @PostMapping("/getAll")
+    public Map<String, Object> getAll(@RequestBody Map<String, Object> reqestMap) {
 
-        List<SaEmpInfo> getAllEmpInfo = null;
+        Map<String, Object> result = new HashMap<>();
+
         try {
-            getAllEmpInfo = saEmpInfoService.getSaEmpInfoList(saEmpInfo);
+            result = saEmpInfoService.getAll(reqestMap);
         } catch (Exception e) {
             e.getStackTrace();
         }
-
-        return getAllEmpInfo;
+        return result;
     }
 
     //조건조회
-    @PostMapping("/getSaEmpInfoByCdEmp")
-    public SaEmpInfo getSaEmpInfoByCdEmp(@RequestBody SaEmpInfo saEmpInfo) {
-
-        SaEmpInfo getSaEmpInfoByCdEmp = null;
-        try {
-            getSaEmpInfoByCdEmp = saEmpInfoService.getSaEmpInfoByCdEmp(saEmpInfo);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-
-        return getSaEmpInfoByCdEmp;
-    }
+//    @PostMapping("/getSaEmpInfoByCdEmp")
+//    public SaEmpInfo getSaEmpInfoByCdEmp(@RequestBody SaEmpInfo saEmpInfo) {
+//
+//        SaEmpInfo getSaEmpInfoByCdEmp = null;
+//        try {
+//            getSaEmpInfoByCdEmp = saEmpInfoService.getSaEmpInfoByCdEmp(saEmpInfo);
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//
+//        return getSaEmpInfoByCdEmp;
+//    }
 
     //삽입
 //    @PostMapping("/getEmpAddByCdEmp")

@@ -80,4 +80,11 @@ public class EmpController {
         int result = empservice.deleteEmp(emp);
         return result;
     }
+
+    @GetMapping("/getEmpListForCodeHelper")
+    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
+        System.out.println(reqestMap.toString());
+        List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

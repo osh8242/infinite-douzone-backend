@@ -4,32 +4,34 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
 
-    <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
-        SELECT i.CD_EMP
-            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = i.CD_EMP) as NM_EMP
-            , i.RANK_NO
-            , i.MN_REDUCTION
-        FROM SAEMPINFO i
-        WHERE i.CD_EMP IN (
-            SELECT DISTINCT p.CD_EMP
-                FROM SAALLOW s , SAALLOWPAY p
-            WHERE 1=1
-            AND s.CD_ALLOW = p.CD_ALLOW
-            AND s.SAL_DIVISION = #{salDivision}
-            AND p.ALLOW_MONTH = #{allowMonth}
-            AND p.PAYMENT_DATE = #{paymentDate}
-        )
+    <select id="getDateId" parameterType="java.util.Map" resultType="String">
+        SELECT DATE_ID
+            FROM "DATE"
+        WHERE ALLOW_YEAR = #{allowYear}
+            AND "MONTH"=#{allowMonth}
+            AND "DATE"=#{paymentDate}
+    </select>
+
+    <select id="getSaEmpInfoList" parameterType="java.util.Map" resultType="SaEmpInfo">
+        SELECT DISTINCT p.CD_EMP, e.NM_KRNAME AS NM_EMP, e.RANK_NO , i.MN_REDUCTION
+            FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
+                ON p.CD_ALLOW = s.CD_ALLOW LEFT OUTER JOIN SAEMPINFO i
+                ON p.CD_EMP = i.CD_EMP LEFT OUTER JOIN "DATE" d
+                ON d.DATE_ID = p.DATE_ID LEFT OUTER JOIN EMP e
+                ON p.CD_EMP = e.CD_EMP
+            WHERE d.DATE_ID = #{dateId}
+                AND s.SAL_DIVISION = #{salDivision}
         <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND i.CD_EMP       = #{searchCdEmp}      </if>
         <if test="searchCdDept      != null and searchCdDept      != ''">   AND i.CD_DEPT      = #{searchCdDept}     </if>
         <if test="searchRankNo      != null and searchRankNo      != ''">   AND i.RANK_NO      = #{searchRankNo}     </if>
         <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND i.CD_OCCUP     = #{searchCdOccup}    </if>
-        <if test="searchCdField     != null and searchCdField     != ''">   AND i.CD_FIELD     = #{searchCdField}    </if>
-        <if test="searchCdProject   != null and searchCdProject   != ''">   AND i.CD_PROJECT   = #{searchCdProject}  </if>
+<!--        <if test="searchCdField     != null and searchCdField     != ''">   AND i.CD_FIELD     = #{searchCdField}    </if>-->
+<!--        <if test="searchCdProject   != null and searchCdProject   != ''">   AND i.CD_PROJECT   = #{searchCdProject}  </if>-->
         <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND i.YN_UNIT      = #{searchYnUnit}     </if>
         <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND i.YN_FORLABOR  = #{searchYnForlabor} </if>
     </select>
 
-    <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
+    <select id="getSaEmpInfoByCdEmp" parameterType="java.util.Map" resultType="SaEmpInfo">
         SELECT CD_EMP
             , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
             , MN_1_1_1
@@ -87,5 +89,6 @@
             <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
         WHERE CD_EMP = #{cdEmp}
     </update>
+
 
 </mapper>
