@@ -84,6 +84,7 @@ public class EmpPhotoController {
 
     @PutMapping("/updateEmpPhoto")
     public ResponseEntity<String> updateEmpPhoto(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("fileExtension") String fileExtension,
                                                  @RequestParam("pkValue") String pkValueJsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         System.out.println("EmpPhotoController.insertEmpPhoto");
@@ -104,7 +105,7 @@ public class EmpPhotoController {
             //originalFilename = 4조.jpg
             String originalFilename = file.getOriginalFilename();
             //FileExtension = .jpg
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
             //uuid = ec41c727-f1de-43c4-a5c7-41182e581eee
             String uuid = UUID.randomUUID().toString();
             //newFilename = ec41c727-f1de-43c4-a5c7-41182e581eee.jpg
