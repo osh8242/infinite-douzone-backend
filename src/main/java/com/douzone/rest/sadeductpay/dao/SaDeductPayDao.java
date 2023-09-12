@@ -9,8 +9,8 @@ import java.util.Map;
 @Mapper
 public interface SaDeductPayDao {
 
-    List<SaDeductPay> getSaDeductPayByCdEmp(SaDeductPay saDeductPay);   // 공제항목 리스트 조회
+    List<SaDeductPay> getSaDeductPayByCdEmp(Map<String, String> requestMap);   // 공제항목 리스트 조회
     public void updateSaDeductPay(Map<String, Object> saDeductPay);//수정
-    List<SaDeductPay>  getSalDeductPaySum(SaDeductPay saDeductPay);
+    List<Map<String, String>> getSalDeductPaySum(Map<String, String> requestMap);
 
 }

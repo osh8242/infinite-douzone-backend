@@ -26,7 +26,12 @@ public class CommonController {
     }
 
     @PostMapping("/getCodeListForCodeHelper")
-    public ResponseEntity<List<Code>> getAllCode(@RequestBody Code code) {
+    public ResponseEntity<List<Code>> getAllCode(@RequestParam(name = "parentId", required = true) String parentId){
+
+        Code code = Code.builder()
+                .parentId(parentId)
+                .build();
+
         List<Code> result = commonService.getAllCode(code);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

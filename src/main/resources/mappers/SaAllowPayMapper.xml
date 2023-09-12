@@ -5,63 +5,55 @@
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
     <!-- 급여리스트 -->
-    <select id="getSalAlLowPayList" parameterType="SaAllowPay" resultType="SaAllowPay">
-        SELECT s.CD_ALLOW
-            , a.NM_ALLOW
-            , a.YN_TAX AS YN_TAX_ALLOW
-            , s.ALLOW_PAY
-            , s.CD_EMP
-            , s.ALLOW_MONTH
-            , s.ALLOW_YEAR
-            , s.PAYMENT_DATE
-        FROM SAALLOWPAY s LEFT OUTER JOIN SAALLOW a
-            ON s.CD_ALLOW = a.CD_ALLOW
-        WHERE CD_EMP = #{cdEmp}
-            AND ALLOW_MONTH = #{allowMonth}
-        <if test="cdAllow                    != null"> AND CD_ALLOW = #{cdAllow} </if>
+    <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
+        SELECT d.ALLOW_YEAR, d."MONTH" AS "ALLOW_MONTH", d."DATE" AS "PAYMENT_DATE", s.YN_TAX , p.ALLOW_PAY, s.CD_ALLOW , s.NM_ALLOW , e.CD_EMP
+            FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
+                ON s.CD_ALLOW = p.CD_ALLOW LEFT OUTER JOIN EMP e
+                ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
+                ON d.DATE_ID = p.DATE_ID
+        WHERE 1=1
+            AND d.DATE_ID = #{dateId}
+            AND e.CD_EMP = #{cdEmp}
+        <if test="cdAllow                    != null"> AND s.CD_ALLOW = #{cdAllow} </if>
     </select>
 
     <!-- 급여자료 입력 -->
     <insert id="insertSalAllowPay" parameterType="SaAllowPay">
         INSERT INTO SAALLOWPAY(
-          CD_ALLOW , ALLOW_PAY , CD_EMP , ALLOW_MONTH , ALLOW_YEAR , PAYMENT_DATE)
+          CD_ALLOW , ALLOW_PAY , CD_EMP  , PAYMENT_DATE)
         VALUES (
             #{cdAllow}
             , #{allowPay}
             , #{cdEmp}
-            , #{allowMonth}
-            , #{allowYear}
             , #{paymentDate}
         )
     </insert>
 
     <!-- 급여자료 수정 -->
-    <update id="updateSalAllowPay" parameterType="SaAllowPay">
+    <update id="updateSalAllowPay" parameterType="java.util.Map">
         UPDATE SAALLOWPAY
             SET ALLOW_PAY = #{allowPay}
         WHERE CD_EMP = #{cdEmp}
             AND CD_ALLOW = #{cdAllow}
-            AND ALLOW_MONTH = #{allowMonth}
+            AND DATE_ID = #{dateId}
     </update>
 
     <!-- 합계 데이터 조회-->
-    <select id="getSalAllowPaySum" parameterType="SaAllowPay" resultType="SaAllowPay">
+    <select id="getSalAllowPaySum" parameterType="java.util.Map" resultType="map">
         SELECT
-            s.CD_ALLOW
-            , (SELECT NM_ALLOW  FROM SAALLOW s2 WHERE s2.CD_ALLOW=s.CD_ALLOW) AS NM_ALLOW
-            , a.YN_TAX AS YN_TAX
-            , sum(s.ALLOW_PAY) AS SUM_ALLOW_PAY
-        FROM
-            SAALLOWPAY s
-        LEFT OUTER JOIN SAALLOW a
-            ON s.CD_ALLOW = a.CD_ALLOW
-        WHERE 1=1
-        <if test="cdEmp                         != null"> AND s.CD_EMP  = #{cdEmp} </if>
-        <if test="allowMonth                    != null"> AND s.ALLOW_MONTH  = #{allowMonth} </if>
-        <if test="allowYear                     != null"> AND s.ALLOW_YEAR  = #{allowYear} </if>
-        GROUP BY s.CD_ALLOW,YN_TAX
+            p.CD_ALLOW AS "cdAllow"
+            , (SELECT s.NM_ALLOW FROM SAALLOW s WHERE s.CD_ALLOW = p.CD_ALLOW) AS "nmAllow"
+            , a.YN_TAX AS "ynTax"
+            , TO_CHAR(sum(p.ALLOW_PAY)) AS "sumAllowPay"
+        FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW a
+            ON a.CD_ALLOW  = p.CD_ALLOW LEFT OUTER JOIN EMP e
+            ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
+            ON p.DATE_ID = d.DATE_ID
+            <if test="paymentDate   != null and paymentDate    != ''"> AND d."DATE" = #{paymentDate}</if>
+            <if test="allowMonth    != null and allowMonth     != ''"> AND d."MONTH" = #{allowMonth}</if>
+            <if test="allowYear     != null and allowYear      != ''"> AND d.ALLOW_YEAR = #{allowYear}</if>
+            <if test="nowFlag       != null and nowFlag        != ''"> AND e.DA_RETIRE &lt; SYSDATE</if>
+        GROUP BY p.CD_ALLOW, a.YN_TAX
     </select>
-
-
 
 </mapper>

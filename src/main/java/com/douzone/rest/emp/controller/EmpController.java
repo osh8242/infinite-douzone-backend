@@ -43,7 +43,6 @@ public class EmpController {
         List<Emp> list = null;
         list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
-
     }
 
     @PostMapping("/getEmpByCdEmp")
@@ -72,7 +71,6 @@ public class EmpController {
     public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
-        System.out.println(result);
         return result;
     }
 
@@ -82,5 +80,12 @@ public class EmpController {
         EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
         System.out.println(empMenuUsage);
         return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
+    }
+
+    @GetMapping("/getEmpListForCodeHelper")
+    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
+        System.out.println(reqestMap.toString());
+        List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

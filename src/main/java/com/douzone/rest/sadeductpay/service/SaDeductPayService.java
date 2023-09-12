@@ -18,8 +18,8 @@ public class SaDeductPayService {
         this.saDeductPayDao = saDeductPayDao;
     }
 
-    public List<SaDeductPay> getSaDeductPayByCdEmp(SaDeductPay saDeductPay) {
-        return saDeductPayDao.getSaDeductPayByCdEmp(saDeductPay);
+    public List<SaDeductPay> getSaDeductPayByCdEmp(Map<String, String> requestMap) {
+        return saDeductPayDao.getSaDeductPayByCdEmp(requestMap);
     }
 
     public int updateSaDeductPay(Map<String, Object> requestMap) {
@@ -36,8 +36,8 @@ public class SaDeductPayService {
         return result;
     }
 
-    public List<SaDeductPay> getSalDeductPaySum(SaDeductPay saDeductPay) {
-        return saDeductPayDao.getSalDeductPaySum(saDeductPay);
+    public List<Map<String, String>> getSalDeductPaySum(Map<String, String> requestMap) {
+        return saDeductPayDao.getSalDeductPaySum(requestMap);
     }
 
 }

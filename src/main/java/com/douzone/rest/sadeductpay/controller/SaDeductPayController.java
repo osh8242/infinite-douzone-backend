@@ -19,18 +19,18 @@ public class SaDeductPayController {
         this.saDeductPayService = saDeductPayService;
     }
 
-    @PostMapping("/getSaDeductPayByCdEmp")
-    public List<SaDeductPay> getSaDeductPayByCdEmp(@RequestBody SaDeductPay saDeductPay) {
-
-        List<SaDeductPay> saDeductPayList = null;
-
-        try {
-            saDeductPayList = saDeductPayService.getSaDeductPayByCdEmp(saDeductPay);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return saDeductPayList;
-    }
+//    @PostMapping("/getSaDeductPayByCdEmp")
+//    public List<SaDeductPay> getSaDeductPayByCdEmp(@RequestBody SaDeductPay saDeductPay) {
+//
+//        List<SaDeductPay> saDeductPayList = null;
+//
+//        try {
+//            saDeductPayList = saDeductPayService.getSaDeductPayByCdEmp(saDeductPay);
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//        return saDeductPayList;
+//    }
 
     @PutMapping("/updateSaDeductPay")
     public void updateSaDeductPay(@RequestBody Map<String, Object> requestMap) {
@@ -41,17 +41,17 @@ public class SaDeductPayController {
         }
     }
 
-    @PostMapping("/getSalDeductPaySum")
-    public List<SaDeductPay> getSalDeductPaySum(@RequestBody SaDeductPay saDeductPay) {
-
-        List<SaDeductPay> salDeductPaySum = null;
-        try {
-            salDeductPaySum = saDeductPayService.getSalDeductPaySum(saDeductPay);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return salDeductPaySum;
-    }
+//    @PostMapping("/getSalDeductPaySum")
+//    public List<SaDeductPay> getSalDeductPaySum(@RequestBody SaDeductPay saDeductPay) {
+//
+//        List<SaDeductPay> salDeductPaySum = null;
+//        try {
+//            salDeductPaySum = saDeductPayService.getSalDeductPaySum(saDeductPay);
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//        return salDeductPaySum;
+//    }
 
 
 }
