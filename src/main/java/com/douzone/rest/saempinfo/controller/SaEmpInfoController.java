@@ -22,12 +22,12 @@ public class SaEmpInfoController {
     
     //전체조회
     @PostMapping("/getAll")
-    public Map<String, Object> getAll(@RequestBody Map<String, Object> reqestMap) {
+    public Map<String, Object> getAll(@RequestBody Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
 
         try {
-            result = saEmpInfoService.getAll(reqestMap);
+            result = saEmpInfoService.getAll(requestMap);
         } catch (Exception e) {
             e.getStackTrace();
         }

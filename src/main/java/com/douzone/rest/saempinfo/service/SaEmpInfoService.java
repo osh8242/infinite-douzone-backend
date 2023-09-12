@@ -1,14 +1,13 @@
 package com.douzone.rest.saempinfo.service;
 
+import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
+import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,22 +15,36 @@ public class SaEmpInfoService {
 
     SaEmpInfoMapper saEmpInfoMapper;
 
+    SaAllowPayMapper saAllowPayMapper;
+
+    SaDeductPayDao saDeductPayDao;
+
     @Autowired
-    public SaEmpInfoService(SaEmpInfoMapper saEmpInfoMapper) {
+    public SaEmpInfoService(
+            SaAllowPayMapper saAllowPayMapper,
+            SaDeductPayDao saDeductPayDao,
+            SaEmpInfoMapper saEmpInfoMapper
+    ) {
+        this.saAllowPayMapper = saAllowPayMapper;
+        this.saDeductPayDao = saDeductPayDao;
         this.saEmpInfoMapper = saEmpInfoMapper;
     }
 
-    public Map<String, Object> getAll(Map<String, Object> reqestMap) {
+    public Map<String, Object> getAll(Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
         try {
-            String dateId = saEmpInfoMapper.getDateId(reqestMap);
+            String dateId = saEmpInfoMapper.getDateId(requestMap);
             if(dateId!=null) {
-                reqestMap.put("dateId", dateId);
+                requestMap.put("dateId", dateId);
                 result.put("dateId", dateId);
-                result.put("plist", saEmpInfoMapper.getSaEmpInfoList(reqestMap));
-                //result.put("totalSalPaydata",saEmpInfoMapper.getSaEmpInfoList(reqestMap))
-                //내일 합시다
+                result.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
+
+                Map<String, Object> totalSalPaydata = new HashMap<>();
+                totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
+                totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
+                result.put("totalSalPaydata",totalSalPaydata);
+
             }
         }catch (Exception e){
             e.getStackTrace();
