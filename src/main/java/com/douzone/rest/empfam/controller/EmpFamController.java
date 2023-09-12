@@ -1,5 +1,6 @@
 package com.douzone.rest.empfam.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.empfam.service.EmpFamService;
 import com.douzone.rest.empfam.vo.EmpFam;
 
@@ -11,42 +12,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empfam/*")
+@RequestMapping("/empFam")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpFamController {
+
     @Autowired
     private EmpFamService empFamService;
 
-    @GetMapping("getAll")
+    @GetMapping("/getAllEmpFam")
     public ResponseEntity<List> getAllEmpFam() {
-        System.out.println("empfam/getAll 컨트롤러 진입!");
+        System.out.println("empFam/getAllEmpFam 컨트롤러 진입!");
         List<EmpFam> empfamList = empFamService.getAllEmpFam();
         return new ResponseEntity<>(empfamList, HttpStatus.OK);
     }
 
-    @PostMapping("getOne")
-    public ResponseEntity<?> getOneEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
-        System.out.println("empfam/getOne 컨트롤러 진입!");
-        EmpFam result = empFamService.getOneEmpFambyCdEmp(empfam);
+    @PostMapping("/getEmpFamListByCdEmp")
+    public ResponseEntity<List<EmpFam>> getEmpFamListByCdEmp(@RequestBody EmpFam empfam){
+        System.out.println("EmpFamController.getEmpFamListByCdEmp");
+        List<EmpFam> result = null;
+        result = empFamService.getEmpFamListByCdEmp(empfam);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("insert")
+    @PostMapping("/insertEmpFam")
     public int insertEmpFam(@RequestBody EmpFam empfam){
-        System.out.println("empfam/insert 컨트롤러 진입!");
+        System.out.println("empFam/insert 컨트롤러 진입!");
         int result = empFamService.insertEmpFam(empfam);
         return result;
     }
 
-    @PostMapping("update")
-    public int updateEmpFamByCdEmpAndCdCalrel(@RequestBody EmpFam empfam){
+    @PutMapping("/updateEmpFamBySeqValAndCdEmp")
+    public int updateEmpFamBySeqValAndCdEmp(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
-        int result = empFamService.updateEmpFamByCdEmpAndCdCalrel(empfam);
+        int result = empFamService.updateEmpFamBySeqValAndCdEmp(empfam);
         return result;
     }
 
-    @PostMapping("delete")
-    public int deleteEmp(@RequestBody EmpFam empfam){
-        System.out.println("empfam/delete 컨트롤러 진입!");
+    @DeleteMapping("/deleteEmpFam")
+    public int deleteEmpFam(@RequestBody EmpFam empfam){
+        System.out.println("empfam/deleteEmpFam 컨트롤러 진입!");
         int result = empFamService.deleteEmpFam(empfam);
         return result;
     }
