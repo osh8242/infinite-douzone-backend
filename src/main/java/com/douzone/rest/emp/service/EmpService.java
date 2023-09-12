@@ -23,9 +23,9 @@ public class EmpService {
         return result;
     }
 
-    public List<Emp> getEmpListByJobOk(Map<String, Object> map){
+    public List<Emp> getEmpListForHrManagement(Map<String, Object> map){
         System.out.println("EmpService.getEmpListByJobOk");
-        List<Emp> result = empDao.getEmpListByJobOk(map);
+        List<Emp> result = empDao.getEmpListForHrManagement(map);
         return result;
     }
 
