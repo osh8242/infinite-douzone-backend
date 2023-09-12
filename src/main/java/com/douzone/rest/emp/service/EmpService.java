@@ -2,9 +2,11 @@ package com.douzone.rest.emp.service;
 
 import com.douzone.rest.emp.dao.EmpDao;
 import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,10 +58,14 @@ public class EmpService {
         return result;
     }
 
-    public int deleteEmp(Emp emp){
+    public EmpMenuUsage deleteEmp(Emp emp){
         System.out.println("Emp delete -----");
-        int result = empDao.deleteEmp(emp);
-        System.out.println("result= "+result);
-        return result;
+
+        int deleteRows = empDao.deleteEmp(emp);
+        EmpMenuUsage empMenuUsage = empDao.getUndeletedEmpByCdEmp(emp);
+
+        System.out.println("삭제된 row의 수: " + deleteRows);
+        System.out.println("삭제되지 않은 데이터: " + empMenuUsage);
+        return empMenuUsage;
     }
 }
