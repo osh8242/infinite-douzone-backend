@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 public class SwsmOtherService {
-
     @Autowired
     private SwsmOtherDao swsmOtherDao;
+
 //    private SwsmOtherDao swsmOtherDao;
 //
 //    @Autowired
@@ -20,11 +20,32 @@ public class SwsmOtherService {
 //    }
 
     public List<SwsmOther> getAllSwsmOther() {
+        System.out.println(swsmOtherDao.getAllSwsmOther());
         return swsmOtherDao.getAllSwsmOther();
     }
 
-    public int insertSwsmOther(SwsmOther swsmOther){
+    public List<SwsmOther> getSwsmOtherByCdEmp(SwsmOther swsmOther) {
+        List<SwsmOther> swsmOtherList = swsmOtherDao.getSwsmOtherByCdEmp(swsmOther);
+        return swsmOtherList;
+    }
+
+
+//    public List<SwsmOther> getSwsmOtherListByCdEmp(SwsmOther swsmOther) {
+//        return swsmOtherDao.getSwsmOtherListByCdEmp(swsmOther);
+//    }
+
+    public int insertSwsmOther(SwsmOther swsmOther) {
         return swsmOtherDao.insertSwsmOther(swsmOther);
     }
+
+    public int updateSwsmOther(SwsmOther swsmOther){
+        System.out.println("service sowowtoehre"+ swsmOtherDao.updateSwsmOther(swsmOther));
+        return swsmOtherDao.updateSwsmOther(swsmOther);
+    }
+
+    public int deleteSwsmOther(SwsmOther swsmOther){
+        return swsmOtherDao.deleteSwsmOther(swsmOther);
+    }
+
 
 }

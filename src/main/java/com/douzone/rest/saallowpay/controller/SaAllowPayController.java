@@ -3,13 +3,13 @@ package com.douzone.rest.saallowpay.controller;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/saallowpay")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class SaAllowPayController {
     SaAllowPayService saAllowPayService;
     @Autowired
@@ -18,25 +18,54 @@ public class SaAllowPayController {
     }
 
     //사원별 급여항목 리스트
-    @GetMapping("/getSaLowPayByCdEmp")
-    public List<SaAllowPay> getSalLowPayList(SaAllowPay saAllowPay) {
+    @PostMapping("/getSaAllowPayByCdEmp")
+    public List<SaAllowPay> getSalAlLowPayList(@RequestBody SaAllowPay saAllowPay) {
 
-        List<SaAllowPay> salLowPayList = null;
+        List<SaAllowPay> saAllowPayList = null;
+
         try {
-            salLowPayList = saAllowPayService.getSalLowPayList(saAllowPay);
+            saAllowPayList = saAllowPayService.getSalAlLowPayList(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
-        return salLowPayList;
+        return saAllowPayList;
     }
-    @PutMapping("/updateSalowPay")
-    public void updateSalowPay(SaAllowPay saAllowPay) {
+    @PostMapping("/insertSalAllowPay")
+    public int insertSalAllowPay(@RequestBody SaAllowPay saAllowPay){
+        int result = 0;
         try {
-            saAllowPayService.updateSalowPay(saAllowPay);
+            result = saAllowPayService.insertSalAllowPay(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return  result;
+    }
+
+    @PutMapping("/updateSalAllowPay")
+    public int updateSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayService.updateSalAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
+
+    @PostMapping("/getSalAllowPaySum")
+    public List<SaAllowPay> getSalAllowPaySum(@RequestBody SaAllowPay saAllowPay) {
+
+        List<SaAllowPay> salAllowPaySum = null;
+        try {
+            salAllowPaySum = saAllowPayService.getSalAllowPaySum(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return salAllowPaySum;
+    }
+
+
+
 //
 //
 //    //삭제

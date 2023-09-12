@@ -17,6 +17,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000/")
 public class EmpAddController {
 
+    @Autowired
     private EmpAddService empAddService;
 
     @Autowired

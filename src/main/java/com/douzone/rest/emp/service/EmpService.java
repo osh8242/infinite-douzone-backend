@@ -68,4 +68,9 @@ public class EmpService {
         System.out.println("삭제되지 않은 데이터: " + empMenuUsage);
         return empMenuUsage;
     }
+
+    public List<Emp> getEmpListForCodeHelper(Map<String, String> map){
+        return empDao.getEmpListForCodeHelper(map);
+    }
+
 }

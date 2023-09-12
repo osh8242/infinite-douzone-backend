@@ -3,9 +3,14 @@ package com.douzone.rest.sadeductpay.dao;
 import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface SaDeductPayDao {
 
-    public void updateSaDeductPay(SaDeductPay saDeductPay);//수정
+    List<SaDeductPay> getSaDeductPayByCdEmp(SaDeductPay saDeductPay);   // 공제항목 리스트 조회
+    public void updateSaDeductPay(Map<String, Object> saDeductPay);//수정
+    List<SaDeductPay>  getSalDeductPaySum(SaDeductPay saDeductPay);
 
 }

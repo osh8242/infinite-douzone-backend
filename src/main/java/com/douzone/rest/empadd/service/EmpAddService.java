@@ -39,6 +39,8 @@ public class EmpAddService {
         result = empAddDao.insertEmpAdd(empAdd);
         return result;
     }
+
+
     public int deleteEmpByCdEmp(EmpAdd empAdd){
         int result = 0;
         result = empAddDao.deleteEmpByCdEmp(empAdd);
@@ -52,4 +54,3 @@ public class EmpAddService {
     }
 
 }
-

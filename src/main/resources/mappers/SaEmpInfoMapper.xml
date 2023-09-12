@@ -5,13 +5,39 @@
 <mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
 
     <select id="getSaEmpInfoList" parameterType="SaEmpInfo" resultType="SaEmpInfo">
-        /* 사원 조회 */
+        SELECT i.CD_EMP
+            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = i.CD_EMP) as NM_EMP
+            , i.RANK_NO
+            , i.MN_REDUCTION
+        FROM SAEMPINFO i
+        WHERE i.CD_EMP IN (
+            SELECT DISTINCT p.CD_EMP
+                FROM SAALLOW s , SAALLOWPAY p
+            WHERE 1=1
+            AND s.CD_ALLOW = p.CD_ALLOW
+            AND s.SAL_DIVISION = #{salDivision}
+            AND p.ALLOW_MONTH = #{allowMonth}
+            AND p.PAYMENT_DATE = #{paymentDate}
+        )
+        <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND i.CD_EMP       = #{searchCdEmp}      </if>
+        <if test="searchCdDept      != null and searchCdDept      != ''">   AND i.CD_DEPT      = #{searchCdDept}     </if>
+        <if test="searchRankNo      != null and searchRankNo      != ''">   AND i.RANK_NO      = #{searchRankNo}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND i.CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchCdField     != null and searchCdField     != ''">   AND i.CD_FIELD     = #{searchCdField}    </if>
+        <if test="searchCdProject   != null and searchCdProject   != ''">   AND i.CD_PROJECT   = #{searchCdProject}  </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND i.YN_UNIT      = #{searchYnUnit}     </if>
+        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND i.YN_FORLABOR  = #{searchYnForlabor} </if>
+    </select>
+
+    <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
         SELECT CD_EMP
-            , (SELECT NM_KRNAME FROM EMP WHERE CD_EMP = #{searchUseYn}) as NM_EMP
+            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
             , MN_1_1_1
             , DA_ENTER
             , YN_MATEDED
-            , NUM_20FAMILY/NUM_60FAMILY/NUM_MANYFAMILY
+            , NUM_20FAMILY
+            , NUM_60FAMILY
+            , NUM_MANYFAMILY
             , YN_RESIDENT
             , YN_UNIT
             , YN_FORLABOR
@@ -27,36 +53,19 @@
             , MN_2_1_1
             , NO_SOCIAL
             , MN_REDUCTION
-        FROM SAEMPINFO
-        WHERE 1=1
-        <if test="searchEmpCd       != null and searchEmpCd       != ''">   and CD_EMP       = #{searchUseYn}      </if>
-        <if test="searchDeptCd      != null and searchDeptCd      != ''">   and CD_DEPT      = #{searchDeptCd}     </if>
-        <if test="searchRankNo      != null and searchRankNo      != ''">   and RANK_NO      = #{searchRankNo}     </if>
-        <if test="searchCdOccup     != null and searchCdOccup     != ''">   and CD_OCCUP     = #{searchCdOccup}    </if>
-        <if test="searchCdField     != null and searchCdField     != ''">   and CD_FIELD     = #{searchCdField}    </if>
-        <if test="searchCdProject   != null and searchCdProject   != ''">   and CD_PROJECT   = #{searchCdProject}  </if>
-        <if test="searchYnUnit      != null and searchYnUnit      != ''">   and YN_UNIT      = #{searchYnUnit}     </if>
-        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   and YN_FORLABOR  = #{searchYnForlabor} </if>
-    </select>
-
-    <select id="getSaEmpInfoByCdEmp" parameterType="SaEmpInfo" resultType="SaEmpInfo">
-        /* 사원 상세 조회 */
-        SELECT *
-        FROM SAEMPINFO
+        FROM SAEMPINFO s
         WHERE CD_EMP = #{cdEmp}
     </select>
 
     <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
-        /* 사원 삭제 */
-        delete
-        from SAEMPINFO
-        where CD_EMP = #{cdEmp}
+        DELETE
+        FROM SAEMPINFO
+        WHERE CD_EMP = #{cdEmp}
     </delete>
 
     <update id="updateEmpInfo" parameterType="SaEmpInfo">
-        /* 사원 수정 */
-        update SAEMPINFO
-        set CD_EMP = #{cdEmp}
+        UPDATE SAEMPINFO
+        SET CD_EMP = #{cdEmp}
             <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>
             <if test="daEnter                  != null">, DA_ENTER = #{daEnter}</if>
             <if test="ynMateDed                != null">, YN_MATEDED = #{ynMateDed}</if>
@@ -76,7 +85,7 @@
             <if test="amHealthInsur            != null">, AM_HEALTHINSUR = #{amHealthInsur}</if>
             <if test="mn211                    != null">, MN_2_1_1 = #{mn211}</if>
             <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
-        where CD_EMP = #{cdEmp}
+        WHERE CD_EMP = #{cdEmp}
     </update>
 
 </mapper>

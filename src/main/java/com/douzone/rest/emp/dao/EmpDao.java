@@ -17,4 +17,8 @@ public interface EmpDao {
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);
     public EmpMenuUsage getUndeletedEmpByCdEmp(Emp emp);
+
+
+    //코드헬퍼
+    public List<Emp> getEmpListForCodeHelper(Map<String, String> map);
 }
