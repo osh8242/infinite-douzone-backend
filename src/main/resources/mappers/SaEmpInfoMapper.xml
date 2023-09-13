@@ -37,12 +37,9 @@
             , MN_1_1_1
             , DA_ENTER
             , YN_MATEDED
-            , NUM_20FAMILY
-            , NUM_60FAMILY
-            , NUM_MANYFAMILY
+            , NUM_20FAMILY || '/' || NUM_60FAMILY || '/' || NUM_MANYFAMILY as num2060many
             , YN_RESIDENT
-            , YN_UNIT
-            , YN_FORLABOR
+            , YN_UNIT || '/' || YN_FORLABOR as ynUnitForlabor
             , YN_OVERWORK
             , DA_RETIRE
             , CD_OCCUP
