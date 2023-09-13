@@ -32,10 +32,24 @@
             ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID LEFT OUTER JOIN EMP e
             ON e.CD_EMP = p.CD_EMP
-            <if test="paymentDate                   != null"> AND d."DATE" = #{paymentDate}</if>
-            <if test="allowMonth                    != null"> AND d."MONTH" = #{allowMonth}</if>
-            <if test="allowYear                     != null"> AND d.ALLOW_YEAR = #{allowYear}</if>
-            <if test="now                           != null"> AND e.DA_RETIRE &lt; SYSDATE</if>
+            <if test="paymentDateFlag   != null and paymentDateFlag    != ''">
+                AND D."DATE" = (SELECT "DATE" FROM "DATE" WHERE date_id = #{dateId})
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND e.DA_RETIRE &lt; (SELECT "DATE" FROM "DATE" WHERE date_id = #{dateId})
+                </if>
+            </if>
+            <if test="allowMonthFlag    != null and allowMonthFlag     != ''">
+                AND d."MONTH" = (SELECT "MONTH" FROM "DATE" WHERE date_id = #{dateId})
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY-MM-DD') &lt; TO_DATE((SELECT "MONTH" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY-MM')
+                </if>
+            </if>
+            <if test="allowYearFlag     != null and allowYearFlag      != ''">
+                AND d.ALLOW_YEAR = (SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId})
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE((SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY')
+                </if>
+            </if>
         GROUP BY p.CD_DEDUCT
     </select>
 </mapper>

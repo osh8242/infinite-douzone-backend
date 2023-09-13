@@ -49,22 +49,22 @@
             ON a.CD_ALLOW  = p.CD_ALLOW LEFT OUTER JOIN EMP e
             ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID
-            <if test="paymentDate   != null and paymentDate    != ''">
-                AND d."DATE" = #{paymentDate}
+            <if test="paymentDateFlag   != null and paymentDateFlag    != ''">
+                AND D."DATE" = (SELECT "DATE" FROM "DATE" WHERE date_id = #{dateId})
                 <if test="nowFlag       != null and nowFlag     != ''">
-                    AND e.DA_RETIRE &lt; #{paymentDate}
+                    AND e.DA_RETIRE &lt; (SELECT "DATE" FROM "DATE" WHERE date_id = #{dateId})
                 </if>
             </if>
-            <if test="allowMonth    != null and allowMonth     != ''">
-                AND d."MONTH" = #{allowMonth}
+            <if test="allowMonthFlag    != null and allowMonthFlag     != ''">
+                AND d."MONTH" = (SELECT "MONTH" FROM "DATE" WHERE date_id = #{dateId})
                 <if test="nowFlag       != null and nowFlag     != ''">
-                    AND TO_DATE(e.DA_RETIRE, 'YYYY-MM-DD') &lt; TO_DATE(#{allowMonth}, 'YYYY-MM')
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY-MM-DD') &lt; TO_DATE((SELECT "MONTH" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY-MM')
                 </if>
             </if>
-            <if test="allowYear     != null and allowYear      != ''">
-                AND d.ALLOW_YEAR = #{allowYear}
+            <if test="allowYearFlag     != null and allowYearFlag      != ''">
+                AND d.ALLOW_YEAR = (SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId})
                 <if test="nowFlag       != null and nowFlag     != ''">
-                    AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE(#{allowYear}, 'YYYY')
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE((SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY')
                 </if>
             </if>
         GROUP BY p.CD_ALLOW, a.YN_TAX
