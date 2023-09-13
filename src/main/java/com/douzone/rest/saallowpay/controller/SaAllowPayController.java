@@ -88,6 +88,19 @@ public class SaAllowPayController {
         return result;
     }
 
+    @GetMapping("/getsalAllowList")
+    public List<Map<String, String>> getsalAllowList(@RequestParam Map<String, String> reqestMap) {
+
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayService.getsalAllowList(reqestMap);
+        }catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
 //
 //
 //    //삭제
@@ -110,6 +123,7 @@ public class SaAllowPayController {
 //            e.getStackTrace();
 //        }
 //    }
+
 
 
 

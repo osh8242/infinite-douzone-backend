@@ -13,9 +13,10 @@ public interface SaAllowPayMapper {
     int insertSalAllowPay(SaAllowPay saAllowPay);   //급여자료 입력
 
     int updateSalAllowPay(Map<String, String> requestMap);   // 급여항목 수정
-    List<Map<String, String>> getSalAllowPaySum(Map<String, String> requestMap);
-    List<Map<String, String>> getPaymentDateList(Map<String, String> requestMap);
+    public List<Map<String, String>> getSalAllowPaySum(Map<String, String> requestMap);
+    public List<Map<String, String>> getPaymentDateList(Map<String, String> requestMap);
 
+    public List<Map<String, String>> getsalAllowList(Map<String, String> requestMap);
 //    List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo);//리스트조회
 //    void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
 //    void updateEmpInfo(SaEmpInfo saEmpInfo);//수정

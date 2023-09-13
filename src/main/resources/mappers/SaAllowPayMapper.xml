@@ -113,4 +113,16 @@
         WHERE d.ALLOW_YEAR = #{allowYear}
             AND d."MONTH" = #{allowMonth}
     </select>
+
+    <select id="getsalAllowList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+        CD_ALLOW AS "cdAllow",
+        NM_ALLOW AS "nmAllow",
+        YN_TAX AS "ynTax",
+        SAL_DIVISION AS "salDivison",
+        c.CODE_NAME AS "nmSalDivison"
+        FROM SAALLOW a LEFT OUTER JOIN CODE c
+        ON c.CODE_ID = a.SAL_DIVISION
+    </select>
+
 </mapper>
