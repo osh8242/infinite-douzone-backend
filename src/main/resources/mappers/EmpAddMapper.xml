@@ -70,6 +70,7 @@
             <if test="daBirth != null">DA_BIRTH = #{daBirth},</if>
             <if test="strHobby != null">STR_HOBBY = #{strHobby},</if>
             <if test="nmSpecial != null">NM_SPECIAL = #{nmSpecial},</if>
+            <if test="tyEmploy != null">TY_EMPLOY = #{tyEmploy},</if>
             <if test="tyReligion != null">TY_RELIGION = #{tyReligion},</if>
             <if test="zipHome != null">ZIP_HOME = #{zipHome},</if>
             <if test="zipOrgin != null">ZIP_ORGIN = #{zipOrgin},</if>
