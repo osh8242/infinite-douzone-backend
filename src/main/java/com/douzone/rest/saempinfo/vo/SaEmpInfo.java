@@ -27,6 +27,8 @@ public class SaEmpInfo {
     private String MnReduction;         // 감면율(임시 칼럼)
 
     private String nmEmp;               // 사원이름
+    private String num2060many;         // 20/60/다자녀
+    private String ynUnitForlabor;      // 생산/국외
 
     /*  검색 파라미터 */
     private String allowMonth;          // 귀속년월

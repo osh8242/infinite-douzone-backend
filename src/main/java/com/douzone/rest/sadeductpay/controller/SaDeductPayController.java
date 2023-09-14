@@ -32,14 +32,14 @@ public class SaDeductPayController {
 //        return saDeductPayList;
 //    }
 
-    @PutMapping("/updateSaDeductPay")
-    public void updateSaDeductPay(@RequestBody Map<String, Object> requestMap) {
-        try {
-            saDeductPayService.updateSaDeductPay(requestMap);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
+//    @PutMapping("/updateSaDeductPay")
+//    public void updateSaDeductPay(@RequestBody Map<String, Object> requestMap) {
+//        try {
+//            saDeductPayService.updateSaDeductPay(requestMap);
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//    }
 
 //    @PostMapping("/getSalDeductPaySum")
 //    public List<SaDeductPay> getSalDeductPaySum(@RequestBody SaDeductPay saDeductPay) {
