@@ -21,7 +21,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/empPhoto")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpPhotoController {
     private static final String UPLOAD_DIRECTORY = "src/main/resources/images/";
     private final EmpPhotoService empPhotoService;

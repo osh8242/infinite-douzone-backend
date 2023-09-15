@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import com.douzone.rest.jwt.JwtProperties;
 
 
 @Service
@@ -40,6 +41,7 @@ public class JwtService {
 
     public String getUsernameFromToken(String token) {
         System.out.println("JwtService.getUsernameFromToken");
+        System.out.println("token = " + token);
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)

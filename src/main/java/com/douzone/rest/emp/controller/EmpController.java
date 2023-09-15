@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/emp")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
 
     private EmpService empservice;

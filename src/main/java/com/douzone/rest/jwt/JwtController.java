@@ -1,29 +1,25 @@
 package com.douzone.rest.jwt;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // 테스트용
 @RestController
 @RequestMapping("/jwt")
 public class JwtController {
-    private JwtService jwtService;
-
-    private final int expirationTime = 1000 * 60 * 10;
-
+    private final JwtService jwtService;
     @Autowired
     public JwtController(JwtService jwtService) {
         this.jwtService = jwtService;
     }
 
     @GetMapping("/getToken")
-    public String getToken(@RequestParam("username") String username){
+    public void getToken(@RequestParam("username") String username, HttpServletResponse response){
         System.out.println("JwtController.getToken");
-        String token = jwtService.createToken("username", expirationTime);
-        return token;
+        String token = JwtProperties.TOKEN_PREFIX + jwtService.createToken(username, JwtProperties.EXPIRATION_TIME );
+        response.addHeader(JwtProperties.HEADER_STRING, token);
+        response.addHeader("Access-Control-Expose-Headers", JwtProperties.HEADER_STRING);
     }
 
     @GetMapping("/validateToken")

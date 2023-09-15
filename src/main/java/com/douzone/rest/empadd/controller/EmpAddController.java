@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/empAdd")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpAddController {
 
     @Autowired
