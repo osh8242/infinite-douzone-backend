@@ -44,11 +44,12 @@ dependencies {
 //	implementation 'org.springframework.security:spring-security-test'
 
 	// jwt
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
 	// redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.4'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// jpa
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
