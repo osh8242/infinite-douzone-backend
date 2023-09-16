@@ -31,17 +31,17 @@ public class EmpController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/getEmpListByJobOk")
-    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestParam(name = "jobOk", required = false) String jobOk,
-                                                       @RequestParam(name = "orderRef", required = false) String orderRef,
-                                                       @RequestParam(name = "refYear", required = false) String refYear) {
+    @GetMapping("/getEmpListForHrManagement")
+    public ResponseEntity<List<Emp>> getEmpListForHrManagement(@RequestParam(name = "jobOk") String jobOk,
+                                                               @RequestParam(name = "orderRef") String orderRef,
+                                                               @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
         if(refYear != null ) map.put("refYear", refYear.trim());
         map.put("orderRef", orderRef.trim());
         List<Emp> list = null;
-        list = empservice.getEmpListByJobOk(map);
+        list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class EmpController {
     }
 
     @PutMapping("/updateEmp")
-    public int updateEmp(@RequestBody Emp emp) {
+    public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         System.out.println("emp = " + emp);
         int result = empservice.updateEmp(emp);
@@ -81,5 +81,12 @@ public class EmpController {
         EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
         System.out.println(empMenuUsage);
         return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
+    }
+
+    @GetMapping("/getEmpListForCodeHelper")
+    public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
+        System.out.println(reqestMap.toString());
+        List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

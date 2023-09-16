@@ -11,7 +11,7 @@
         ORDER BY CD_EMP
     </select>
 
-    <select id="getEmpListByJobOk" parameterType="map" resultType="Emp">
+    <select id="getEmpListForHrManagement" parameterType="map" resultType="Emp">
         SELECT *
         FROM EMP WHERE JOB_OK = #{jobOk}
         <if test="refYear != null">
@@ -356,5 +356,27 @@
             RIGHT JOIN empMenuUsage em
             ON e.cd_emp = em.cd_emp
         WHERE e.cd_emp = #{cdEmp}
+    </select>
+
+    <select id="getEmpListForCodeHelper" parameterType="java.util.Map">
+        select
+            CD_EMP,
+            NM_KRNAME,
+            NO_SOCIAL,
+            DA_RETIRE,
+            RANK_NO,
+            YN_FOR
+        from emp
+        where 1=1
+        <if test="jobOk     != null     and     jobOk       != ''">AND JOB_OK = #{jobOk}   </if>
+        <if test="refYear   != null     and     refYear     != ''">AND EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{refYear} </if>
+        <if test="ynFor     != null     and     ynFor       != ''">AND YN_FOR = #{ynFor} </if>
+
+<!--        <if test="orderRef == 'cdEmp'"> ORDER BY CD_EMP</if>-->
+<!--        <if test="orderRef == 'nmKrname'"> ORDER BY NM_KRNAME</if>-->
+<!--        <if test="orderRef == 'noSocial'"> ORDER BY NO_SOCIAL</if>-->
+<!--        <if test="orderRef == 'naRetire'"> ORDER BY DA_RETIRE</if>-->
+<!--        <if test="orderRef == 'rankNo'"> ORDER BY RANK_NO</if>-->
+<!--        <if test="orderRef == 'ynFor'"> ORDER BY YN_FOR</if>-->
     </select>
 </mapper>

@@ -4,11 +4,15 @@ import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SaAllowPayMapper {
-    List<SaAllowPay> getSalLowPayList(SaAllowPay saAllowPay);   // 급여항목 리스트 조회
-    void updateSalowPay(SaAllowPay saAllowPay);   // 급여항목 수정
+    List<SaAllowPay> getSalAlLowPayListByEmp(Map<String, String> requestMap);   // 급여항목 리스트 조회
+    int insertSalAllowPay(SaAllowPay saAllowPay);   //급여자료 입력
+    int updateSalAllowPay(Map<String, String> requestMap);   // 급여항목 수정
+
+    List<Map<String, String>> getSalAllowPaySum(Map<String, String> requestMap);
 
 //    List<SaEmpInfo> getSaEmpInfoList(SaEmpInfo saEmpInfo);//리스트조회
 //    void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
