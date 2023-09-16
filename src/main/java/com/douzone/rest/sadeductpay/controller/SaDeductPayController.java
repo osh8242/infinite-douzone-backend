@@ -1,7 +1,6 @@
 package com.douzone.rest.sadeductpay.controller;
 
 import com.douzone.rest.sadeductpay.service.SaDeductPayService;
-import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sadeductpay")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class SaDeductPayController {
     private SaDeductPayService saDeductPayService;
 
