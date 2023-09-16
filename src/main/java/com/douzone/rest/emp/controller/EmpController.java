@@ -1,5 +1,6 @@
 package com.douzone.rest.emp.controller;
 
+import com.douzone.rest.company.config.RoutingCompanyDataSource;
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.emp.vo.EmpMenuUsage;
@@ -21,6 +22,8 @@ public class EmpController {
     public EmpController(EmpService empservice) {
         this.empservice = empservice;
     }
+
+    private RoutingCompanyDataSource routingCompanyDataSource = new RoutingCompanyDataSource();
 
     @GetMapping("/getAllEmp")
     public ResponseEntity<List<Emp>> getAllEmp(){

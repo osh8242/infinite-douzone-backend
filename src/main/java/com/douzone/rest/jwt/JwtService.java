@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import com.douzone.rest.jwt.JwtProperties;
 
 
 @Service
@@ -23,7 +22,6 @@ public class JwtService {
     public JwtService(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
-
 
     public String createToken(String username, long expirationTime) {
         System.out.println("JwtService.createToken");

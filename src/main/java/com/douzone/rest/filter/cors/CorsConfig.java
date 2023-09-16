@@ -1,4 +1,4 @@
-package com.douzone.rest.jwt.config;
+package com.douzone.rest.filter.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

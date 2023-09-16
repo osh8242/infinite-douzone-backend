@@ -3,6 +3,7 @@ package com.douzone.rest.jwt;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import static com.douzone.rest.jwt.JwtProperties.*;
 
 // 테스트용
 @RestController
@@ -17,9 +18,9 @@ public class JwtController {
     @GetMapping("/getToken")
     public void getToken(@RequestParam("username") String username, HttpServletResponse response){
         System.out.println("JwtController.getToken");
-        String token = JwtProperties.TOKEN_PREFIX + jwtService.createToken(username, JwtProperties.EXPIRATION_TIME );
-        response.addHeader(JwtProperties.HEADER_STRING, token);
-        response.addHeader("Access-Control-Expose-Headers", JwtProperties.HEADER_STRING);
+        String token = TOKEN_PREFIX + jwtService.createToken(username, EXPIRATION_TIME );
+        response.addHeader(HEADER_STRING, token);
+        response.addHeader("Access-Control-Expose-Headers", HEADER_STRING);
     }
 
     @GetMapping("/validateToken")

@@ -1,17 +1,13 @@
-package com.douzone.rest.jwt.config;
+package com.douzone.rest.filter.jwt;
 
-import com.douzone.rest.jwt.JwtProperties;
 import com.douzone.rest.jwt.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 public class JwtFilter implements Filter {
-
     private final JwtService jwtService;
 
     public JwtFilter(JwtService jwtService) {
