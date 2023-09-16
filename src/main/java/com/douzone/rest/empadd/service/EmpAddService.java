@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmpAddService {
@@ -19,6 +20,12 @@ public class EmpAddService {
     public List<EmpAdd> getAllEmpAdd(){
         List<EmpAdd> empAdds = null;
         empAdds = empAddDao.getAllEmpAdd();
+        return empAdds;
+    }
+
+    public List<EmpAdd> getEmpAddListForHrManagement(Map<String, String> map){
+        List<EmpAdd> empAdds = null;
+        empAdds = empAddDao.getEmpAddListForHrManagement(map);
         return empAdds;
     }
 

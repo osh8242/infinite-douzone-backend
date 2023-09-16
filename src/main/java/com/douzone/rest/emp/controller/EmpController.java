@@ -1,7 +1,9 @@
 package com.douzone.rest.emp.controller;
 
+import com.douzone.rest.company.config.RoutingCompanyDataSource;
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,49 +15,49 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/emp")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
 
     private EmpService empservice;
-
     @Autowired
     public EmpController(EmpService empservice) {
         this.empservice = empservice;
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<Emp>> getAllEmp() {
+    private RoutingCompanyDataSource routingCompanyDataSource = new RoutingCompanyDataSource();
+
+    @GetMapping("/getAllEmp")
+    public ResponseEntity<List<Emp>> getAllEmp(){
         System.out.println("Emp Controller 진입");
         List<Emp> result = empservice.getAllEmp();
         System.out.println("result = " + result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/getEmpListByJobOk")
-    public ResponseEntity<List<Emp>> getEmpListByJobOk(@RequestParam(name = "jobOk", required = false) String jobOk,
-                                                       @RequestParam(name = "orderRef", required = false) String orderRef,
-                                                       @RequestParam(name = "refYear", required = false) String refYear) {
+    @GetMapping("/getEmpListForHrManagement")
+    public ResponseEntity<List<Emp>> getEmpListForHrManagement(@RequestParam(name = "jobOk") String jobOk,
+                                                               @RequestParam(name = "orderRef") String orderRef,
+                                                               @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
-        map.put("refYear", refYear.trim());
+        if(refYear != null ) map.put("refYear", refYear.trim());
         map.put("orderRef", orderRef.trim());
         List<Emp> list = null;
-        list = empservice.getEmpListByJobOk(map);
+        list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping("/getOne")
-    public ResponseEntity<Emp> getOneEmpByCdEmp(@RequestBody Emp emp) {
-        System.out.println("Emp getOneEmpByCdEmp Controller -----");
+    @PostMapping("/getEmpByCdEmp")
+    public ResponseEntity<Emp> getEmpByCdEmp(@RequestBody Emp emp){
+        System.out.println("Emp getEmpByCdEmp Controller -----");
         Emp resultEmp = empservice.getEmpByCdEmp(emp);
         return new ResponseEntity<>(resultEmp, HttpStatus.OK);
     }
 
-    //    {columnName: 컬럼명, columnValue: 컬럼값} 으로 전달받아 검색하는 기능
-    @PostMapping("/getListByVariable")
-    public ResponseEntity<List<Emp>> getListByVariable(@RequestBody Map<String, String> variable) {
-        System.out.println("---------- Emp getListByColumn Controller 시작 ----------");
+//    {columnName: 컬럼명, columnValue: 컬럼값} 으로 전달받아 검색하는 기능
+    @PostMapping("/getEmpListByVariable")
+    public ResponseEntity<List<Emp>> getEmpListByVariable(@RequestBody Map<String, String> variable){
+        System.out.println("---------- Emp getEmpListByVariable Controller 시작 ----------");
         List<Emp> result = empservice.getEmpListByVariable(variable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -68,17 +70,18 @@ public class EmpController {
     }
 
     @PutMapping("/updateEmp")
-    public int updateEmp(@RequestBody Emp emp) {
+    public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
         return result;
     }
 
     @DeleteMapping("/deleteEmp")
-    public int deleteEmp(@RequestBody Emp emp) {
+    public ResponseEntity<EmpMenuUsage> deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
-        int result = empservice.deleteEmp(emp);
-        return result;
+        EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
+        System.out.println(empMenuUsage);
+        return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
     }
 
     @GetMapping("/getEmpListForCodeHelper")

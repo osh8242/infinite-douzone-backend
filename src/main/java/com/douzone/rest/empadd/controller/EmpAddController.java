@@ -1,16 +1,19 @@
 package com.douzone.rest.empadd.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.empadd.service.EmpAddService;
 import com.douzone.rest.empadd.vo.EmpAdd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/empAdd")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpAddController {
 
     @Autowired
@@ -27,6 +30,22 @@ public class EmpAddController {
         empAdds = empAddService.getAllEmpAdd();
         return ResponseEntity.ok(empAdds);
     }
+
+    @GetMapping("/getEmpAddListForHrManagement")
+    public ResponseEntity<List<EmpAdd>> getEmpAddListForHrManagement(@RequestParam(name = "jobOk") String jobOk,
+                                                                  @RequestParam(name = "orderRef", required = false) String orderRef,
+                                                                  @RequestParam(name = "refYear", required = false) String refYear) {
+        System.out.println("EmpAddController.getEmpAddListForHrManagement");
+        Map<String, String> map = new HashMap<>();
+        map.put("jobOk", jobOk.trim());
+        if(refYear != null ) map.put("refYear", refYear.trim());
+        map.put("orderRef", orderRef.trim());
+        List<EmpAdd> list = null;
+        list = empAddService.getEmpAddListForHrManagement(map);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
     @PostMapping("/getEmpAddByCdEmp")
     public ResponseEntity<EmpAdd> getAllEmpAdd(@RequestBody EmpAdd empAdd) {
         empAdd = empAddService.getEmpAddByCdEmp(empAdd);
@@ -49,7 +68,7 @@ public class EmpAddController {
 
     @PutMapping("/updateEmpAdd")
     public ResponseEntity<Integer> updateEmpAddByCD_EMP(@RequestBody EmpAdd empAdd){
-        System.out.println("EmpAddController.deleteEmpByCD_EMP");
+        System.out.println("EmpAddController.updateEmpAddByCD_EMP");
         System.out.println("empAdd = " + empAdd);
         int result = 0;
         result = empAddService.updateEmpAddByCdEmp(empAdd);

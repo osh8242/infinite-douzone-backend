@@ -1,0 +1,40 @@
+package com.douzone.crawling;
+
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+
+@Service
+public class MainService {
+
+    // 크롤링할 URL 주소
+    private static final String CRAWLING_URL = "";
+    // 다운로드 받을 Dir 주소
+    private static final String DIR = "D:\\1.download";
+    // 파일명 갱신
+    private static int FILE_NUM = 0;
+
+
+    public String webCrawling() {
+
+        try{
+            Connection conn = Jsoup.connect(CRAWLING_URL);
+
+            Document html = conn.get();
+            // 수집할 Class 명
+            Elements imageUrlElements = html.getElementsByClass("thumbnail");
+
+
+
+            return imageUrlElements.toString();
+        } catch(IOException ie){
+            ie.printStackTrace();
+
+            return "error";
+        }
+    }
+}
