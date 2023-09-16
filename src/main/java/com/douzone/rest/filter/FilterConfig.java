@@ -13,6 +13,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean(CorsFilter corsFilter) {
+        System.out.println("FilterConfig.corsFilterRegistrationBean");
         FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>(corsFilter);
         registrationBean.setOrder(1);  // 필터의 적용순번
         return registrationBean;
