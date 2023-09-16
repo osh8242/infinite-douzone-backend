@@ -42,7 +42,4 @@ public class EmpAdd {
     private String rankNo;
     private String daEnter;
     private String daRetire;
-    //Emp join 용
-    private String nmKrname;
-    private String jobOk;
 }

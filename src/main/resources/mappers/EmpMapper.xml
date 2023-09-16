@@ -23,27 +23,28 @@
     </select>
 
 
-    <select id="getOneEmpByCdEmp" parameterType="Emp">
+    <select id="getEmpByCdEmp" parameterType="Emp">
         SELECT
             *
         FROM EMP
         WHERE cd_emp = #{cdEmp}
     </select>
 
-    <select id="getListEmpByVariable" parameterType="hashmap">
+    <select id="getEmpListByVariable" parameterType="hashmap">
         SELECT *,
         FROM EMP
         WHERE ${columnName} = #{columnValue}
     </select>
 
-    <insert id="insertEmp" parameterType="Emp">
-        INSERT INTO EMP(
+    <update id="insertEmp" parameterType="Emp">
+        INSERT ALL
+        INTO EMP(
         cd_emp,
         nm_krname,
         yn_for,
         no_social,
-        <if test="jobOk != null">jobOk,</if>
-        <if test="daEnter != null">daEnter,</if>
+        <if test="jobOk != null">job_ok,</if>
+        <if test="daEnter != null">da_enter,</if>
         fg_sex,
         abb_nation,
         yn_resident,
@@ -180,7 +181,13 @@
         #{str4211, jdbcType=VARCHAR},
         #{mn4111, jdbcType=VARCHAR}
         )
-    </insert>
+        <if test="cdEmp != null">
+            INTO EmpMenuUsage
+            VALUES (#{cdEmp, jdbcType=VARCHAR}, null)
+        </if>
+        SELECT 1 FROM DUAL
+    </update>
+
 
 
 
@@ -256,6 +263,7 @@
         <if test="ynOverwork != null">yn_overwork = #{ynOverwork, jdbcType=VARCHAR},</if>
         <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>
         <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>
+            cd_emp = #{cdEmp}
         </set>
         WHERE cd_emp = #{cdEmp}
     </update>
@@ -263,9 +271,17 @@
 
     <delete id="deleteEmp" parameterType="Emp">
         DELETE
-        FROM EMP
-        WHERE cd_emp = #{cdEmp}
+        FROM emp
+        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
     </delete>
+
+    <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
+        SELECT e.cd_emp, e.nm_krname, em.use_menuList
+        FROM emp e
+            RIGHT JOIN empMenuUsage em
+            ON e.cd_emp = em.cd_emp
+        WHERE e.cd_emp = #{cdEmp}
+    </select>
 
     <select id="getEmpListForCodeHelper" parameterType="java.util.Map">
         select

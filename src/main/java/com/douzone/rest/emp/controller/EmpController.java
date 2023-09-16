@@ -2,6 +2,7 @@ package com.douzone.rest.emp.controller;
 
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
+import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,6 @@ public class EmpController {
         List<Emp> list = null;
         list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
-
     }
 
     @PostMapping("/getEmpByCdEmp")
@@ -71,15 +71,15 @@ public class EmpController {
     public int updateEmp(@RequestBody Emp emp){
         System.out.println("Emp update Controller -----");
         int result = empservice.updateEmp(emp);
-        System.out.println(result);
         return result;
     }
 
     @DeleteMapping("/deleteEmp")
-    public int deleteEmp(@RequestBody Emp emp) {
+    public ResponseEntity<EmpMenuUsage> deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
-        int result = empservice.deleteEmp(emp);
-        return result;
+        EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
+        System.out.println(empMenuUsage);
+        return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
     }
 
     @GetMapping("/getEmpListForCodeHelper")
