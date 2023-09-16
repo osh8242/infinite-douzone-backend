@@ -6,15 +6,16 @@
 
     <!-- 급여리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT d.ALLOW_YEAR, d."MONTH" AS "ALLOW_MONTH", d."DATE" AS "PAYMENT_DATE", s.YN_TAX , p.ALLOW_PAY, s.CD_ALLOW , s.NM_ALLOW , e.CD_EMP
-            FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
-                ON s.CD_ALLOW = p.CD_ALLOW LEFT OUTER JOIN EMP e
-                ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
-                ON d.DATE_ID = p.DATE_ID
-        WHERE 1=1
-            AND d.DATE_ID = #{dateId}
-            AND e.CD_EMP = #{cdEmp}
-        <if test="cdAllow                    != null"> AND s.CD_ALLOW = #{cdAllow} </if>
+        SELECT
+            s.CD_ALLOW, s.SAL_DIVISION, s.NM_ALLOW, s.YN_TAX, p.ALLOW_PAY
+        FROM
+            SAALLOW s LEFT OUTER JOIN (
+                SELECT CD_ALLOW,ALLOW_PAY FROM SAALLOWPAY
+                WHERE CD_EMP = #{cdEmp}
+                AND DATE_ID = #{dateId}
+            ) p
+            ON s.CD_ALLOW = p.CD_ALLOW
+        WHERE (s.SAL_DIVISION = 'SAL' OR p.ALLOW_PAY IS NOT NULL)
     </select>
 
     <!-- 급여자료 입력 -->
@@ -70,6 +71,7 @@
         GROUP BY p.CD_ALLOW, a.YN_TAX
     </select>
 
+
     <!-- 급여자료 입력-->
 <!--    <insert id="insertSalAllowPay" parameterType="SaAllowPay">-->
 <!--        <selectKey keyProperty="dateId" resultType="String" order="BEFORE">-->
@@ -114,15 +116,30 @@
             AND d."MONTH" = #{allowMonth}
     </select>
 
+    <!-- 모달_급여항목등록 급여항목 리스트 -->
     <select id="getsalAllowList" parameterType="java.util.Map" resultType="hashmap">
         SELECT
-        CD_ALLOW AS "cdAllow",
-        NM_ALLOW AS "nmAllow",
-        YN_TAX AS "ynTax",
-        SAL_DIVISION AS "salDivison",
-        c.CODE_NAME AS "nmSalDivison"
+            CD_ALLOW AS "cdAllow",
+            NM_ALLOW AS "nmAllow",
+            YN_TAX AS "ynTax",
+            SAL_DIVISION AS "salDivison",
+            c.CODE_NAME AS "nmSalDivison",
+            COMMONLY_YN as "commonlyYn",
+            MONTHLY_YN as "monthlyYn"
         FROM SAALLOW a LEFT OUTER JOIN CODE c
-        ON c.CODE_ID = a.SAL_DIVISION
+            ON c.CODE_ID = a.SAL_DIVISION
+        ORDER BY COMMONLY_YN
+    </select>
+
+    <!-- 모달_비과세 항목 설정 리스트 -->
+    <select id="getNonTaxSalAllowList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            CD_ALLOW as "cdAllow",
+            NM_ALLOW as "nmAllow",
+            NONTAX_LIMIT as "nonTaxLimit",
+            NONTAX_DIVISON as "nonTaxDivison"
+        FROM SAALLOW s
+        WHERE s.YN_TAX ='N'
     </select>
 
 </mapper>

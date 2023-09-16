@@ -1,12 +1,8 @@
 package com.douzone.rest.saallowpay.controller;
 
-import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
-import com.douzone.rest.sadeductpay.service.SaDeductPayService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,21 +17,21 @@ public class SaAllowPayController {
     SaAllowPayService saAllowPayService;
 
     @Autowired
-    public SaAllowPayController(SaAllowPayService saAllowPayService){
+    public SaAllowPayController(SaAllowPayService saAllowPayService) {
         this.saAllowPayService = saAllowPayService;
     }
 
     //사원별 급여항목 리스트
 
     @PostMapping("/insertSalAllowPay")
-    public int insertSalAllowPay(@RequestBody SaAllowPay saAllowPay){
+    public int insertSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
         int result = 0;
         try {
             result = saAllowPayService.insertSalAllowPay(saAllowPay);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
-        return  result;
+        return result;
     }
 
     @PutMapping("/updateSalPay")
@@ -54,7 +50,7 @@ public class SaAllowPayController {
     public Map<String, Object> getSaPayByCdEmp(@RequestBody Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
-        try{
+        try {
             result = saAllowPayService.getSaPayByCdEmp(requestMap);
 
         } catch (Exception e) {
@@ -82,7 +78,7 @@ public class SaAllowPayController {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saAllowPayService.getPaymentDateList(reqestMap);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
@@ -94,37 +90,23 @@ public class SaAllowPayController {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saAllowPayService.getsalAllowList(reqestMap);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
+    @GetMapping("/getNonTaxSalAllowList")
+    public List<Map<String, String>> getNonTaxSalAllowList(@RequestParam Map<String, String> reqestMap) {
 
-//
-//
-//    //삭제
-//    @DeleteMapping("/deleteEmpInfo")
-//    public void deleteEmpInfo(SaLowPay saLowPay) {
-//        try {
-//            saLowPayService.deleteSaLowPay(saLowPay);
-//
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//    }
-//
-//    @PutMapping("/updateEmpInfo")
-//    public void updateEmpInfo(SaLowPay saLowPay) {
-//        try {
-//            saLowPayService.updateEmpInfo(saLowPay);
-//
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//    }
-
-
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayService.getNonTaxSalAllowList(reqestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
 
 
 }

@@ -13,4 +13,5 @@ public interface SaDeductPayDao {
     public void updateSaDeductPay(Map<String, Object> saDeductPay); //수정
     List<Map<String, String>> getSalDeductPaySum(Map<String, String> requestMap);
 
+    public List<Map<String, String>> getsalDeductList(Map<String, String> requestMap);
 }

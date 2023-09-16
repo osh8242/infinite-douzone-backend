@@ -5,6 +5,7 @@ import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,39 +20,16 @@ public class SaDeductPayController {
         this.saDeductPayService = saDeductPayService;
     }
 
-//    @PostMapping("/getSaDeductPayByCdEmp")
-//    public List<SaDeductPay> getSaDeductPayByCdEmp(@RequestBody SaDeductPay saDeductPay) {
-//
-//        List<SaDeductPay> saDeductPayList = null;
-//
-//        try {
-//            saDeductPayList = saDeductPayService.getSaDeductPayByCdEmp(saDeductPay);
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//        return saDeductPayList;
-//    }
+    @GetMapping("/getsalDeductList")
+    public List<Map<String, String>> getsalDeductList(@RequestParam Map<String, String> reqestMap) {
 
-//    @PutMapping("/updateSaDeductPay")
-//    public void updateSaDeductPay(@RequestBody Map<String, Object> requestMap) {
-//        try {
-//            saDeductPayService.updateSaDeductPay(requestMap);
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//    }
-
-//    @PostMapping("/getSalDeductPaySum")
-//    public List<SaDeductPay> getSalDeductPaySum(@RequestBody SaDeductPay saDeductPay) {
-//
-//        List<SaDeductPay> salDeductPaySum = null;
-//        try {
-//            salDeductPaySum = saDeductPayService.getSalDeductPaySum(saDeductPay);
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//        return salDeductPaySum;
-//    }
-
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saDeductPayService.getsalDeductList(reqestMap);
+        }catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
 
 }

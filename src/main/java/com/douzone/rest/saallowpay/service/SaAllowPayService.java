@@ -116,4 +116,14 @@ public class SaAllowPayService {
         }
         return result;
     }
+
+    public List<Map<String, String>> getNonTaxSalAllowList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayMapper.getNonTaxSalAllowList(map);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
 }

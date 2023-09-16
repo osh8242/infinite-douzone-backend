@@ -40,4 +40,13 @@ public class SaDeductPayService {
         return saDeductPayDao.getSalDeductPaySum(requestMap);
     }
 
+    public List<Map<String, String>> getsalDeductList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saDeductPayDao.getsalDeductList(map);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
 }

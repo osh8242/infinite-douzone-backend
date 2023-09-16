@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.sadeductpay.dao.SaDeductPayDao">
 
+    <!-- 사원별 공제항목 조회 -->
     <select id="getSaDeductPayByCdEmp" parameterType="java.util.Map" resultType="SaDeductPay">
         SELECT p.CD_DEDUCT ,d.NM_DEDUCT , p.ALLOW_PAY , p.CD_EMP ,d2."DATE" AS "PAYMENT_DATE" , d2.ALLOW_YEAR , d2."MONTH" AS "ALLOW_MONTH"
             FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
@@ -13,14 +14,6 @@
             AND  d2.DATE_ID = #{dateId}
         <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
     </select>
-
-    <update id="updateSaDeductPay" parameterType="java.util.Map">
-        UPDATE SADEDUCTPAY
-            set ALLOW_PAY = #{allowPay}
-        WHERE CD_EMP = #{cdEmp}
-            AND DATE_ID = #{dateId}
-            AND CD_DEDUCT = #{cdDeduct}
-    </update>
 
     <!-- 합계 데이터 조회-->
     <select id="getSalDeductPaySum"  parameterType="java.util.Map" resultType="map">
@@ -52,4 +45,24 @@
             </if>
         GROUP BY p.CD_DEDUCT
     </select>
+
+    <!-- 모달_공제항목등록 급여항목 리스트 -->
+    <select id="getsalDeductList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            CD_DEDUCT AS "cdDeduct",
+            NM_DEDUCT AS "nmDeduct",
+            YN_BONUS AS "ynBonus",
+            YN_SAL AS "ynSal"
+        FROM SADEDUCT
+        ORDER BY NM_DEDUCT
+    </select>
+
+    <update id="updateSaDeductPay" parameterType="java.util.Map">
+        UPDATE SADEDUCTPAY
+        set ALLOW_PAY = #{allowPay}
+        WHERE CD_EMP = #{cdEmp}
+        AND DATE_ID = #{dateId}
+        AND CD_DEDUCT = #{cdDeduct}
+    </update>
+
 </mapper>

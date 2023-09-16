@@ -26,9 +26,16 @@ public class SaEmpInfo {
     private String noSocial;            // 주민번호
     private String MnReduction;         // 감면율(임시 칼럼)
 
+    private String workday;             // 귀속월 근무일수
+    private String overTime;            // 초과근무 시간
+    private String hourlywage;          // 통상임금
+    private String jobOk;               // 퇴사여부
+
     private String nmEmp;               // 사원이름
     private String num2060many;         // 20/60/다자녀
     private String ynUnitForlabor;      // 생산/국외
+
+
 
     /*  검색 파라미터 */
     private String allowMonth;          // 귀속년월

@@ -35,6 +35,7 @@ public class SaEmpInfoService {
         Map<String, Object> result = new HashMap<>();
         try {
             String dateId = saEmpInfoMapper.getDateId(requestMap);
+
             if(dateId!=null) {
                 requestMap.put("dateId", dateId);
                 result.put("dateId", dateId);
@@ -44,8 +45,8 @@ public class SaEmpInfoService {
                 totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
                 totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
                 result.put("totalSalPaydata",totalSalPaydata);
-
             }
+
         }catch (Exception e){
             e.getStackTrace();
         }

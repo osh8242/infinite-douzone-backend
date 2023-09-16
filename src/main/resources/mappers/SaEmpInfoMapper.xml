@@ -13,62 +13,41 @@
     </select>
 
     <select id="getSaEmpInfoList" parameterType="java.util.Map" resultType="SaEmpInfo">
-        SELECT DISTINCT p.CD_EMP, e.NM_KRNAME AS NM_EMP, e.RANK_NO , i.MN_REDUCTION
-            FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
-                ON p.CD_ALLOW = s.CD_ALLOW LEFT OUTER JOIN SAEMPINFO i
-                ON p.CD_EMP = i.CD_EMP LEFT OUTER JOIN "DATE" d
-                ON d.DATE_ID = p.DATE_ID LEFT OUTER JOIN EMP e
-                ON p.CD_EMP = e.CD_EMP
-            WHERE d.DATE_ID = #{dateId}
-                AND s.SAL_DIVISION = #{salDivision}
+        SELECT e.CD_EMP
+            , e.NM_KRNAME AS "NM_EMP"
+            , i.CD_DEPT
+            , i.CD_FIELD
+            , i.CD_PROJECT
+            , i.CD_OCCUP
+            , i.YN_FORLABOR
+            , i.YN_OVERWORK
+            , i.YN_MATEDED
+            , i.DA_ENTER
+            , i.YN_RESIDENT
+            , i.YN_UNIT
+            , i.NO_SOCIAL
+            , i.NUM_20FAMILY
+            , i.NUM_60FAMILY
+            , i.NUM_MANYFAMILY
+            , c.WORKDAY
+            , c.OVERTIME
+            , c.HOURLYWAGE
+            , i.DA_RETIRE
+            , i.NUM_20FAMILY || '/' || i.NUM_60FAMILY || '/' || i.NUM_MANYFAMILY as num2060many
+            , i.YN_UNIT || '/' || i.YN_FORLABOR as ynUnitForlabor
+            , i.MN_REDUCTION
+        FROM EMP e LEFT OUTER JOIN SAEMPINFO i
+            ON e.CD_EMP = i.CD_EMP LEFT OUTER JOIN EMP_PAYROLL_CRITERIA c
+            ON e.CD_EMP = c.CD_EMP LEFT OUTER JOIN "DATE" d
+        ON c.ALLOW_MONTH = d."MONTH"
+        AND d.DATE_ID = #{dateId}
         <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND i.CD_EMP       = #{searchCdEmp}      </if>
         <if test="searchCdDept      != null and searchCdDept      != ''">   AND i.CD_DEPT      = #{searchCdDept}     </if>
         <if test="searchRankNo      != null and searchRankNo      != ''">   AND i.RANK_NO      = #{searchRankNo}     </if>
         <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND i.CD_OCCUP     = #{searchCdOccup}    </if>
-<!--        <if test="searchCdField     != null and searchCdField     != ''">   AND i.CD_FIELD     = #{searchCdField}    </if>-->
-<!--        <if test="searchCdProject   != null and searchCdProject   != ''">   AND i.CD_PROJECT   = #{searchCdProject}  </if>-->
         <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND i.YN_UNIT      = #{searchYnUnit}     </if>
         <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND i.YN_FORLABOR  = #{searchYnForlabor} </if>
     </select>
-
-    <select id="getSaEmpInfoByCdEmp" parameterType="java.util.Map" resultType="SaEmpInfo">
-        SELECT CD_EMP
-            , (SELECT NM_KRNAME FROM EMP e WHERE e.CD_EMP = s.CD_EMP) as NM_EMP
-            , MN_1_1_1
-            , DA_ENTER
-            , YN_MATEDED
-            , NUM_20FAMILY || '/' || NUM_60FAMILY || '/' || NUM_MANYFAMILY as num2060many
-            , YN_RESIDENT
-            , YN_UNIT || '/' || YN_FORLABOR as ynUnitForlabor
-            , YN_OVERWORK
-            , DA_RETIRE
-            , CD_OCCUP
-            , RANK_NO
-            , CD_DEPT
-            , CD_FIELD
-            , CD_PROJECT
-            , AM_NATIONPEN
-            , AM_HEALTHINSUR
-            , MN_2_1_1
-            , NO_SOCIAL
-            , MN_REDUCTION
-        FROM SAEMPINFO s
-        WHERE CD_EMP = #{cdEmp}
-    </select>
-
-    <insert id="insertSaEmpInfo" parameterType="SaEmpInfo">
-        INSERT INTO SAEMPINFO (
-            
-        ) VALUES (
-
-        )
-    </insert>
-
-    <delete id="deleteSaEmpInfo" parameterType="SaEmpInfo">
-        DELETE
-        FROM SAEMPINFO
-        WHERE CD_EMP = #{cdEmp}
-    </delete>
 
     <update id="updateEmpInfo" parameterType="SaEmpInfo">
         UPDATE SAEMPINFO
