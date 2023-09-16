@@ -4,6 +4,12 @@ import lombok.Data;
 
 @Data
 public class Emp {
+    // custom type을 위해 추가된 field
+    private String combinedAddress; //zipHome, addHome1 - 우편번호와 상세주소1
+    private String combinedTelHome; //telHome1, telHome2, telHome3 - 전화번호
+    private String combinedCelEmp ; // celEmp1, celEmp2, celEmp3 - 모바일번호
+
+    // 기본 Emp field
     private String cdEmp;
     private String nmKrname;
     private String ynFor;

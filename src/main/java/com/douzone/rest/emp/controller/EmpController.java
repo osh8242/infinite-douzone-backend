@@ -70,6 +70,7 @@ public class EmpController {
     @PutMapping("/updateEmp")
     public int updateEmp(@RequestBody Emp emp) {
         System.out.println("Emp update Controller -----");
+        System.out.println("emp = " + emp);
         int result = empservice.updateEmp(emp);
         return result;
     }
