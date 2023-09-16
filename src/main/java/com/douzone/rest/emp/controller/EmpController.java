@@ -23,8 +23,6 @@ public class EmpController {
         this.empservice = empservice;
     }
 
-    private RoutingCompanyDataSource routingCompanyDataSource = new RoutingCompanyDataSource();
-
     @GetMapping("/getAllEmp")
     public ResponseEntity<List<Emp>> getAllEmp(){
         System.out.println("Emp Controller 진입");

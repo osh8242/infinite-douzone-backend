@@ -51,7 +51,10 @@
         #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
         #{noSocial, jdbcType=VARCHAR},      #{fgSex, jdbcType=VARCHAR},
         #{cdDept, jdbcType=VARCHAR},      #{rankNo, jdbcType=VARCHAR},
-        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR})
+        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR}),
+        #{telHome1, jdbcType=VARCHAR},     #{telHome2, jdbcType=VARCHAR},
+        #{telHome3, jdbcType=VARCHAR},       #{celEmp1, jdbcType=VARCHAR},
+        #{celEmp2, jdbcType=VARCHAR},       #{celEmp3, jdbcType=VARCHAR}
     </insert>
 
     <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
@@ -98,9 +101,14 @@
             <if test="rankNo != null">RANK_NO = #{rankNo},</if>
             <if test="daEnter != null">DA_ENTER = #{daEnter},</if>
             <if test="daRetire != null">DA_RETIRE = #{daRetire},</if>
+            <if test="telHome1 != null">TEL_HOME1 = #{telHome1},</if>
+            <if test="telHome2 != null">TEL_HOME2 = #{telHome2},</if>
+            <if test="telHome3 != null">TEL_HOME3 = #{telHome3},</if>
+            <if test="celEmp1 != null">CEL_EMP1 = #{celEmp1},</if>
+            <if test="celEmp2 != null">CEL_EMP2 = #{celEmp2},</if>
+            <if test="celEmp3 != null">CEL_EMP3 = #{celEmp3},</if>
         </set>
         WHERE CD_EMP = #{cdEmp}
     </update>
-
 
 </mapper>
