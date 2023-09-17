@@ -52,11 +52,11 @@
     <!-- 합계 데이터 조회-->
     <select id="getSalAllowPaySum" parameterType="java.util.Map" resultType="map">
         SELECT
-            p.CD_ALLOW AS "cdAllow"
-            , (SELECT s.NM_ALLOW FROM SAALLOW s WHERE s.CD_ALLOW = p.CD_ALLOW) AS "nmAllow"
+            a.CD_ALLOW AS "cdAllow"
+            , (SELECT s.NM_ALLOW FROM SAALLOW s WHERE s.CD_ALLOW = a.CD_ALLOW) AS "nmAllow"
             , a.YN_TAX AS "ynTax"
             , TO_CHAR(sum(p.ALLOW_PAY)) AS "sumAllowPay"
-        FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW a
+        FROM SAALLOW a LEFT OUTER JOIN SAALLOWPAY p
             ON a.CD_ALLOW  = p.CD_ALLOW LEFT OUTER JOIN EMP e
             ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID
@@ -78,7 +78,7 @@
                     AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE((SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY')
                 </if>
             </if>
-        GROUP BY p.CD_ALLOW, a.YN_TAX
+        GROUP BY a.CD_ALLOW, a.YN_TAX
     </select>
 
     <!--지급일 리스트(코드도움창) -->

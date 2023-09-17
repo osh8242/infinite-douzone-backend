@@ -6,22 +6,25 @@
 
     <!-- 사원별 공제항목 조회 -->
     <select id="getSaDeductPayByCdEmp" parameterType="java.util.Map" resultType="SaDeductPay">
-        SELECT p.CD_DEDUCT ,d.NM_DEDUCT , p.ALLOW_PAY , p.CD_EMP ,d2."DATE" AS "PAYMENT_DATE" , d2.ALLOW_YEAR , d2."MONTH" AS "ALLOW_MONTH"
-            FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
-                ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d2
-                ON d2."DATE_ID" = p.DATE_ID
-        WHERE p.CD_EMP = #{cdEmp}
-            AND  d2.DATE_ID = #{dateId}
+        SELECT
+            d.CD_DEDUCT
+            , d.NM_DEDUCT
+            , p.ALLOW_PAY
+            , p.CD_EMP , p.DATE_ID
+        FROM SADEDUCT d LEFT OUTER JOIN SADEDUCTPAY p
+            ON d.CD_DEDUCT = p.CD_DEDUCT
+            AND p.DATE_ID = #{dateId}
+            AND p.CD_EMP = #{cdEmp}
         <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
     </select>
 
     <!-- 합계 데이터 조회-->
     <select id="getSalDeductPaySum"  parameterType="java.util.Map" resultType="map">
         SELECT
-            p.CD_DEDUCT AS "cdDeduct"
-            , (SELECT s.NM_DEDUCT FROM SADEDUCT s WHERE s.CD_DEDUCT = p.CD_DEDUCT) AS "nmDeduct"
+            d.CD_DEDUCT AS "cdDeduct"
+            , (SELECT s.NM_DEDUCT FROM SADEDUCT s WHERE s.CD_DEDUCT = d.CD_DEDUCT) AS "nmDeduct"
             , TO_CHAR(sum(p.ALLOW_PAY)) AS "sumDeductPay"
-        FROM SADEDUCTPAY p LEFT OUTER JOIN SADEDUCT d
+        FROM SADEDUCT d LEFT OUTER JOIN SADEDUCTPAY p
             ON p.CD_DEDUCT = d.CD_DEDUCT LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID LEFT OUTER JOIN EMP e
             ON e.CD_EMP = p.CD_EMP
@@ -43,7 +46,7 @@
                     AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE((SELECT "ALLOW_YEAR" FROM "DATE" WHERE date_id = #{dateId}), 'YYYY')
                 </if>
             </if>
-        GROUP BY p.CD_DEDUCT
+        GROUP BY d.CD_DEDUCT
     </select>
 
     <!-- 모달_공제항목등록 급여항목 리스트 -->
