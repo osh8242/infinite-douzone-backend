@@ -16,19 +16,29 @@
             ) p
             ON s.CD_ALLOW = p.CD_ALLOW
         WHERE (s.SAL_DIVISION = 'SAL' OR p.ALLOW_PAY IS NOT NULL)
+        ORDER BY s."ORDER"
     </select>
 
     <!-- 급여자료 입력 -->
-    <insert id="insertSalAllowPay" parameterType="SaAllowPay">
-        INSERT INTO SAALLOWPAY(
-          CD_ALLOW , ALLOW_PAY , CD_EMP  , DATE_ID)
-        VALUES (
-            #{cdAllow}
-            , #{allowPay}
-            , #{cdEmp}
-            , #{dateId}
-        )
-    </insert>
+    <update id="mergeSalAllowPay" parameterType="SaAllowPay">
+        MERGE INTO SAALLOWPAY target
+        USING (
+            SELECT #{cdAllow} AS CD_ALLOW,
+                    #{cdEmp} AS CD_EMP,
+                    #{dateId} AS DATE_ID,
+                    #{allowPay} AS ALLOW_PAY
+            FROM dual
+        ) source
+        ON (target.CD_ALLOW = source.CD_ALLOW
+            AND target.CD_EMP = source.CD_EMP
+            AND target.DATE_ID = source.DATE_ID)
+        WHEN MATCHED THEN
+            UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
+        WHEN NOT MATCHED THEN
+            INSERT (CD_ALLOW, CD_EMP, DATE_ID, ALLOW_PAY)
+            VALUES (source.CD_ALLOW, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY)
+    </update>
+
 
     <!-- 급여자료 수정 -->
     <update id="updateSalAllowPay" parameterType="java.util.Map">
@@ -71,43 +81,6 @@
         GROUP BY p.CD_ALLOW, a.YN_TAX
     </select>
 
-
-    <!-- 급여자료 입력-->
-<!--    <insert id="insertSalAllowPay" parameterType="SaAllowPay">-->
-<!--        <selectKey keyProperty="dateId" resultType="String" order="BEFORE">-->
-<!--            SELECT DATE_ID-->
-<!--            FROM "DATE"-->
-<!--            WHERE allow_year = #{allowYear}-->
-<!--            AND "MONTH" = #{allowMonth}-->
-<!--            AND "DATE" = #{paymentDate}-->
-<!--        </selectKey>-->
-<!--        <if test="dateId == null">-->
-<!--            <insert id="insertDate" parameterType="SaAllowPay">-->
-<!--                INSERT INTO "DATE" (allow_year, "MONTH", "DATE", DATE_ID)-->
-<!--                VALUES (-->
-<!--                    #{allowYear}-->
-<!--                    , #{allowMonth}-->
-<!--                    , #{paymentDate}-->
-<!--                    , #{allowYear}#{allowMonth}#{paymentDate}-->
-<!--                )-->
-<!--                <selectKey keyProperty="dateId" resultType="String" order="AFTER">-->
-<!--                    RETURNING DATE_ID INTO #{dateId}-->
-<!--                </selectKey>-->
-<!--            </insert>-->
-<!--        </if>-->
-<!--        INSERT INTO SAALLOWPAY(-->
-<!--            CD_ALLOW-->
-<!--            , ALLOW_PAY-->
-<!--            , CD_EMP-->
-<!--            , DATE_ID-->
-<!--        ) VALUES (-->
-<!--            #{cdAllow}-->
-<!--            , #{allowPay}-->
-<!--            , #{cdEmp}-->
-<!--            , #{dateId}-->
-<!--        )-->
-<!--    </insert>-->
-
     <!--지급일 리스트(코드도움창) -->
     <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
         SELECT "DATE" AS "paymentDate" ,  DATE_ID AS "dateId"
@@ -128,6 +101,10 @@
             MONTHLY_YN as "monthlyYn"
         FROM SAALLOW a LEFT OUTER JOIN CODE c
             ON c.CODE_ID = a.SAL_DIVISION
+        WHERE 1=1
+        <if test="salDivison       != null and salDivison     != ''">
+            AND SAL_DIVISION = #{salDivison}
+        </if>
         ORDER BY COMMONLY_YN
     </select>
 

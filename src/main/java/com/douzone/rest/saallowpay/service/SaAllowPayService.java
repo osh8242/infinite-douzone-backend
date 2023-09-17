@@ -53,11 +53,10 @@ public class SaAllowPayService {
         return result;
     }
 
-    public int insertSalAllowPay(SaAllowPay saAllowPay) {
+    public int mergeSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            //result = SaAllowPayMapper.updateSalAllowPay(saAllowPay);
-            result = saAllowPayMapper.insertSalAllowPay(saAllowPay);
+            result = saAllowPayMapper.mergeSalAllowPay(saAllowPay);
 
         }catch (Exception e){
             e.getStackTrace();

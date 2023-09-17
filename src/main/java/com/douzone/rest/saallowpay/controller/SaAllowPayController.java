@@ -22,11 +22,11 @@ public class SaAllowPayController {
 
     //사원별 급여항목 리스트
 
-    @PostMapping("/insertSalAllowPay")
-    public int insertSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
+    @PostMapping("/mergeSalAllowPay")
+    public int mergeSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            result = saAllowPayService.insertSalAllowPay(saAllowPay);
+            result = saAllowPayService.mergeSalAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
