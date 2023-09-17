@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -68,10 +69,11 @@ public class SaEmpInfoService {
         return result;
     }
 
-    public int deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+    public int deleteSaEmpList(List<Map<String,String>> deleteEmpList) {
         int result = 0;
         try {
-            saEmpInfoMapper.deleteSaEmpInfo(saEmpInfo);
+            saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList);
+            saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);
         } catch (Exception e) {
             e.getStackTrace();
         }

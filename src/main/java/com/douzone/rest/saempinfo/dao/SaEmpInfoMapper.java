@@ -14,7 +14,8 @@ public interface SaEmpInfoMapper {
 
     int insertSaEmpInfo(SaEmpInfo saEmpInfo);//삽입
 
-    int deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
+    int deleteSaAllowPayEmpList(List<Map<String,String>> deleteEmpList);//삭제
+    int deleteSaDeductEmpList(List<Map<String,String>> deleteEmpList);//삭제
 
     void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
 
