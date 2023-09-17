@@ -1,18 +1,13 @@
 package com.douzone.rest.swsm.controller;
 
 import com.douzone.rest.emp.service.EmpService;
-import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.empadd.service.EmpAddService;
-import com.douzone.rest.empadd.vo.EmpAdd;
 import com.douzone.rest.swsm.service.SwsmService;
 import com.douzone.rest.swsm.vo.Swsm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,5 +55,4 @@ public class SwsmController {
 
         return result;
     }
-
 }
