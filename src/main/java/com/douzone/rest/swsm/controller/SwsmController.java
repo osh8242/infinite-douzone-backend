@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class SwsmController {
     @PostMapping("/getSwsmByCdEmp")
     public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
         Swsm reswsm = swsmService.getSwsmByCdEmp(swsm);
-//        if(reswsm == null) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Swsm not found for given CdEmp"
-//            );
-//        }
+        if(reswsm == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Swsm not found for given CdEmp"
+            );
+        }
             return ResponseEntity.status(HttpStatus.OK).body(reswsm);
     }
 

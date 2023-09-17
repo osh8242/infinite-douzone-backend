@@ -22,18 +22,16 @@ public class AuthService {
 
 
         if (user == null) {
-            response.setMessage("아이디가 일치하지 않습니다.");
+            response.setMessage("CHECK_ID");
         } else if (user.getUserPwd().equals(userVo.getUserPwd())) {
 
          // JWT 토큰
             String jwtToken = jwtService.generateToken(user.getUserId());
-
             response.setMessage("SUCCESS");
             response.setToken(jwtToken);
             response.setUser(user);
-
         } else {
-            response.setMessage("비밀번호가 일치 하지 않습니다..");
+            response.setMessage("CHECK_PWD");
         }
         return response;
     }
