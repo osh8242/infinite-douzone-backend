@@ -1,15 +1,13 @@
 package com.douzone.rest.company.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.douzone.rest.company.vo.DataSourceInfo;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
-    @PostMapping("/createCompany")
-    public String createCompany(@RequestParam("companyCode") String companyCode){
+    @PostMapping("/createDataSourceInfo")
+    public String createDataSourceInfo(@RequestBody DataSourceInfo dataSourceInfo){
 
         return "create company successfully";
     }
