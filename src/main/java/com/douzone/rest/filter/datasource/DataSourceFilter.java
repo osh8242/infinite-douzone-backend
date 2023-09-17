@@ -18,7 +18,7 @@ public class DataSourceFilter implements Filter {
         System.out.println("companyCode = " + companyCode);
 
         try {
-            if (companyCode != null && (companyCode.equals("HR") || companyCode.equals("HR101"))) {
+            if (companyCode != null) {
                 System.out.println("setCompanyCode = " + companyCode);
                 CompanyContextHolder.setCompanyCode(companyCode);
             }
