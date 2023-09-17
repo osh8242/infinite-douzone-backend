@@ -24,7 +24,6 @@ public class SaEmpInfoController {
     public Map<String, Object> getAll(@RequestBody Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
-
         try {
             result = saEmpInfoService.getAll(requestMap);
         } catch (Exception e) {
@@ -32,20 +31,6 @@ public class SaEmpInfoController {
         }
         return result;
     }
-
-    //조건조회
-//    @PostMapping("/getSaEmpInfoByCdEmp")
-//    public SaEmpInfo getSaEmpInfoByCdEmp(@RequestBody SaEmpInfo saEmpInfo) {
-//
-//        SaEmpInfo getSaEmpInfoByCdEmp = null;
-//        try {
-//            getSaEmpInfoByCdEmp = saEmpInfoService.getSaEmpInfoByCdEmp(saEmpInfo);
-//        } catch (Exception e) {
-//            e.getStackTrace();
-//        }
-//
-//        return getSaEmpInfoByCdEmp;
-//    }
 
     //삽입
     @PostMapping("/insertSaEmpInfo")
@@ -74,9 +59,9 @@ public class SaEmpInfoController {
     
     //수정
     @PutMapping("/updateSaEmpInfo")
-    public void updateEmpInfo(SaEmpInfo saEmpInfo) {
+    public void updateSaEmpInfo(@RequestBody SaEmpInfo saEmpInfo) {
         try {
-            saEmpInfoService.updateEmpInfo(saEmpInfo);
+            saEmpInfoService.updateSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }

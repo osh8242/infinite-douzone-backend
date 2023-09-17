@@ -17,7 +17,7 @@ public interface SaEmpInfoMapper {
     int deleteSaAllowPayEmpList(List<Map<String,String>> deleteEmpList);//삭제
     int deleteSaDeductEmpList(List<Map<String,String>> deleteEmpList);//삭제
 
-    void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
+    void updateSaEmpInfo(SaEmpInfo saEmpInfo);//수정
 
     String getDateId(Map<String, String> reqestMap);//날짜 id 검색
 }

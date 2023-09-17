@@ -80,9 +80,9 @@ public class SaEmpInfoService {
         return result;
     }
 
-    public void updateEmpInfo(SaEmpInfo saEmpInfo) {
+    public void updateSaEmpInfo(SaEmpInfo saEmpInfo) {
         try {
-            saEmpInfoMapper.updateEmpInfo(saEmpInfo);
+            saEmpInfoMapper.updateSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }

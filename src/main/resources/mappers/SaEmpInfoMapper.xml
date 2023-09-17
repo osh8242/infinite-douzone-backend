@@ -66,9 +66,9 @@
         <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND i.YN_FORLABOR  = #{searchYnForlabor} </if>
     </select>
 
-    <update id="updateEmpInfo" parameterType="SaEmpInfo">
+    <update id="updateSaEmpInfo" parameterType="SaEmpInfo">
         UPDATE SAEMPINFO
-        SET CD_EMP = #{cdEmp}
+        <set>
             <if test="mn111                    != null">, MN_1_1_1 = #{mn111}</if>
             <if test="daEnter                  != null">, DA_ENTER = #{daEnter}</if>
             <if test="ynMateDed                != null">, YN_MATEDED = #{ynMateDed}</if>
@@ -88,6 +88,7 @@
             <if test="amHealthInsur            != null">, AM_HEALTHINSUR = #{amHealthInsur}</if>
             <if test="mn211                    != null">, MN_2_1_1 = #{mn211}</if>
             <if test="noSocial                 != null">, NO_SOCIAL = #{noSocial}</if>
+        </set>
         WHERE CD_EMP = #{cdEmp}
     </update>
 
