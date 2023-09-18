@@ -6,37 +6,49 @@
 
     <!-- 급여리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT
-            s.CD_ALLOW, s.SAL_DIVISION, s.NM_ALLOW, s.YN_TAX, p.ALLOW_PAY
-        FROM
-            SAALLOW s LEFT OUTER JOIN (
-                SELECT CD_ALLOW,ALLOW_PAY FROM SAALLOWPAY
-                WHERE CD_EMP = #{cdEmp}
-                AND DATE_ID = #{dateId}
-            ) p
-            ON s.CD_ALLOW = p.CD_ALLOW
-        WHERE (s.SAL_DIVISION = 'SAL' OR p.ALLOW_PAY IS NOT NULL)
-        ORDER BY s."ORDER"
+        SELECT CD_ALLOW,
+            NM_ALLOW,
+            SAL_DIVISION,
+            MIN(YN_TAX) AS YN_TAX,
+            SUM(ALLOW_PAY) AS ALLOW_PAY
+        FROM (
+            SELECT s.CD_ALLOW,
+                s.NM_ALLOW,
+                CASE WHEN i.YN_UNIT = 'Y' AND s.CD_ALLOW = 'OVERTIME_PAY' THEN 'N' ELSE s.YN_TAX END AS YN_TAX,
+                s.SAL_DIVISION,
+                p.ALLOW_PAY,
+                s."ORDER"
+            FROM SAALLOW s
+                LEFT OUTER JOIN SAEMPINFO i ON i.CD_EMP = #{cdEmp}
+                LEFT OUTER JOIN SAALLOWPAY p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX AND p.CD_EMP = #{cdEmp} AND p.DATE_ID = #{dateId}
+        ORDER BY CASE WHEN s.YN_TAX = 'N' THEN 0 ELSE 1 END, s."ORDER"
+            ) a
+        GROUP BY CD_ALLOW, NM_ALLOW, SAL_DIVISION
     </select>
 
     <!-- 급여자료 입력 -->
-    <update id="mergeSalAllowPay" parameterType="SaAllowPay">
+    <update id="mergeSalAllowPay" parameterType="list">
         MERGE INTO SAALLOWPAY target
         USING (
-            SELECT #{cdAllow} AS CD_ALLOW,
-                    #{cdEmp} AS CD_EMP,
-                    #{dateId} AS DATE_ID,
-                    #{allowPay} AS ALLOW_PAY
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT #{item.cdAllow} AS CD_ALLOW,
+                    #{item.cdEmp} AS CD_EMP,
+                    #{item.dateId} AS DATE_ID,
+                    #{item.allowPay} AS ALLOW_PAY,
+                    #{item.ynTax} AS YN_TAX
             FROM dual
+        </foreach>
         ) source
         ON (target.CD_ALLOW = source.CD_ALLOW
             AND target.CD_EMP = source.CD_EMP
-            AND target.DATE_ID = source.DATE_ID)
+            AND target.DATE_ID = source.DATE_ID
+            AND target.YN_TAX = source.YN_TAX
+            )
         WHEN MATCHED THEN
             UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
         WHEN NOT MATCHED THEN
-            INSERT (CD_ALLOW, CD_EMP, DATE_ID, ALLOW_PAY)
-            VALUES (source.CD_ALLOW, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY)
+            INSERT (CD_ALLOW, CD_EMP, DATE_ID, ALLOW_PAY , YN_TAX)
+            VALUES (source.CD_ALLOW, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY , source.YN_TAX)
     </update>
 
 
@@ -53,12 +65,11 @@
     <select id="getSalAllowPaySum" parameterType="java.util.Map" resultType="map">
         SELECT
             a.CD_ALLOW AS "cdAllow"
-            , (SELECT s.NM_ALLOW FROM SAALLOW s WHERE s.CD_ALLOW = a.CD_ALLOW) AS "nmAllow"
             , a.YN_TAX AS "ynTax"
+            , (SELECT s.NM_ALLOW FROM SAALLOW s WHERE s.CD_ALLOW = a.CD_ALLOW AND s.YN_TAX = a.YN_TAX) AS "nmAllow"
             , TO_CHAR(sum(p.ALLOW_PAY)) AS "sumAllowPay"
         FROM SAALLOW a LEFT OUTER JOIN SAALLOWPAY p
-            ON a.CD_ALLOW  = p.CD_ALLOW LEFT OUTER JOIN EMP e
-            ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
+            ON a.CD_ALLOW  = p.CD_ALLOW AND a.YN_TAX =p.YN_TAX LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID
             <if test="paymentDateFlag   != null and paymentDateFlag    != ''">
                 AND D."DATE" = (SELECT "DATE" FROM "DATE" WHERE date_id = #{dateId})
@@ -118,5 +129,30 @@
         FROM SAALLOW s
         WHERE s.YN_TAX ='N'
     </select>
+
+    <select id="getSalAllowInfo" parameterType="SaAllowPay" resultType="SaAllow">
+        SELECT *
+        FROM (
+        SELECT
+            s.CD_ALLOW
+            , CASE WHEN i.YN_UNIT = 'Y' AND s.CD_ALLOW = 'OVERTIME_PAY' THEN 'N' ELSE s.YN_TAX END AS YN_TAX
+            , s.SAL_DIVISION
+            , s.MONTHLY_YN
+            , s.COMMONLY_YN
+            , s.NONTAX_LIMIT
+            , s.NONTAX_DIVISON
+            FROM SAALLOW s LEFT OUTER JOIN SAEMPINFO i
+                ON i.CD_EMP = #{cdEmp} AND s.CD_ALLOW = #{cdAllow}
+            ORDER BY CASE WHEN s.YN_TAX = 'N' THEN 0 ELSE 1 END
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+    <delete id="deleteSalAllowPay" parameterType="SaAllowPay">
+        DELETE FROM SAALLOWPAY
+        WHERE CD_ALLOW = #{cdAllow}
+            AND DATE_ID = #{dateId}
+            AND CD_EMP = #{cdEmp}
+    </delete>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.douzone.rest.saallowpay.service;
 import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,20 @@ public class SaAllowPayService {
     private SaAllowPayMapper saAllowPayMapper;
     private SaDeductPayDao saDeductPayDao;
     private SaEmpInfoMapper saEmpInfoMapper;
+    private SaAllowCalculationService saAllowCalculationService;
+    private SaDeductCalculationService saDeductCalculationService;
 
     @Autowired
     public SaAllowPayService(
             SaAllowPayMapper saAllowPayMapper,
             SaDeductPayDao saDeductPayDao,
-            SaEmpInfoMapper saEmpInfoMapper
+            SaEmpInfoMapper saEmpInfoMapper,
+            SaAllowCalculationService saAllowCalculationService
     ) {
         this.saAllowPayMapper = saAllowPayMapper;
         this.saDeductPayDao = saDeductPayDao;
         this.saEmpInfoMapper = saEmpInfoMapper;
+        this.saAllowCalculationService = saAllowCalculationService;
     }
 
 
@@ -52,32 +57,18 @@ public class SaAllowPayService {
 
         return result;
     }
-
+    /* 급여항목 입력 or 수정 */
     public int mergeSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            result = saAllowPayMapper.mergeSalAllowPay(saAllowPay);
+            List<SaAllowPay> newSalaryAllowPayList = saAllowCalculationService.newSalaryAllowPayList(saAllowPay);
+            System.out.println(newSalaryAllowPayList.toString());
+            result = saAllowPayMapper.mergeSalAllowPay(newSalaryAllowPayList);
+
+            //List<SaDeductPay> salartyDeductPayList = saDeductCalculationService.salaryDeductPayList(saAllowPay.getAllowPay(),saAllowPay.getDateId());
+            //result = saDeductPayDao.updateSaDeductPayList(salartyDeductPayList);
 
         }catch (Exception e){
-            e.getStackTrace();
-        }
-        return result;
-    }
-
-    public int updateSalPay(Map<String, Object> requestMap) {
-        int result = 0;
-        try {
-            Map<String, String> updateAllowData = (Map<String, String>)requestMap.get("updateAllowData");
-            saAllowPayMapper.updateSalAllowPay(updateAllowData); // 지급항목 수정
-
-            List<Map<String, Object>> updateDeductPayList = (ArrayList<Map<String, Object>>)requestMap.get("updateDeductData");
-            for (Map<String, Object> saDeductPay : updateDeductPayList) {
-                saDeductPay.put("dateId", requestMap.get("dateId"));
-                saDeductPay.put("cdEmp", requestMap.get("cdEmp"));
-                saDeductPayDao.updateSaDeductPay(saDeductPay);
-            }
-
-        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
@@ -104,7 +95,6 @@ public class SaAllowPayService {
         }
         return result;
     }
-
 
     public List<Map<String, String>> getsalAllowList(Map<String, String> map){
         List<Map<String, String>> result = new ArrayList<>();

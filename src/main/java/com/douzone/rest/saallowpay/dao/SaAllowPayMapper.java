@@ -1,5 +1,6 @@
 package com.douzone.rest.saallowpay.dao;
 
+import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,8 +16,9 @@ public interface SaAllowPayMapper {
     public List<Map<String, String>> getsalAllowList(Map<String, String> requestMap);
     public List<Map<String, String>> getNonTaxSalAllowList(Map<String, String> requestMap);
 
-    public int mergeSalAllowPay(SaAllowPay saAllowPay);  // 급여자료 입력
-    int updateSalAllowPay(Map<String, String> requestMap);   // 급여항목 수정
+    public int mergeSalAllowPay(List<SaAllowPay> newSaAllowPayList );  // 급여자료 입력
 
+    public SaAllow getSalAllowInfo(SaAllowPay saAllowPay);
+    public int deleteSalAllowPay(SaAllowPay saAllowPay);
 
 }

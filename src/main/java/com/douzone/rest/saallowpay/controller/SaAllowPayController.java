@@ -33,17 +33,6 @@ public class SaAllowPayController {
         return result;
     }
 
-    @PutMapping("/updateSalPay")
-    public int updateSalPay(@RequestBody Map<String, Object> requestMap) {
-        int result = 0;
-        try {
-            result = saAllowPayService.updateSalPay(requestMap);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return result;
-    }
-
 
     @PostMapping("/getSaPayByCdEmp")
     public Map<String, Object> getSaPayByCdEmp(@RequestBody Map<String, String> requestMap) {

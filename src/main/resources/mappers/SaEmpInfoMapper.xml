@@ -49,9 +49,13 @@
             , c.WORKDAY
             , c.OVERTIME
             , c.HOURLYWAGE
+            , (c.WORKDAY * 8) + c.OVERTIME AS "allowMonthWorktime"
             , i.DA_RETIRE
-            , i.NUM_20FAMILY || '/' || i.NUM_60FAMILY || '/' || i.NUM_MANYFAMILY as num2060many
-            , i.YN_UNIT || '/' || i.YN_FORLABOR as ynUnitForlabor
+            , i.NUM_20FAMILY
+            , i.NUM_60FAMILY
+            , i.NUM_MANYFAMILY
+            , i.YN_UNIT
+            , i.YN_FORLABOR
             , i.MN_REDUCTION
         FROM EMP e LEFT OUTER JOIN SAEMPINFO i
             ON e.CD_EMP = i.CD_EMP LEFT OUTER JOIN EMP_PAYROLL_CRITERIA c
@@ -94,18 +98,20 @@
 
     <delete id="deleteSaAllowPayEmpList" parameterType="list">
         DELETE FROM SAALLOWPAY
-        WHERE (CD_EMP, DATE_ID) IN
-        <foreach collection="list" item="param" open="(" separator=")," close=")">
-            (#{param.cdEmp}, #{param.dateId})
+        WHERE (CD_EMP, DATE_ID) IN (
+        <foreach collection="list" item="param" open="(" separator="),(" close=")">
+            #{param.cdEmp}, #{param.dateId}
         </foreach>
+        )
     </delete>
 
     <delete id="deleteSaDeductEmpList" parameterType="list">
         DELETE FROM SADEDUCTPAY
-        WHERE (CD_EMP, DATE_ID) IN
-        <foreach collection="list" item="param" open="(" separator=")," close=")">
-            (#{param.cdEmp}, #{param.dateId})
+        WHERE (CD_EMP, DATE_ID) IN (
+        <foreach collection="list" item="param" open="(" separator="),(" close=")">
+            #{param.cdEmp}, #{param.dateId}
         </foreach>
+        )
     </delete>
 
 </mapper>

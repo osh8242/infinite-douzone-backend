@@ -34,7 +34,7 @@ public class SaEmpInfo {
     private String nmEmp;               // 사원이름
     private String num2060many;         // 20/60/다자녀
     private String ynUnitForlabor;      // 생산/국외
-
+    private String allowMonthWorktime;  // 귀속월 총 근무시간
 
 
     /*  검색 파라미터 */
