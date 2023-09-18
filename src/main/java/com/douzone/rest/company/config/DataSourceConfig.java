@@ -11,7 +11,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class DataSourceConfig {
@@ -34,10 +36,12 @@ public class DataSourceConfig {
 
         Map<Object, Object> targetDataSources = new HashMap<>();
 
-        for (DataSourceInfo dataSourceInfo : dataSourceInfos) {
-            DataSource dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
-            targetDataSources.put(dataSourceInfo.getCompanyCode(), dataSource);
-        }
+//        for (DataSourceInfo dataSourceInfo : dataSourceInfos) {
+//            DataSource dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
+//            targetDataSources.put(dataSourceInfo.getCompanyCode(), dataSource);
+//        }
+        DataSource dataSource = createDataSource(dataSourceInfos.get(0).getCompanyCode(), dataSourceInfos.get(0).getPassword());
+        targetDataSources.put(dataSourceInfos.get(0).getCompanyCode(), dataSource);
 
         routingCompanyDataSource.setTargetDataSources(targetDataSources);
         routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("HR")); // default data source

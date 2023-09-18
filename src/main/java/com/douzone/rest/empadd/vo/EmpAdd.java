@@ -48,4 +48,5 @@ public class EmpAdd {
     private String rankNo;
     private String daEnter;
     private String daRetire;
+    private String nmKrname;
 }
