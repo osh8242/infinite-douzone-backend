@@ -3,7 +3,6 @@ package com.douzone.rest.saallowpay.service;
 import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
-import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
