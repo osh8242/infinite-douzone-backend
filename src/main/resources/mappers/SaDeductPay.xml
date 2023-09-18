@@ -60,12 +60,26 @@
         ORDER BY NM_DEDUCT
     </select>
 
-    <update id="updateSaDeductPay" parameterType="java.util.Map">
-        UPDATE SADEDUCTPAY
-        set ALLOW_PAY = #{allowPay}
-        WHERE CD_EMP = #{cdEmp}
-        AND DATE_ID = #{dateId}
-        AND CD_DEDUCT = #{cdDeduct}
+    <update id="updateSaDeductPayList" parameterType="list">
+        MERGE INTO SADEDUCTPAY target
+        USING (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT #{item.cdDeduct} AS CD_DEDUCT,
+                #{item.cdEmp} AS CD_EMP,
+                #{item.dateId} AS DATE_ID,
+                #{item.allowPay} AS ALLOW_PAY
+            FROM dual
+        </foreach>
+        ) source
+        ON (target.CD_DEDUCT = source.CD_DEDUCT
+            AND target.CD_EMP = source.CD_EMP
+            AND target.DATE_ID = source.DATE_ID)
+        WHEN MATCHED THEN
+            UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
+        WHEN NOT MATCHED THEN
+            INSERT (CD_DEDUCT, CD_EMP, DATE_ID, ALLOW_PAY)
+            VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY)
+
     </update>
 
 </mapper>
