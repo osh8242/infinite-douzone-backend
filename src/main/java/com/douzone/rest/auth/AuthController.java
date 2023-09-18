@@ -15,17 +15,13 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-//    public AuthController(){
-//        System.out.println("controollll");
-//    }
-
-
     @PostMapping("/login")
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
-        System.out.println("parameter login info: " + user);
+        System.out.println("parameter login info: ");
+        System.out.println(user);
         ResponseVo response = authService.findUser(user);
 
-        if(response.getMessage().equals("SUCCESS")) {
+        if (response.getMessage().equals("SUCCESS")) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);

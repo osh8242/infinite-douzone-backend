@@ -6,6 +6,7 @@ import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
 public class AuthService {
 
@@ -20,13 +21,14 @@ public class AuthService {
         UserVo user = userDao.findUser(userVo);
         String result;
 
-
         if (user == null) {
             response.setMessage("CHECK_ID");
         } else if (user.getUserPwd().equals(userVo.getUserPwd())) {
 
-         // JWT 토큰
+            // JWT 토큰
             String jwtToken = jwtService.generateToken(user.getUserId());
+            System.out.println("TOKEN...");
+            System.out.println(jwtToken);
             response.setMessage("SUCCESS");
             response.setToken(jwtToken);
             response.setUser(user);

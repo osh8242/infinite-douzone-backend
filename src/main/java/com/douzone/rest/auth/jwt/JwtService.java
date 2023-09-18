@@ -32,7 +32,7 @@ public class JwtService {
     // JWT 토큰 생성
     private String generateToken(String userId, long expirationTime) {
         return Jwts.builder()
-                .setSubject(userId)  // 토큰 주체 설정 (여기서는 사용자 ID)
+                .setSubject(userId)  // 토큰 주체 설정 (id 별 토큰 발급을 위한)
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // 토큰 만료 시간 설정
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)  // HS512 알고리즘과 시크릿 키로 서명 설정
                 .compact();  // 토큰 문자열로 변환
