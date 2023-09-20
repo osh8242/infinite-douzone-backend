@@ -1,4 +1,4 @@
-package com.douzone.rest.company.config;
+package com.douzone.rest.datasource;
 
 import com.douzone.rest.company.vo.DataSourceInfo;
 import com.zaxxer.hikari.HikariConfig;
@@ -30,10 +30,6 @@ public class DataSourceConfig {
     @Bean
     public DataSource initDataSource() {
         routingCompanyDataSource = new RoutingCompanyDataSource();
-
-
-
-
         //데이터소스 목록을 담는 Map
         Map<Object, Object> targetDataSources = new HashMap<>();
         //디폴트 데이터소스
@@ -54,6 +50,7 @@ public class DataSourceConfig {
         return routingCompanyDataSource;
     }
 
+    // 데이터소스 객체 생성
     private DataSource createDataSource(String companyCode, String password) {
 
         HikariConfig hikariConfig = new HikariConfig();
@@ -65,6 +62,7 @@ public class DataSourceConfig {
         return new HikariDataSource(hikariConfig);
     }
 
+    // 데이터소스 목록에 데이터소스 추가
     public void addNewDataSource(String companyCode, String password) {
         DataSource newDataSource = createDataSource(companyCode, password);
         targetDataSources.put(companyCode, newDataSource);
@@ -82,7 +80,9 @@ public class DataSourceConfig {
         saveDataSourceInfos(dataSourceInfos);
     }
 
+    //파일에서 데이터소스 목록 불러오기
     private List<DataSourceInfo> loadDataSourceInfos() {
+        System.out.println("DataSourceConfig.loadDataSourceInfos");
         List<DataSourceInfo> dataSourceInfos = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("dataSources.dat"))) {
             Object obj = ois.readObject();
@@ -94,11 +94,17 @@ public class DataSourceConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return dataSourceInfos;
-    }
 
+        // 데이터소스 목록 출력
+        System.out.println("Loaded DataSourceInfos: " + dataSourceInfos);
 
+        return dataSourceInfos;    }
+
+    // 파일에 데이터 소스 목록을 저장하기
     private void saveDataSourceInfos(List<DataSourceInfo> dataSourceInfos) {
+        System.out.println("DataSourceConfig.saveDataSourceInfos");
+        // 데이터소스 목록 출력
+        System.out.println("Saving DataSourceInfos: " + dataSourceInfos);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dataSources.dat"))) {
             oos.writeObject(dataSourceInfos);
         } catch (Exception e) {

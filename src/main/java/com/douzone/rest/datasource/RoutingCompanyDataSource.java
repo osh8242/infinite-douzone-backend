@@ -1,5 +1,6 @@
-package com.douzone.rest.company.config;
+package com.douzone.rest.datasource;
 
+import com.douzone.rest.company.config.CompanyContextHolder;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 public class RoutingCompanyDataSource extends AbstractRoutingDataSource {
