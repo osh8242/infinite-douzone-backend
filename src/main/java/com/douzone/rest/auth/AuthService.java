@@ -24,7 +24,6 @@ public class AuthService {
         if (user == null) {
             response.setMessage("CHECK_ID");
         } else if (user.getUserPwd().equals(userVo.getUserPwd())) {
-
             // JWT 토큰
             String jwtToken = jwtService.generateToken(user.getUserId());
             System.out.println("TOKEN...");

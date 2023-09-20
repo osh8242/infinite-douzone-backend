@@ -13,4 +13,6 @@ public class UserVo {
     private String companyCode;
     private String userId;
     private String userPwd;
+    private String userName;
+    private String userEmail;
 }
