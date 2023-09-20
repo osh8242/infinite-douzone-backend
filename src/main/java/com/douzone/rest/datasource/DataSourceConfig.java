@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -36,11 +35,11 @@ public class DataSourceConfig {
         DataSource dataSource = createDataSource("HR", PASSWORD);
         targetDataSources.put("default", dataSource);
 
-        //데이터소스 목록 파일에서 데이터소스 목록을 불러오기
-//        List<DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
+//        데이터소스 목록 파일에서 데이터소스 목록을 불러오기
+//        Map<String, DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
 //        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
-//        for (DataSourceInfo dataSourceInfo : dataSourceInfos) {
-//            DataSource dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
+//        for (DataSourceInfo dataSourceInfo : dataSourceInfos.values()) {
+//            dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
 //            targetDataSources.put(dataSourceInfo.getCompanyCode(), dataSource);
 //        }
 
@@ -63,45 +62,45 @@ public class DataSourceConfig {
     }
 
     // 데이터소스 목록에 데이터소스 추가
+    // 데이터소스 목록에 데이터소스 추가
     public void addNewDataSource(String companyCode, String password) {
         DataSource newDataSource = createDataSource(companyCode, password);
         targetDataSources.put(companyCode, newDataSource);
         routingCompanyDataSource.setTargetDataSources(new HashMap<>(targetDataSources));
         routingCompanyDataSource.afterPropertiesSet(); // 데이터소스 변경을 알리기 위해 호출
 
-        // 데이터소스 정보 리스트 불러오기
-        List<DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
+        // 데이터소스 정보 맵 불러오기
+        Map<String, DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
 
-        // 새 DataSourceInfo 객체 생성 및 리스트에 추가
+        // 새 DataSourceInfo 객체 생성 및 맵에 추가
         DataSourceInfo newDataSourceInfo = new DataSourceInfo(companyCode, password);
-        dataSourceInfos.add(newDataSourceInfo);
+        dataSourceInfos.put(companyCode, newDataSourceInfo);
 
-        // 리스트를 파일에 저장
+        // 맵을 파일에 저장
         saveDataSourceInfos(dataSourceInfos);
     }
 
-    //파일에서 데이터소스 목록 불러오기
-    private List<DataSourceInfo> loadDataSourceInfos() {
+    // 파일에서 데이터소스 목록 불러오기
+    private Map<String, DataSourceInfo> loadDataSourceInfos() {
         System.out.println("DataSourceConfig.loadDataSourceInfos");
-        List<DataSourceInfo> dataSourceInfos = null;
+        Map<String, DataSourceInfo> dataSourceInfos = new HashMap<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("dataSources.dat"))) {
             Object obj = ois.readObject();
-            if (obj instanceof List) {
-                dataSourceInfos = (List<DataSourceInfo>) obj;
+            if (obj instanceof Map) {
+                dataSourceInfos = (Map<String, DataSourceInfo>) obj;
             } else {
                 throw new ClassNotFoundException("Data does not match the expected type");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         // 데이터소스 목록 출력
         System.out.println("Loaded DataSourceInfos: " + dataSourceInfos);
-
-        return dataSourceInfos;    }
+        return dataSourceInfos;
+    }
 
     // 파일에 데이터 소스 목록을 저장하기
-    private void saveDataSourceInfos(List<DataSourceInfo> dataSourceInfos) {
+    private void saveDataSourceInfos(Map<String, DataSourceInfo> dataSourceInfos) {
         System.out.println("DataSourceConfig.saveDataSourceInfos");
         // 데이터소스 목록 출력
         System.out.println("Saving DataSourceInfos: " + dataSourceInfos);
