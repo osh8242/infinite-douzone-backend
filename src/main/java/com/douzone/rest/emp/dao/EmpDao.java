@@ -16,7 +16,7 @@ public interface EmpDao {
     public int insertEmp(Emp emp);
     public int updateEmp(Emp emp);
     public int deleteEmp(Emp emp);
-    public EmpMenuUsage getUndeletedEmpByCdEmp(Emp emp);
+//    public EmpMenuUsage getUndeletedEmpByCdEmp(Emp emp);
 
 
     //코드헬퍼

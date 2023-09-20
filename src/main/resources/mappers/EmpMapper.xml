@@ -4,9 +4,76 @@
 <mapper namespace="com.douzone.rest.emp.dao.EmpDao">
     <select id="getAllEmp" resultType="Emp">
         SELECT
-            cd_emp, nm_krname, yn_for, no_social, job_ok, da_enter, fg_sex, abb_nation, yn_resident,
-            str_39_1_1, str_40_1_1, cd_nation, zip_home, add_home1, add_home2,
-            tel_home1 || ' ' || tel_home2 || ' ' || tel_home3 AS combined_tel_home
+            cd_emp,
+            nm_krname,
+            yn_for,
+            no_social,
+            job_ok,
+            da_enter,
+            fg_sex,
+            abb_nation,
+            yn_resident,
+            str_39_1_1,
+            str_40_1_1,
+            cd_nation,
+            zip_home,
+            add_home1,
+            add_home2,
+            tel_home1,
+            tel_home2,
+            tel_home3,
+            cel_emp1,
+            cel_emp2,
+            cel_emp3,
+            em_emp,
+            id_msn,
+            cd_dept,
+            cd_occup,
+            rank_no,
+            cd_salcls,
+            cd_field,
+            cd_project,
+            da_retire,
+            cd_bank,
+            no_bnkacct,
+            nm_bnkowner,
+            mn_6_1_1,
+            cd_acctit1,
+            cd_acctit2,
+            fg_paysupply,
+            mn_mmaverage,
+            mn_natptarget,
+            mn_natpslev,
+            mn_hostarget,
+            mn_hos,
+            no_health,
+            mn_emptarget,
+            mn_emp,
+            yn_employ,
+            yn_ceo,
+            yn_sanjae,
+            yn_longinsur,
+            str_32_1_1,
+            str_33_1_1,
+            str_35_1_1,
+            mn_2_1_1,
+            mn_3_1_1,
+            str_1_1_1,
+            str_45_1_1,
+            str_46_1_1,
+            str_47_1_1,
+            mn_1_1_1,
+            yn_danil,
+            yn_iclman,
+            str_43_1_1,
+            str_44_1_1,
+            mn_iclpay,
+            str_34_1_1,
+            yn_forlabor,
+            yn_unit,
+            yn_overwork,
+            str_42_1_1,
+            mn_4_1_1
         FROM EMP
         ORDER BY CD_EMP
     </select>
@@ -40,15 +107,12 @@
             str_39_1_1,
             str_40_1_1,
             cd_nation,
-            zip_home || ' ' || add_home1 AS combined_address,
             zip_home,
             add_home1,
             add_home2,
-            tel_home1 || ' ' || tel_home2 || ' ' || tel_home3 AS combined_tel_home,
             tel_home1,
             tel_home2,
             tel_home3,
-            cel_emp1 || ' ' || cel_emp2 || ' ' || cel_emp3 AS combined_cel_emp,
             cel_emp1,
             cel_emp2,
             cel_emp3,
@@ -343,20 +407,25 @@
         WHERE cd_emp = #{cdEmp}
     </update>
 
-
     <delete id="deleteEmp" parameterType="Emp">
         DELETE
         FROM emp
-        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
+        WHERE cd_emp = #{cdEmp}
     </delete>
 
-    <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
-        SELECT e.cd_emp, e.nm_krname, em.use_menuList
-        FROM emp e
-            RIGHT JOIN empMenuUsage em
-            ON e.cd_emp = em.cd_emp
-        WHERE e.cd_emp = #{cdEmp}
-    </select>
+<!--    <delete id="deleteEmp" parameterType="Emp">-->
+<!--        DELETE-->
+<!--        FROM emp-->
+<!--        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')-->
+<!--    </delete>-->
+
+<!--    <select id="getUndeletedEmpByCdEmp" parameterType="Emp">-->
+<!--        SELECT e.cd_emp, e.nm_krname, em.use_menuList-->
+<!--        FROM emp e-->
+<!--            RIGHT JOIN empMenuUsage em-->
+<!--            ON e.cd_emp = em.cd_emp-->
+<!--        WHERE e.cd_emp = #{cdEmp}-->
+<!--    </select>-->
 
     <select id="getEmpListForCodeHelper" parameterType="java.util.Map">
         select

@@ -76,11 +76,11 @@ public class EmpController {
     }
 
     @DeleteMapping("/deleteEmp")
-    public ResponseEntity<EmpMenuUsage> deleteEmp(@RequestBody Emp emp){
+    public int deleteEmp(@RequestBody Emp emp){
         System.out.println("Emp delete Controller -----");
-        EmpMenuUsage empMenuUsage =empservice.deleteEmp(emp);
-        System.out.println(empMenuUsage);
-        return new ResponseEntity<>(empMenuUsage, HttpStatus.OK);
+        int result =empservice.deleteEmp(emp);
+        System.out.println(result);
+        return result;
     }
 
     @GetMapping("/getEmpListForCodeHelper")
