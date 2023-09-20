@@ -25,7 +25,6 @@ public class SwsmController {
 
     @Autowired
     public SwsmController(SwsmService swsmService) {
-        System.out.println("Swsm Controller============================");
         this.swsmService = swsmService;
     }
 

@@ -1,5 +1,6 @@
 package com.douzone.rest.emp.controller;
 
+import com.douzone.rest.company.config.RoutingCompanyDataSource;
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.emp.vo.EmpMenuUsage;
@@ -14,7 +15,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/emp")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
 
     private EmpService empservice;
@@ -36,6 +36,9 @@ public class EmpController {
                                                                @RequestParam(name = "orderRef") String orderRef,
                                                                @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
+        System.out.println("jobOk = " + jobOk);
+        System.out.println("orderRef = " + orderRef);
+        System.out.println("refYear = " + refYear);
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
         if(refYear != null ) map.put("refYear", refYear.trim());

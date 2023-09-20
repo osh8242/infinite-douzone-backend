@@ -31,13 +31,21 @@ public class SaAllowPayService {
     }
 
 
-    public Map<String, Object> getSaPayByCdEmp( Map<String, String> requestMap) {
+    public Map<String, Object> getSaPayByCdEmp(Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
+
         try {
             result.put("saAllowPayList", saAllowPayMapper.getSalAlLowPayListByEmp(requestMap));  // 급여항목 리스트
             result.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));    // 공제항목 리스트
             result.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));         // 사원 상세 정보
+
+            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
+            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
+            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
+
+            result.put("totalSalPaydata",totalSalPaydata);
+
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -48,7 +56,9 @@ public class SaAllowPayService {
     public int insertSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
+            //result = SaAllowPayMapper.updateSalAllowPay(saAllowPay);
             result = saAllowPayMapper.insertSalAllowPay(saAllowPay);
+
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -81,6 +91,27 @@ public class SaAllowPayService {
             result.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
 
         }catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public List<Map<String, String>> getPaymentDateList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayMapper.getPaymentDateList(map);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public List<Map<String, String>> getsalAllowList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saAllowPayMapper.getsalAllowList(map);
+        }catch (Exception e){
             e.getStackTrace();
         }
         return result;

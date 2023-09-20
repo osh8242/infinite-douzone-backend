@@ -20,12 +20,12 @@
     <!-- 급여자료 입력 -->
     <insert id="insertSalAllowPay" parameterType="SaAllowPay">
         INSERT INTO SAALLOWPAY(
-          CD_ALLOW , ALLOW_PAY , CD_EMP  , PAYMENT_DATE)
+          CD_ALLOW , ALLOW_PAY , CD_EMP  , DATE_ID)
         VALUES (
             #{cdAllow}
             , #{allowPay}
             , #{cdEmp}
-            , #{paymentDate}
+            , #{dateId}
         )
     </insert>
 
@@ -49,11 +49,80 @@
             ON a.CD_ALLOW  = p.CD_ALLOW LEFT OUTER JOIN EMP e
             ON e.CD_EMP = p.CD_EMP LEFT OUTER JOIN "DATE" d
             ON p.DATE_ID = d.DATE_ID
-            <if test="paymentDate   != null and paymentDate    != ''"> AND d."DATE" = #{paymentDate}</if>
-            <if test="allowMonth    != null and allowMonth     != ''"> AND d."MONTH" = #{allowMonth}</if>
-            <if test="allowYear     != null and allowYear      != ''"> AND d.ALLOW_YEAR = #{allowYear}</if>
-            <if test="nowFlag       != null and nowFlag        != ''"> AND e.DA_RETIRE &lt; SYSDATE</if>
+            <if test="paymentDate   != null and paymentDate    != ''">
+                AND d."DATE" = #{paymentDate}
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND e.DA_RETIRE &lt; #{paymentDate}
+                </if>
+            </if>
+            <if test="allowMonth    != null and allowMonth     != ''">
+                AND d."MONTH" = #{allowMonth}
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY-MM-DD') &lt; TO_DATE(#{allowMonth}, 'YYYY-MM')
+                </if>
+            </if>
+            <if test="allowYear     != null and allowYear      != ''">
+                AND d.ALLOW_YEAR = #{allowYear}
+                <if test="nowFlag       != null and nowFlag     != ''">
+                    AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE(#{allowYear}, 'YYYY')
+                </if>
+            </if>
         GROUP BY p.CD_ALLOW, a.YN_TAX
+    </select>
+
+    <!-- 급여자료 입력-->
+<!--    <insert id="insertSalAllowPay" parameterType="SaAllowPay">-->
+<!--        <selectKey keyProperty="dateId" resultType="String" order="BEFORE">-->
+<!--            SELECT DATE_ID-->
+<!--            FROM "DATE"-->
+<!--            WHERE allow_year = #{allowYear}-->
+<!--            AND "MONTH" = #{allowMonth}-->
+<!--            AND "DATE" = #{paymentDate}-->
+<!--        </selectKey>-->
+<!--        <if test="dateId == null">-->
+<!--            <insert id="insertDate" parameterType="SaAllowPay">-->
+<!--                INSERT INTO "DATE" (allow_year, "MONTH", "DATE", DATE_ID)-->
+<!--                VALUES (-->
+<!--                    #{allowYear}-->
+<!--                    , #{allowMonth}-->
+<!--                    , #{paymentDate}-->
+<!--                    , #{allowYear}#{allowMonth}#{paymentDate}-->
+<!--                )-->
+<!--                <selectKey keyProperty="dateId" resultType="String" order="AFTER">-->
+<!--                    RETURNING DATE_ID INTO #{dateId}-->
+<!--                </selectKey>-->
+<!--            </insert>-->
+<!--        </if>-->
+<!--        INSERT INTO SAALLOWPAY(-->
+<!--            CD_ALLOW-->
+<!--            , ALLOW_PAY-->
+<!--            , CD_EMP-->
+<!--            , DATE_ID-->
+<!--        ) VALUES (-->
+<!--            #{cdAllow}-->
+<!--            , #{allowPay}-->
+<!--            , #{cdEmp}-->
+<!--            , #{dateId}-->
+<!--        )-->
+<!--    </insert>-->
+
+    <!--지급일 리스트(코드도움창) -->
+    <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT "DATE" AS "paymentDate" ,  DATE_ID AS "dateId"
+            FROM "DATE" d
+        WHERE d.ALLOW_YEAR = #{allowYear}
+            AND d."MONTH" = #{allowMonth}
+    </select>
+
+    <select id="getsalAllowList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+        CD_ALLOW AS "cdAllow",
+        NM_ALLOW AS "nmAllow",
+        YN_TAX AS "ynTax",
+        SAL_DIVISION AS "salDivison",
+        c.CODE_NAME AS "nmSalDivison"
+        FROM SAALLOW a LEFT OUTER JOIN CODE c
+        ON c.CODE_ID = a.SAL_DIVISION
     </select>
 
 </mapper>
