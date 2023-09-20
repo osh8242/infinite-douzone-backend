@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,25 +26,38 @@ public class DataSourceConfig {
     @Bean
     public DataSource initDataSource() {
         routingCompanyDataSource = new RoutingCompanyDataSource();
-        //데이터소스 목록을 담는 Map
+        // 데이터소스 목록을 담는 Map
         Map<Object, Object> targetDataSources = new HashMap<>();
-        //디폴트 데이터소스
+        // 디폴트 데이터소스
         DataSource dataSource = createDataSource("HR", PASSWORD);
         targetDataSources.put("default", dataSource);
 
-//        데이터소스 목록 파일에서 데이터소스 목록을 불러오기
-//        Map<String, DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
-//        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
-//        for (DataSourceInfo dataSourceInfo : dataSourceInfos.values()) {
-//            dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
-//            targetDataSources.put(dataSourceInfo.getCompanyCode(), dataSource);
-//        }
-
+        // 데이터소스 목록 파일에서 데이터소스 목록을 불러오기
+        Map<String, DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
+        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
+        StringBuilder connections = new StringBuilder();
+        if (dataSourceInfos.size() != 0) {
+            for (DataSourceInfo dataSourceInfo : dataSourceInfos.values()) {
+                String companyCode = dataSourceInfo.getCompanyCode();
+                try {
+                    dataSource = createDataSource(companyCode, dataSourceInfo.getPassword());
+                    targetDataSources.put(companyCode, dataSource);
+                    connections.append("companyCode = " + companyCode + "(연결성공)").append("\n");
+                } catch (Exception e) {
+                    System.err.println("해당 회사코드로 데이터소스 연결실패: " + dataSourceInfo.getCompanyCode());
+                    e.printStackTrace();
+                    targetDataSources.remove(companyCode);
+                    connections.append("companyCode = " + companyCode + "(연결실패)").append("\n");
+                }
+            }
+        }
+        System.out.println("========CONNECTION STATUS=========\n" + connections);
         routingCompanyDataSource.setTargetDataSources(targetDataSources);
         routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("default")); // default data source
 
         return routingCompanyDataSource;
     }
+
 
     // 데이터소스 객체 생성
     private DataSource createDataSource(String companyCode, String password) {
@@ -69,22 +79,19 @@ public class DataSourceConfig {
         routingCompanyDataSource.setTargetDataSources(new HashMap<>(targetDataSources));
         routingCompanyDataSource.afterPropertiesSet(); // 데이터소스 변경을 알리기 위해 호출
 
-        // 데이터소스 정보 맵 불러오기
-        Map<String, DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
-
-        // 새 DataSourceInfo 객체 생성 및 맵에 추가
-        DataSourceInfo newDataSourceInfo = new DataSourceInfo(companyCode, password);
-        dataSourceInfos.put(companyCode, newDataSourceInfo);
-
         // 맵을 파일에 저장
-        saveDataSourceInfos(dataSourceInfos);
+        saveDataSourceInfos();
     }
 
     // 파일에서 데이터소스 목록 불러오기
     private Map<String, DataSourceInfo> loadDataSourceInfos() {
         System.out.println("DataSourceConfig.loadDataSourceInfos");
         Map<String, DataSourceInfo> dataSourceInfos = new HashMap<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("dataSources.dat"))) {
+        File file = new File("dataSources.dat");
+        if (!file.exists()) {
+            return dataSourceInfos; // 파일이 없으면 빈 맵을 반환
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             Object obj = ois.readObject();
             if (obj instanceof Map) {
                 dataSourceInfos = (Map<String, DataSourceInfo>) obj;
@@ -93,19 +100,20 @@ public class DataSourceConfig {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // 데이터소스 목록 출력
+            System.out.println("Loaded DataSourceInfos: " + dataSourceInfos);
+            return dataSourceInfos;
         }
-        // 데이터소스 목록 출력
-        System.out.println("Loaded DataSourceInfos: " + dataSourceInfos);
-        return dataSourceInfos;
     }
 
     // 파일에 데이터 소스 목록을 저장하기
-    private void saveDataSourceInfos(Map<String, DataSourceInfo> dataSourceInfos) {
+    private void saveDataSourceInfos() {
         System.out.println("DataSourceConfig.saveDataSourceInfos");
         // 데이터소스 목록 출력
-        System.out.println("Saving DataSourceInfos: " + dataSourceInfos);
+        System.out.println("Saving DataSourceInfos: " + targetDataSources);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dataSources.dat"))) {
-            oos.writeObject(dataSourceInfos);
+            oos.writeObject(targetDataSources);
         } catch (Exception e) {
             e.printStackTrace();
         }
