@@ -31,20 +31,25 @@ public class DataSourceConfig {
     public DataSource initDataSource() {
         routingCompanyDataSource = new RoutingCompanyDataSource();
 
-        List<DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
-        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
 
+
+
+        //데이터소스 목록을 담는 Map
         Map<Object, Object> targetDataSources = new HashMap<>();
+        //디폴트 데이터소스
+        DataSource dataSource = createDataSource("HR", PASSWORD);
+        targetDataSources.put("default", dataSource);
 
+        //데이터소스 목록 파일에서 데이터소스 목록을 불러오기
+//        List<DataSourceInfo> dataSourceInfos = loadDataSourceInfos();
+//        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
 //        for (DataSourceInfo dataSourceInfo : dataSourceInfos) {
 //            DataSource dataSource = createDataSource(dataSourceInfo.getCompanyCode(), dataSourceInfo.getPassword());
 //            targetDataSources.put(dataSourceInfo.getCompanyCode(), dataSource);
 //        }
-        DataSource dataSource = createDataSource(dataSourceInfos.get(0).getCompanyCode(), dataSourceInfos.get(0).getPassword());
-        targetDataSources.put(dataSourceInfos.get(0).getCompanyCode(), dataSource);
 
         routingCompanyDataSource.setTargetDataSources(targetDataSources);
-        routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("HR")); // default data source
+        routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("default")); // default data source
 
         return routingCompanyDataSource;
     }
@@ -80,12 +85,18 @@ public class DataSourceConfig {
     private List<DataSourceInfo> loadDataSourceInfos() {
         List<DataSourceInfo> dataSourceInfos = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("dataSources.dat"))) {
-            dataSourceInfos = (List<DataSourceInfo>) ois.readObject();
+            Object obj = ois.readObject();
+            if (obj instanceof List) {
+                dataSourceInfos = (List<DataSourceInfo>) obj;
+            } else {
+                throw new ClassNotFoundException("Data does not match the expected type");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return dataSourceInfos;
     }
+
 
     private void saveDataSourceInfos(List<DataSourceInfo> dataSourceInfos) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dataSources.dat"))) {
