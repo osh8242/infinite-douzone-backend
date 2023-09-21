@@ -129,5 +129,9 @@ public class DataSourceConfig {
         }
     }
 
+    public boolean hasDataSource(String companyCode){
+        return targetDataSources.get(companyCode) == null ? false : true;
+    }
+
 
 }

@@ -75,7 +75,7 @@ public class JwtService {
         System.out.println("JwtService.validateToken");
         UserVo user = getUserVoFromToken(token);
         System.out.println("user = " + user);
-        String subject = user.getCompanyCode() + "." + user.getUserId();
+        String subject = user.getCompanyCode() + "&" + user.getUserId();
        if(Boolean.TRUE.equals(redisTemplate.hasKey(subject))){
            request.setAttribute("companyCode", user.getCompanyCode());
            return true;

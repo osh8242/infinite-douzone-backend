@@ -1,4 +1,4 @@
-//package com.douzone.rest.auth.config;
+//package com.douzone.rest.config;
 //
 //import com.douzone.rest.auth.jwt.JwtAuthenticationFilter;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
