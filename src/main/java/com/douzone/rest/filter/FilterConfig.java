@@ -2,7 +2,7 @@ package com.douzone.rest.filter;
 
 import com.douzone.rest.filter.datasource.DataSourceFilter;
 import com.douzone.rest.filter.jwt.JwtFilter;
-import com.douzone.rest.jwt.JwtService;
+import com.douzone.rest.auth.jwt.JwtService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

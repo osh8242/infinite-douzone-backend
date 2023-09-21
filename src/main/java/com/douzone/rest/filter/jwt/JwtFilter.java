@@ -1,6 +1,6 @@
 package com.douzone.rest.filter.jwt;
 
-import com.douzone.rest.jwt.JwtService;
+import com.douzone.rest.auth.jwt.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,13 +23,13 @@ public class JwtFilter implements Filter {
 
         String token = httpRequest.getHeader("Authorization").trim().split(" ")[1];
         System.out.println("getHeader(Authorization) = " + token);
-        if (token != null && jwtService.validateToken(token)) {
-            System.out.println("유효한 토큰입니다");
-            chain.doFilter(request, response);
-        } else {
-            System.out.println("유효하지 않은 토큰입니다");
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
+//        if (token != null && jwtService.validateToken(token)) {
+//            System.out.println("유효한 토큰입니다");
+//            chain.doFilter(request, response);
+//        } else {
+//            System.out.println("유효하지 않은 토큰입니다");
+//            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        }
     }
 
 }
