@@ -20,10 +20,9 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<JwtFilter> jwtFilterRegistrationBean(JwtService jwtService) {
+    public FilterRegistrationBean<JwtFilter> jwtFilterRegistrationBean(JwtFilter jwtService) {
         System.out.println("FilterConfig.jwtFilter");
-        FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new JwtFilter(jwtService));
+        FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>(jwtService);
         registrationBean.addUrlPatterns("/**");
         //registrationBean.addUrlPatterns("/jwt/validateToken");
         registrationBean.setOrder(2);
@@ -32,6 +31,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<DataSourceFilter> dataSourceFilterRegistrationBean(DataSourceFilter dataSourceFilter) {
+        System.out.println("FilterConfig.dataSourceFilterRegistrationBean");
         FilterRegistrationBean<DataSourceFilter> registrationBean = new FilterRegistrationBean<>(dataSourceFilter);
         registrationBean.setOrder(3);
         return registrationBean;

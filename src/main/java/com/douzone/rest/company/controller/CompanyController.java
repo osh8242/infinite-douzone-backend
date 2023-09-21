@@ -1,7 +1,6 @@
 package com.douzone.rest.company.controller;
 
 import com.douzone.rest.company.service.CompanyService;
-import com.douzone.rest.company.vo.DataSourceInfo;
 import com.douzone.rest.datasource.DataSourceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @Autowired
-    private DataSourceConfig dataSourceConfig;
+    private DataSourceConfig dataSourceVo;
 
     @PostMapping("/createNewSchema")
     public String createNewSchema(@RequestBody Map<String, String> object){
@@ -26,7 +25,7 @@ public class CompanyController {
         System.out.println("password = " + password);
         try {
             companyService.createNewSchema(companyCode, password);
-            dataSourceConfig.addNewDataSource(companyCode, password);
+            dataSourceVo.addNewDataSource(companyCode, password);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

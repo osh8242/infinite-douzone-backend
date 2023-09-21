@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class DataSourceInfo implements Serializable {
+public class DataSourceVo implements Serializable {
     @Serial
     private static final long serialVersionUID  = 1L;
 
