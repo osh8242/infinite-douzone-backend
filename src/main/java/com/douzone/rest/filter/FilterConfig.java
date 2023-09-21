@@ -1,8 +1,8 @@
 package com.douzone.rest.filter;
 
+import com.douzone.rest.auth.jwt.JwtService;
 import com.douzone.rest.filter.datasource.DataSourceFilter;
 import com.douzone.rest.filter.jwt.JwtFilter;
-import com.douzone.rest.auth.jwt.JwtService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +20,12 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<JwtFilter> jwtFilter(JwtService jwtService) {
+    public FilterRegistrationBean<JwtFilter> jwtFilterRegistrationBean(JwtService jwtService) {
         System.out.println("FilterConfig.jwtFilter");
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtFilter(jwtService));
-        registrationBean.addUrlPatterns("/jwt/validateToken");
+        registrationBean.addUrlPatterns("/**");
+        //registrationBean.addUrlPatterns("/jwt/validateToken");
         registrationBean.setOrder(2);
         return registrationBean;
     }

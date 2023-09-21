@@ -3,11 +3,11 @@ package com.douzone.rest.filter.datasource;
 import com.douzone.rest.company.config.CompanyContextHolder;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 
-@Component
+@Configuration
 public class DataSourceFilter implements Filter {
 
     @Override

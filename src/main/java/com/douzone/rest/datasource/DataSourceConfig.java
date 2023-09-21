@@ -110,13 +110,24 @@ public class DataSourceConfig {
     // 파일에 데이터 소스 목록을 저장하기
     private void saveDataSourceInfos() {
         System.out.println("DataSourceConfig.saveDataSourceInfos");
+
+        // DataSourceInfo 객체만을 저장할 맵을 생성
+        Map<String, DataSourceInfo> dataSourceInfoMap = new HashMap<>();
+        for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
+            if (entry.getValue() instanceof DataSourceInfo) {
+                dataSourceInfoMap.put((String) entry.getKey(), (DataSourceInfo) entry.getValue());
+            }
+        }
+
         // 데이터소스 목록 출력
-        System.out.println("Saving DataSourceInfos: " + targetDataSources);
+        System.out.println("Saving DataSourceInfos: " + dataSourceInfoMap);
+
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dataSources.dat"))) {
-            oos.writeObject(targetDataSources);
+            oos.writeObject(dataSourceInfoMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }

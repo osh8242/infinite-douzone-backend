@@ -1,8 +1,10 @@
 package com.douzone.rest.auth;
 
+import com.douzone.rest.auth.jwt.JwtProperties;
 import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,15 @@ public class AuthController {
     private EmailService emailService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
+    public String login(@RequestBody UserVo user, HttpServletResponse response) {
         System.out.println("parameter login info: ");
         System.out.println(user);
-        ResponseVo response = authService.findUser(user);
+        ResponseVo responseVo = authService.findUser(user);
+        System.out.println("responseVo.getToken() = " + responseVo.getToken());
+        response.addHeader(JwtProperties.HEADER_STRING, responseVo.getToken());
+        response.addHeader("Access-Control-Expose-Headers", JwtProperties.HEADER_STRING);
 
-        if (response.getMessage().equals("SUCCESS")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-        }
+        return responseVo.getMessage();
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
