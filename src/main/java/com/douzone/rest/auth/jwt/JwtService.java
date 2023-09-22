@@ -2,9 +2,9 @@ package com.douzone.rest.auth.jwt;
 
 import com.douzone.rest.auth.vo.UserVo;
 import com.douzone.rest.company.config.CompanyContextHolder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -57,29 +57,39 @@ public class JwtService {
 
     //companyCode, userId 반환 (UserVo 객체형태 반환)
     public UserVo getUserVoFromToken(String token) {
-        System.out.println("JwtService.getUsernameFromToken");
-        String subject = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-        String companyCode = subject.split("&")[0];
-        String userId = subject.split("&")[1];
-        UserVo user = new UserVo();
-        user.setCompanyCode(companyCode);
-        user.setUserId(userId);
+        UserVo user = null;
+        try {
+            System.out.println("JwtService.getUsernameFromToken");
+            String subject = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+            String companyCode = subject.split("&")[0];
+            String userId = subject.split("&")[1];
+            user = new UserVo();
+            user.setCompanyCode(companyCode);
+            user.setUserId(userId);
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
+                 IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
         return user;
     }
 
     public boolean validateToken(String token, HttpServletRequest request) {
-        System.out.println("JwtService.validateToken");
-        UserVo user = getUserVoFromToken(token);
-        System.out.println("user = " + user);
-        String subject = user.getCompanyCode() + "&" + user.getUserId();
-       if(Boolean.TRUE.equals(redisTemplate.hasKey(subject))){
-           request.setAttribute("companyCode", user.getCompanyCode());
-           return true;
-       } else return false;
+        try {
+            System.out.println("JwtService.validateToken");
+            UserVo user = getUserVoFromToken(token);
+            System.out.println("user = " + user);
+            String subject = user.getCompanyCode() + "&" + user.getUserId();
+            if(Boolean.TRUE.equals(redisTemplate.hasKey(subject))){
+                request.setAttribute("companyCode", user.getCompanyCode());
+                return true;
+            } else return false;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //시크릿 키 반환

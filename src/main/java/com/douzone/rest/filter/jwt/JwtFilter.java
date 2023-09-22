@@ -25,6 +25,13 @@ public class JwtFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
         System.out.println("Request URI: " + requestURI);
 
+        // 요청패턴 company 무인증 통과
+        if (requestURI.startsWith("/company")) {
+            System.out.println("/company 요청 -> 무인증 통과");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(requestURI);
+            dispatcher.forward(request, response);
+            return;
+        }
         // 요청패턴이 /auth인 경우 필터를 종료하고 DispatcherSevlet에 넘긴다
         if (requestURI.startsWith("/auth")) {
             System.out.println("/auth 요청 -> 인증절차 시작");
@@ -33,6 +40,7 @@ public class JwtFilter implements Filter {
             return;
         }
 
+        System.out.println("httpRequest.getHeader(\"Authorization\") = " + httpRequest.getHeader("Authorization"));
         String token = httpRequest.getHeader("Authorization").trim().split(" ")[1];
         System.out.println("getHeader(Authorization) = " + token);
         if (token != null && jwtService.validateToken(token, httpRequest)) {
