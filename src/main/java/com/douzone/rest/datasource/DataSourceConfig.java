@@ -45,8 +45,8 @@ public class DataSourceConfig {
                     connections.append("companyCode = " + companyCode + "(연결성공)").append("\n");
                 } catch (Exception e) {
                     System.err.println("해당 회사코드로 데이터소스 연결실패: " + dataSourceInfo.getCompanyCode());
-                    e.printStackTrace();
                     targetDataSources.remove(companyCode);
+                    saveDataSourceMap();
                     connections.append("companyCode = " + companyCode + "(연결실패)").append("\n");
                 }
             }
@@ -80,21 +80,21 @@ public class DataSourceConfig {
         routingCompanyDataSource.afterPropertiesSet(); // 데이터소스 변경을 알리기 위해 호출
 
         // 맵을 파일에 저장
-        saveDataSourceInfos(companyCode, password);
+        saveDataSourceMap(companyCode, password);
     }
 
     // 파일에서 데이터소스 목록 불러오기
     private Map<String, DataSourceVo> loadDataSourceInfos() {
         System.out.println("DataSourceConfig.loadDataSourceInfos");
-        Map<String, DataSourceVo> dataSourceInfos = new HashMap<>();
+        Map<String, DataSourceVo> dataSourceVoMap = new HashMap<>();
         File file = new File("dataSources.dat");
         if (!file.exists()) {
-            return dataSourceInfos; // 파일이 없으면 빈 맵을 반환
+            return dataSourceVoMap; // 파일이 없으면 빈 맵을 반환
         }
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             Object obj = ois.readObject();
             if (obj instanceof Map) {
-                dataSourceInfos = (Map<String, DataSourceVo>) obj;
+                dataSourceVoMap = (Map<String, DataSourceVo>) obj;
             } else {
                 throw new ClassNotFoundException("Data does not match the expected type");
             }
@@ -102,34 +102,42 @@ public class DataSourceConfig {
             e.printStackTrace();
         } finally {
             // 데이터소스 목록 출력
-            System.out.println("Loaded DataSourceInfos: " + dataSourceInfos);
-            return dataSourceInfos;
+            System.out.println("Loaded DataSourceInfos: " + dataSourceVoMap);
+            return dataSourceVoMap;
         }
     }
 
     // 파일에 데이터 소스 목록을 저장하기
-    private void saveDataSourceInfos(String companyCode, String password) {
+    private void saveDataSourceMap(String companyCode, String password) {
         System.out.println("DataSourceConfig.saveDataSourceInfos");
 
-        // DataSourceInfo 객체만을 저장할 맵을 생성
-        Map<String, DataSourceVo> dataSourceInfoMap = new HashMap<>();
-        for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
-            if (entry.getValue() instanceof DataSourceVo) {
-                dataSourceInfoMap.put(companyCode, (DataSourceVo) entry.getValue());
-            }
-        }
-        dataSourceInfoMap.put(companyCode, new DataSourceVo(companyCode, password));
+        // DataSourceVo 객체만을 저장할 맵을 생성
+        Map<String, DataSourceVo> dataSourceVoMap = createDataSourceVoMapFromTargetDataSources();
+        if (companyCode != null && password != null)
+            dataSourceVoMap.put(companyCode, new DataSourceVo(companyCode, password));
+
         // 데이터소스 목록 출력
-        System.out.println("Saving DataSourceInfos: " + dataSourceInfoMap);
+        System.out.println("Saving DataSourceInfos: " + dataSourceVoMap);
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dataSources.dat"))) {
-            oos.writeObject(dataSourceInfoMap);
+            oos.writeObject(dataSourceVoMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    private void saveDataSourceMap() {
+        saveDataSourceMap(null, null);
+    }
 
-    public boolean hasDataSource(String companyCode){
+    private Map<String, DataSourceVo> createDataSourceVoMapFromTargetDataSources() {
+        Map<String, DataSourceVo> dataSourceVoMap = new HashMap<>();
+        for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
+            dataSourceVoMap.put((String) entry.getKey(), (DataSourceVo) entry.getValue());
+        }
+        return dataSourceVoMap;
+    }
+
+    public boolean hasDataSourceKey(String companyCode) {
         return targetDataSources.get(companyCode) == null ? false : true;
     }
 
