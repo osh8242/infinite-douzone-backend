@@ -35,11 +35,11 @@ public class SaEmpInfoService {
 
         Map<String, Object> result = new HashMap<>();
         try {
-            String dateId = saEmpInfoMapper.getDateId(requestMap);
+            Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
 
-            if(dateId!=null) {
-                requestMap.put("dateId", dateId);
-                result.put("dateId", dateId);
+            if(dateInfo!=null) {
+                requestMap.put("dateId", dateInfo.get("dateId"));
+                result.put("dateId", dateInfo);
                 result.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
 
                 Map<String, Object> totalSalPaydata = new HashMap<>();

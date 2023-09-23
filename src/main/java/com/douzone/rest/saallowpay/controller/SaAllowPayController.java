@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/saallowpay")
+@RequestMapping("/sallowpay")
 public class SaAllowPayController {
     SaAllowPayService saAllowPayService;
 
@@ -20,8 +20,19 @@ public class SaAllowPayController {
         this.saAllowPayService = saAllowPayService;
     }
 
-    //사원별 급여항목 리스트
 
+    @PostMapping("/getSalaryAllInfoByDate")
+    public Map<String, Object> getAll(@RequestBody Map<String, String> requestMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result = saAllowPayService.getSalaryAllInfoByDate(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    //사원별 급여항목 리스트
     @PostMapping("/mergeSalAllowPay")
     public int mergeSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
         int result = 0;
@@ -52,6 +63,7 @@ public class SaAllowPayController {
 
         Map<String, Object> result = new HashMap<>();
         try {
+            System.out.println(requestMap.toString());
             result = saAllowPayService.getSalTotalPaySum(requestMap);
         } catch (Exception e) {
             e.getStackTrace();
@@ -96,5 +108,38 @@ public class SaAllowPayController {
         return result;
     }
 
+    @PostMapping("/recalculation")
+    public int recalculation(@RequestBody Map<String, Object> requestMap) {
+        int result = 0;
 
+        try {
+            result = saAllowPayService.recalculation(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    @PostMapping("/updateDate")
+    public int updateDate(@RequestBody Map<String, String> requestMap) {
+        int result = 0;
+        try {
+            result = saAllowPayService.updateDate(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/setCopyLastMonthData")
+    public int setCopyLastMonthData(@RequestBody Map<String, String> requestMap) {
+        int result = 0;
+        try {
+            result = saAllowPayService.setCopyLastMonthData(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
 }

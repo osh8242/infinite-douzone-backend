@@ -20,6 +20,7 @@ public class SaAllowPay {
     private String sumAllowPay; //지급금액 합계
 
     private String salDivision;
+    private String calculation;
 
 
 }

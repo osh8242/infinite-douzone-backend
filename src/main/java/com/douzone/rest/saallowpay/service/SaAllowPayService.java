@@ -15,10 +15,10 @@ import java.util.Map;
 @Service
 public class SaAllowPayService {
 
-    private SaAllowPayMapper saAllowPayMapper;
-    private SaDeductPayDao saDeductPayDao;
-    private SaEmpInfoMapper saEmpInfoMapper;
-    private SaAllowCalculationService saAllowCalculationService;
+    private final SaAllowPayMapper saAllowPayMapper;
+    private final SaDeductPayDao saDeductPayDao;
+    private final SaEmpInfoMapper saEmpInfoMapper;
+    private final SaAllowCalculationService saAllowCalculationService;
     private SaDeductCalculationService saDeductCalculationService;
 
     @Autowired
@@ -34,40 +34,63 @@ public class SaAllowPayService {
         this.saAllowCalculationService = saAllowCalculationService;
     }
 
-
-    public Map<String, Object> getSaPayByCdEmp(Map<String, String> requestMap) {
-
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Object> getSalaryAllInfoByDate(Map<String, String> requestMap) {
+        Map<String, Object> resultMap = new HashMap<>();
 
         try {
-            result.put("saAllowPayList", saAllowPayMapper.getSalAlLowPayListByEmp(requestMap));  // 급여항목 리스트
-            result.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));    // 공제항목 리스트
-            result.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));         // 사원 상세 정보
+            Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
+            System.out.println("dateInfo");
+            System.out.println(dateInfo);
+            resultMap.put("dateInfo", dateInfo);
+            resultMap.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
 
-            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
+            Map<String, Object> totalSalPaydata = new HashMap<>();
             totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
             totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
-
-            result.put("totalSalPaydata",totalSalPaydata);
+            resultMap.put("totalSalPaydata",totalSalPaydata);
 
         }catch (Exception e){
             e.getStackTrace();
         }
 
-        return result;
+        return resultMap;
     }
+
+    public Map<String, Object> getSaPayByCdEmp(Map<String, String> requestMap) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            resultMap.put("saAllowPayList", saAllowPayMapper.getSalAlLowPayListByEmp(requestMap));      // 급여항목 리스트
+            resultMap.put("sumAllowPayByYnTax", saAllowPayMapper.getSumAllowPayByYnTax(requestMap));    // 과세 비과세 합
+
+            resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
+
+            resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));         // 사원 상세 정보
+
+            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
+            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
+            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
+
+            resultMap.put("totalSalPaydata", totalSalPaydata);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return resultMap;
+    }
+
     /* 급여항목 입력 or 수정 */
     public int mergeSalAllowPay(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            List<SaAllowPay> newSalaryAllowPayList = saAllowCalculationService.newSalaryAllowPayList(saAllowPay);
-            System.out.println(newSalaryAllowPayList.toString());
-            result = saAllowPayMapper.mergeSalAllowPay(newSalaryAllowPayList);
+            result = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay);
 
             //List<SaDeductPay> salartyDeductPayList = saDeductCalculationService.salaryDeductPayList(saAllowPay.getAllowPay(),saAllowPay.getDateId());
             //result = saDeductPayDao.updateSaDeductPayList(salartyDeductPayList);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
@@ -76,40 +99,75 @@ public class SaAllowPayService {
     public Map<String, Object> getSalTotalPaySum(Map<String, String> requestMap) {
         Map<String, Object> result = new HashMap<>();
         try {
+
             result.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
             result.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
-    public List<Map<String, String>> getPaymentDateList(Map<String, String> map){
+    public List<Map<String, String>> getPaymentDateList(Map<String, String> map) {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saAllowPayMapper.getPaymentDateList(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
-    public List<Map<String, String>> getsalAllowList(Map<String, String> map){
+    public List<Map<String, String>> getsalAllowList(Map<String, String> map) {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saAllowPayMapper.getsalAllowList(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
-    public List<Map<String, String>> getNonTaxSalAllowList(Map<String, String> map){
+    public List<Map<String, String>> getNonTaxSalAllowList(Map<String, String> map) {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saAllowPayMapper.getNonTaxSalAllowList(map);
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public int recalculation(Map<String, Object> requestMap) {
+        int result = 0;
+        try {
+            result = saAllowCalculationService.getReCalculateResult(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public int updateDate(Map<String, String> requestMap) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.updateDate(requestMap);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public int setCopyLastMonthData(Map<String, String> requestMap) {
+        int result = 0;
+        try {
+            saAllowPayMapper.setDateId(requestMap);
+            result = saAllowPayMapper.setCopyLastMonthData(requestMap);
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;

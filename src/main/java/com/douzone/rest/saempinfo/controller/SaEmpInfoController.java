@@ -18,19 +18,6 @@ public class SaEmpInfoController {
     public SaEmpInfoController(SaEmpInfoService saEmpInfoService){
         this.saEmpInfoService = saEmpInfoService;
     }
-    
-    //전체조회
-    @PostMapping("/getAll")
-    public Map<String, Object> getAll(@RequestBody Map<String, String> requestMap) {
-
-        Map<String, Object> result = new HashMap<>();
-        try {
-            result = saEmpInfoService.getAll(requestMap);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return result;
-    }
 
     //삽입
     @PostMapping("/insertSaEmpInfo")
@@ -66,7 +53,5 @@ public class SaEmpInfoController {
             e.getStackTrace();
         }
     }
-
-
 
 }

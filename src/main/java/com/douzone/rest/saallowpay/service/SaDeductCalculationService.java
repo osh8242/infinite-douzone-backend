@@ -8,13 +8,7 @@ import java.util.List;
 public class SaDeductCalculationService {
     private int salaryAllowPay;
     private String dateId;
-    public List<SaDeductPay> salaryDeductPayList(String salaryAllowPay , String dateId){
-        receiveSalaryAllowPay(salaryAllowPay);
-        receiveDateId(dateId);
 
-        List<SaDeductPay> salaryDeductPayList = new ArrayList<>();
-        return salaryDeductPayList;
-    }
     private void receiveSalaryAllowPay(String salaryAllowPay){
         this.salaryAllowPay = Integer.parseInt(salaryAllowPay);
     }

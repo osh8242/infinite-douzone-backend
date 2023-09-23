@@ -18,8 +18,10 @@ public class SaEmpInfo {
     private String cdOccup;             // 직종
     private String rankNo;              // 직급
     private String cdDept;              // 부서
+    private String nmDept;              // 부서이름
     private String cdField;             // 현장
     private String cdProject;           // 프로젝트
+
     private String amNationPen;         // 국민연금보험료
     private String amHealthInsur;       // 건강보험료
     private String mn211;               // 두루누리 적용률
