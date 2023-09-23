@@ -4,6 +4,7 @@ import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,11 @@ public class AuthController {
         ResponseVo response = authService.findUser(user);
 
         if (response.getMessage().equals("SUCCESS")) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
+                        HttpHeaders headers = new HttpHeaders();
+            // ResponseVo에서 토큰을 가져와서 헤더에 추가
+            headers.set("Authorization", "Bearer " + response.getToken());
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+//            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }

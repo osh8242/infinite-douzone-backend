@@ -14,5 +14,8 @@ public class UserVo {
     private String userId;
     private String userPwd;
     private String userName;
-    private String userEmail;
+    private String email;
+    private String birth;
+    private String gender;
+    private String phone;
 }
