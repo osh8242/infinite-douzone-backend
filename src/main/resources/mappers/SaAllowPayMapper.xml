@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
-    <!-- 급여리스트 -->
+    <!-- 급여지급액 리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
         SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY) AS "ALLOW_PAY"
         FROM ( SELECT
@@ -21,12 +21,32 @@
                     WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
                     GROUP BY CD_ALLOW, YN_TAX ) p
                 ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
-                WHERE s.SAL_DIVISION = 'SAL'
+                <if test="salDivision       != null and salDivision     != ''">
+                    WHERE s.SAL_DIVISION = #{salDivision}
+                </if>
             ) a
         GROUP BY a.CD_ALLOW, a.NM_ALLOW
     </select>
 
-    <!-- 급여자료 입력 -->
+    <!-- 급여지급액 과세 비과세별 합계  -->
+    <select id="getSumAllowPayByYnTax" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            SUM(CASE WHEN p.YN_TAX = 'Y' THEN ALLOW_PAY ELSE '0' END) AS "sumByY",
+            SUM(CASE WHEN p.YN_TAX = 'N' THEN ALLOW_PAY ELSE '0' END) AS "sumByN",
+            SUM(ALLOW_PAY) AS "sumAllowPay"
+        FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
+        ON s.CD_ALLOW= p.CD_ALLOW
+        WHERE 1=1
+        <if test="cdEmp     != null and cdEmp   != '' and dateId    != null and dateId  !=''">
+            AND p.CD_EMP = #{cdEmp} AND DATE_ID = #{dateId}
+        </if>
+        <if test="salDivision       != null and salDivision     != ''">
+            AND s.SAL_DIVISION = #{salDivision}
+        </if>
+        AND p.YN_TAX IN ('Y', 'N')
+    </select>
+
+    <!-- 급여지급액 insert or update -->
     <update id="mergeSalAllowPay" parameterType="list">
         MERGE INTO SAALLOWPAY target
         USING (
@@ -51,17 +71,7 @@
             VALUES (source.CD_ALLOW, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY , source.YN_TAX)
     </update>
 
-
-    <!-- 급여자료 수정 -->
-    <update id="updateSalAllowPay" parameterType="java.util.Map">
-        UPDATE SAALLOWPAY
-            SET ALLOW_PAY = #{allowPay}
-        WHERE CD_EMP = #{cdEmp}
-            AND CD_ALLOW = #{cdAllow}
-            AND DATE_ID = #{dateId}
-    </update>
-
-    <!-- 합계 데이터 조회-->
+    <!-- 지급액 통계 리스트 -->
     <select id="getSalAllowPaySum" parameterType="java.util.Map" resultType="map">
         SELECT
             a.CD_ALLOW AS "cdAllow"
@@ -93,9 +103,17 @@
         GROUP BY a.CD_ALLOW, a.YN_TAX
     </select>
 
-    <!--지급일 리스트(코드도움창) -->
+    <!-- 급여리스트 삭제 -->
+    <delete id="deleteSalAllowPay" parameterType="SaAllowPay">
+        DELETE FROM SAALLOWPAY
+        WHERE CD_ALLOW = #{cdAllow}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </delete>
+
+    <!-- 지급일 리스트(코드도움창) -->
     <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
-        SELECT "DATE" AS "paymentDate" ,  DATE_ID AS "dateId"
+        SELECT "DATE" AS "paymentDate" , DATE_ID AS "dateId"
             FROM "DATE" d
         WHERE d.ALLOW_YEAR = #{allowYear}
             AND d."MONTH" = #{allowMonth}
@@ -120,42 +138,6 @@
         ORDER BY COMMONLY_YN
     </select>
 
-    <!-- 모달_비과세 항목 설정 리스트 -->
-    <select id="getNonTaxSalAllowList" parameterType="java.util.Map" resultType="hashmap">
-        SELECT
-            CD_ALLOW as "cdAllow",
-            NM_ALLOW as "nmAllow",
-            NONTAX_LIMIT as "nonTaxLimit",
-            NONTAX_DIVISON as "nonTaxDivison"
-        FROM SAALLOW s
-        WHERE s.YN_TAX ='N'
-    </select>
-
-    <select id="getSalAllowInfo" parameterType="SaAllowPay" resultType="SaAllow">
-        SELECT *
-        FROM (
-        SELECT
-            s.CD_ALLOW
-            , CASE WHEN i.YN_UNIT = 'Y' AND s.CD_ALLOW = 'OVERTIME_PAY' THEN 'N' ELSE s.YN_TAX END AS YN_TAX
-            , s.SAL_DIVISION
-            , s.MONTHLY_YN
-            , s.COMMONLY_YN
-            , s.NONTAX_LIMIT
-            , s.NONTAX_DIVISON
-            FROM SAALLOW s LEFT OUTER JOIN SAEMPINFO i
-                ON i.CD_EMP = #{cdEmp} AND s.CD_ALLOW = #{cdAllow}
-            ORDER BY CASE WHEN s.YN_TAX = 'N' THEN 0 ELSE 1 END
-        )
-        WHERE ROWNUM = 1
-    </select>
-
-    <delete id="deleteSalAllowPay" parameterType="SaAllowPay">
-        DELETE FROM SAALLOWPAY
-        WHERE CD_ALLOW = #{cdAllow}
-            AND DATE_ID = #{dateId}
-            AND CD_EMP = #{cdEmp}
-    </delete>
-
     <!-- 통상시급 재계산 (월 소정 근로시간 = 209시간) -->
     <update id="updateHourlyWage" parameterType="java.util.Map">
         UPDATE SAEMPINFO SET HOURLYWAGE = (
@@ -174,19 +156,6 @@
         UPDATE "DATE" SET YN_COMPLETE = #{ynComplete}
         WHERE DATE_ID = #{dateId}
     </update>
-
-
-    <!-- dateId 프로시져 호풀 -->
-    <select id="setDateId" statementType="CALLABLE" parameterType="hashMap">
-        {call PROC_COPY_LAST_MONTH_DATE_ID(
-                #{IN_DATA, mode=IN, jdbcType=VARCHAR},
-                #{IN_DATA, mode=IN, jdbcType=VARCHAR},
-                #{IN_DATA, mode=IN, jdbcType=VARCHAR},
-            #{OUT_ERROR_CODE, mode=OUT, jdbcType=DECIMAL, javaType=long},
-            #{OUT_ERROR_MESSAGE, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
-            )
-        }
-    </select>
 
     <!-- 전월데이터 복사 -->
     <insert id="setCopyLastMonthData" parameterType="java.util.Map">
@@ -224,16 +193,58 @@
 <!--        AND "MONTH"= (SELECT TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM') FROM DUAL)-->
 <!--        )-->
 <!--    </insert>-->
-    <select id="getSumAllowPayByYnTax" parameterType="java.util.Map" resultType="hashmap">
+
+    <!-- 지급액 계산_급여항목 정보(과세 분기) -->
+    <select id="getSalAllowInfo" parameterType="SaAllowPay" resultType="SaAllow">
+        SELECT *
+        FROM (
         SELECT
-            SUM(CASE WHEN YN_TAX = 'Y' THEN ALLOW_PAY ELSE '0' END) AS "sumByY",
-            SUM(CASE WHEN YN_TAX = 'N' THEN ALLOW_PAY ELSE '0' END) AS "sumByN",
-            SUM(ALLOW_PAY) AS "sumAllowPay"
-        FROM SAALLOWPAY s
-        WHERE 1=1
-        <if test="cdEmp     != null and cdEmp   != ''">AND s.CD_EMP = #{cdEmp}</if>
-        <if test="dateId    != null and dateId  !=''">AND DATE_ID = #{dateId}</if>
-        AND YN_TAX IN ('Y', 'N')
-        GROUP BY YN_TAX
+        s.CD_ALLOW
+        , CASE WHEN i.YN_UNIT = 'Y' AND s.CD_ALLOW = 'OVERTIME_PAY' THEN 'N' ELSE s.YN_TAX END AS YN_TAX
+        , s.SAL_DIVISION
+        , s.MONTHLY_YN
+        , s.COMMONLY_YN
+        , s.NONTAX_LIMIT
+        , s.NONTAX_DIVISON
+        FROM SAALLOW s LEFT OUTER JOIN SAEMPINFO i
+        ON i.CD_EMP = #{cdEmp}
+        WHERE CD_ALLOW = #{cdAllow}
+        ORDER BY CASE WHEN s.YN_TAX = 'N' THEN 0 ELSE 1 END
+        )
+        WHERE ROWNUM = 1
     </select>
+
+    <!-- 지급액 계산_해당 귀속연월 사원의 급여 지급액 정보(한도)-->
+    <select id = "getSalAllowPaySumByMonth" parameterType="java.util.Map" resultType="Integer">
+        SELECT SUM(s.ALLOW_PAY)
+        FROM SAALLOWPAY s LEFT OUTER JOIN "DATE" d
+            ON s.DATE_ID = d.DATE_ID
+        WHERE s.CD_ALLOW = #{cdAllow}
+            AND d."MONTH" = #{allowMonth}
+            AND s.CD_EMP = #{cdEmp]
+        GROUP BY s.CD_ALLOW
+    </select>
+
+    <!-- 지급액 계산_해당 지급날짜 사원의 지급액 정보(과세여부)-->
+    <select id = "getSalAllowPaySumByYnTax" parameterType="java.util.Map" resultType="Integer">
+        SELECT SUM(s.ALLOW_PAY)
+        FROM SAALLOWPAY s LEFT OUTER JOIN "DATE" d
+        ON s.DATE_ID = d.DATE_ID
+        WHERE s.YN_TAX = #{ynTax}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </select>
+
+    <!-- dateId 만들기 -->
+    <insert id="makeDateId" parameterType="SaAllowPay" useGeneratedKeys="true" keyProperty="dateId" keyColumn="DATE_ID">
+        INSERT INTO "DATE" (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
+        VALUES (#{allowYear}, #{allowMonth}, #{paymentDate}, DATE_SEQ.nextval)
+    </insert>
+
+    <!-- dateId 가져오기 -->
+    <select id="getDateId" parameterType="java.util.Map" resultType="string">
+        SELECT DATE_ID FROM "DATE"
+        WHERE ALLOW_YEAR = #{allowYear} AND "MONTH" = #{allowMonth} AND "DATE" = #{paymentDate}
+    </select>
+
 </mapper>

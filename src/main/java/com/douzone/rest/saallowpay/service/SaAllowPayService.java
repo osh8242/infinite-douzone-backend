@@ -7,10 +7,7 @@ import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SaAllowPayService {
@@ -65,12 +62,11 @@ public class SaAllowPayService {
             resultMap.put("sumAllowPayByYnTax", saAllowPayMapper.getSumAllowPayByYnTax(requestMap));    // 과세 비과세 합
 
             resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
-
-            resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));         // 사원 상세 정보
+            resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));              // 사원 상세 정보
 
             Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
-            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
-            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
+            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
+            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
 
             resultMap.put("totalSalPaydata", totalSalPaydata);
 
@@ -82,18 +78,30 @@ public class SaAllowPayService {
     }
 
     /* 급여항목 입력 or 수정 */
-    public int mergeSalAllowPay(SaAllowPay saAllowPay) {
-        int result = 0;
+    public String mergeSalAllowPay(SaAllowPay saAllowPay) {
+        String dateId = saAllowPay.getDateId();
+
         try {
-            result = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay);
+            if("".equals(saAllowPay.getDateId())) { // dateId 없는 경우 dateId 생성
+                makeDateId(saAllowPay);
+            }
+
+            int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay);
+
+            if(mergeSalaryAllowPayResult > 0) {
+                saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 inesert or update
+                dateId = saAllowPay.getDateId();
+            }
+
 
             //List<SaDeductPay> salartyDeductPayList = saDeductCalculationService.salaryDeductPayList(saAllowPay.getAllowPay(),saAllowPay.getDateId());
             //result = saDeductPayDao.updateSaDeductPayList(salartyDeductPayList);
 
         } catch (Exception e) {
             e.getStackTrace();
+            System.out.println("mergeSalAllowPay에서 터짐");
         }
-        return result;
+        return dateId;
     }
 
     public Map<String, Object> getSalTotalPaySum(Map<String, String> requestMap) {
@@ -172,4 +180,23 @@ public class SaAllowPayService {
         }
         return result;
     }
+
+    // DateId 만들기
+    // Date테이블 dateId 생성하는 프로시져 호출
+    // SaAllowPay (allowyear, allowMonth, paymentDate)
+    private String makeDateId(SaAllowPay saAllowPay){
+        String newDateId = "";
+
+        try {
+            saAllowPayMapper.makeDateId(saAllowPay);
+            newDateId = saAllowPay.getDateId();
+            System.out.println("newDateId");
+
+        }catch (Exception e){
+            e.getStackTrace();
+            System.out.println("setDateId에서 터짐.");
+        }
+        return newDateId;
+    }
+
 }

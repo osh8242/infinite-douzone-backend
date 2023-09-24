@@ -40,11 +40,8 @@ public class SaAllowCalculationService {
         int result = 0;
         try {
 
-            if("".equals(dateId)) {}//dateId 맹들기
             List<SaAllowPay> newSalaryAllowPayList = makeCalculationAllowPayData(saAllowPay);   // 수당 리스트
-            saAllowPayMapper.mergeSalAllowPay(newSalaryAllowPayList);   // 수당 insert or update
-
-            mergeNewSalaryDeductPay();
+            result = saAllowPayMapper.mergeSalAllowPay(newSalaryAllowPayList);   // 수당 insert or update
 
         }catch (Exception e) {
             e.getStackTrace();
@@ -131,7 +128,7 @@ public class SaAllowCalculationService {
                 }
             }
 
-            // 해당날짜의 과세 비과세 재계산 내역 udpate하기
+            // 해당날짜의 과세 비과세 재계산 내역 update
             result = saAllowPayMapper.mergeSalAllowPay(reCalculateAllowPayList);
 
         }catch (Exception e){
@@ -166,17 +163,18 @@ public class SaAllowCalculationService {
             if (NON_TAXABLE.equals(salAllowInfo.getYnTax())) {
                 deleteSalAllowPay(saAllowPay);  // 해당 사원의 해당날짜 모든 지급항목 삭제
 
-                int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit()); // 한달 한도
+                int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());    // 한달 한도
+                int allowPaySumByEmp =  getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합
+                int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
 
-//                int allowPaySumByEmp =  ();
-                int allowPay = Integer.parseInt(saAllowPay.getAllowPay());
+                if (allowPaySumByEmp + allowPay > limit) {
+                    salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
+                    salaryAllowList.add(createSalAllowPay(TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
 
-                if (allowPay > limit) {
-                    salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(limit)));
-                    salaryAllowList.add(createSalAllowPay(TAXABLE, String.valueOf(allowPay - limit)));
                 } else {
                     salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(allowPay)));
                 }
+
             } else {
                 salaryAllowList.add(createSalAllowPay(TAXABLE, saAllowPay.getAllowPay()));
             }
@@ -188,15 +186,25 @@ public class SaAllowCalculationService {
         return salaryAllowList;
     }
 
-    //
-    private int getSalAllowPaySumByEmp() {
+    // 사원의 귀속연월의 해당 수당항목의 합
+    private int getSalAllowPaySumByMonth(SaAllowPay saAllowPay){
         int result = 0;
+
         try {
+            Map<String, String> requestMap = new HashMap<>();
+            requestMap.put("cdAllow", saAllowPay.getCdAllow());
+            requestMap.put("allowMonth", saAllowPay.getAllowMonth());
+            requestMap.put("cdEmp", saAllowPay.getCdEmp());
+
+            if(saAllowPayMapper.getSumAllowPayByYnTax(requestMap) != null){
+                result = saAllowPayMapper.getSalAllowPaySumByMonth(requestMap);
+            };
 
         }catch (Exception e){
             e.getStackTrace();
             System.out.println("getSalAllowPaySumByEmp에서 터짐");
         }
+
         return result;
     }
 
@@ -242,6 +250,7 @@ public class SaAllowCalculationService {
     private List<SaAllowPay> getSalAllowPayList(SaAllowPay saAllowPay) {
         try {
             Map<String,String> requestMap = new HashMap<>();
+
             requestMap.put("cdEmp", saAllowPay.getCdEmp());
             requestMap.put("dateId", saAllowPay.getDateId());
             return saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
@@ -256,6 +265,7 @@ public class SaAllowCalculationService {
     // 필수 값 : cdAllow
     private SaAllow getSalAllowInfo(SaAllowPay saAllowPay) {
         try {
+            System.out.println(saAllowPay.toString());
             return saAllowPayMapper.getSalAllowInfo(saAllowPay);
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,16 +298,4 @@ public class SaAllowCalculationService {
         return totalPay;
     }
 
-
-    // DateId 만들기
-    // Date테이블 dateId 생성하는 프로시져 호출
-    // requestMap (allowyear, allowMonth, paymentDate)
-    private void setDateId(Map<String,String> requestMap){
-        try {
-            setDateId(requestMap);
-        }catch (Exception e){
-            e.getStackTrace();
-            System.out.println("setDateId에서 터짐.");
-        }
-    }
 }

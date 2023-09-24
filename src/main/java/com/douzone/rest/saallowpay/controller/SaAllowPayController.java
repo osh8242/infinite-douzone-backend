@@ -34,14 +34,14 @@ public class SaAllowPayController {
 
     //사원별 급여항목 리스트
     @PostMapping("/mergeSalAllowPay")
-    public int mergeSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
-        int result = 0;
+    public String mergeSalAllowPay(@RequestBody SaAllowPay saAllowPay) {
+        String dateId = "";
         try {
-            result = saAllowPayService.mergeSalAllowPay(saAllowPay);
+            dateId = saAllowPayService.mergeSalAllowPay(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
-        return result;
+        return dateId;
     }
 
 
