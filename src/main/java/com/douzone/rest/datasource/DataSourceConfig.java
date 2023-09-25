@@ -4,6 +4,7 @@ package com.douzone.rest.datasource;
 import com.douzone.rest.company.vo.DataSourceVo;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,41 +19,45 @@ public class DataSourceConfig {
     private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@localhost:1521:oracle";
     //private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=gf2a91e2c0ac50a_oshdb_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))";
     private final String DRIVER_CLASS_NAME = "net.sf.log4jdbc.sql.jdbcapi.DriverSpy";
-    private final String PASSWORD = "1004";
-    //    private final String PASSWORD = "DouzoneTeam3";
-    private final Map<Object, Object> targetDataSources = new HashMap<>();
-
-    private RoutingCompanyDataSource routingCompanyDataSource;
+    Map<Object, Object> targetDataSources = new HashMap<>();
+    RoutingCompanyDataSource routingCompanyDataSource;
+    //    private final String PASSWORD = "1004";
+    @Value("${spring.datasource.username}")
+    private String USERNAME;
+    @Value("${spring.datasource.password}")
+    private String PASSWORD;
 
     @Bean
     public DataSource initDataSource() {
         routingCompanyDataSource = new RoutingCompanyDataSource();
+
         // 데이터소스 목록을 담는 Map
         Map<Object, Object> targetDataSources = new HashMap<>();
-        // 디폴트 데이터소스
-        DataSource dataSource = createDataSource("HR", PASSWORD);
+
+        // 디폴트(기본) 데이터소스
+        DataSource dataSource = createDataSource(USERNAME, PASSWORD);
         targetDataSources.put("default", dataSource);
 
-        // 데이터소스 목록 파일에서 데이터소스 목록을 불러오기
-        Map<String, DataSourceVo> dataSourceInfos = loadDataSourceInfos();
-        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
-        StringBuilder connections = new StringBuilder();
-        if (dataSourceInfos.size() != 0) {
-            for (DataSourceVo dataSourceInfo : dataSourceInfos.values()) {
-                String companyCode = dataSourceInfo.getCompanyCode();
-                try {
-                    dataSource = createDataSource(companyCode, dataSourceInfo.getPassword());
-                    targetDataSources.put(companyCode, dataSource);
-                    connections.append("companyCode = " + companyCode + "(연결성공)").append("\n");
-                } catch (Exception e) {
-                    System.err.println("해당 회사코드로 데이터소스 연결실패: " + dataSourceInfo.getCompanyCode());
-                    targetDataSources.remove(companyCode);
-                    saveDataSourceMap();
-                    connections.append("companyCode = " + companyCode + "(연결실패)").append("\n");
-                }
-            }
-        }
-        System.out.println("========CONNECTION STATUS=========\n" + connections);
+//        // 데이터소스 목록 파일에서 데이터소스 목록을 불러오기
+//        Map<String, DataSourceVo> dataSourceInfos = loadDataSourceInfos();
+//        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
+//        StringBuilder connections = new StringBuilder();
+//        if (dataSourceInfos.size() != 0) {
+//            for (DataSourceVo dataSourceInfo : dataSourceInfos.values()) {
+//                String companyCode = dataSourceInfo.getCompanyCode();
+//                try {
+//                    dataSource = createDataSource(companyCode, dataSourceInfo.getPassword());
+//                    targetDataSources.put(companyCode, dataSource);
+//                    connections.append("companyCode = " + companyCode + "(연결성공)").append("\n");
+//                } catch (Exception e) {
+//                    System.err.println("해당 회사코드로 데이터소스 연결실패: " + dataSourceInfo.getCompanyCode());
+//                    targetDataSources.remove(companyCode);
+//                    saveDataSourceMap();
+//                    connections.append("companyCode = " + companyCode + "(연결실패)").append("\n");
+//                }
+//            }
+//        }
+//
         routingCompanyDataSource.setTargetDataSources(targetDataSources);
         routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("default")); // default data source
 
@@ -61,7 +66,7 @@ public class DataSourceConfig {
 
 
     // 데이터소스 객체 생성
-    private DataSource createDataSource(String companyCode, String password) {
+    DataSource createDataSource(String companyCode, String password) {
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(DRIVER_CLASS_NAME);
@@ -126,6 +131,7 @@ public class DataSourceConfig {
             e.printStackTrace();
         }
     }
+
     private void saveDataSourceMap() {
         saveDataSourceMap(null, null);
     }
