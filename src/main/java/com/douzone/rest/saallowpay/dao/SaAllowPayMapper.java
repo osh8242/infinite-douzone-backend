@@ -2,10 +2,7 @@ package com.douzone.rest.saallowpay.dao;
 
 import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.mapping.StatementType;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +29,5 @@ public interface SaAllowPayMapper {
     void makeDateId(SaAllowPay saAllowPay);
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
-    String getDateId(Map<String, String> requestMap);
-    int getSalAllowPaySumByYnTax(Map<String, String> requestMap);
+    Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
 }

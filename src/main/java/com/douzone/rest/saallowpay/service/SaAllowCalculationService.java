@@ -50,20 +50,6 @@ public class SaAllowCalculationService {
         return result;
     }
 
-    // 입력한 급여항목에 대한 공제항목 계산
-     public int mergeNewSalaryDeductPay() {
-
-         int result = 0;
-         try {
-             // 국민연금
-
-         } catch (Exception e) {
-             e.getStackTrace();
-             System.out.println("mergeNewSalaryDeductPay에서 터짐");
-         }
-         return result;
-     }
-
     // 재계산 버튼 함수
     public int getReCalculateResult(Map<String, Object> requestMap) {
 
@@ -284,18 +270,6 @@ public class SaAllowCalculationService {
             System.out.println("deleteSalAllowPay에서 터짐");
         }
         return result;
-    }
-
-    // 해당 귀속월의 해당 급여항목의 총액 구해오기
-    private int getTotalAllowPayByCdAllow(SaAllowPay saAllowPay){
-        int totalPay = 0;
-        try {
-            //totalPay = saAllowPayMapper.getTotalAllowPayByCdAllow(saAllowPay);
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("getTotalAllowPayByCdAllow에서 터짐");
-        }
-        return totalPay;
     }
 
 }

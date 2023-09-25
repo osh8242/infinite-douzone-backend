@@ -55,12 +55,13 @@
             CD_DEDUCT AS "cdDeduct",
             NM_DEDUCT AS "nmDeduct",
             YN_BONUS AS "ynBonus",
-            YN_SAL AS "ynSal"
+            YN_SAL AS "ynSal",
+            RATE AS "rate"
         FROM SADEDUCT
         ORDER BY NM_DEDUCT
     </select>
 
-    <update id="updateSaDeductPayList" parameterType="list">
+    <update id="mergeSaDeductPayList" parameterType="list">
         MERGE INTO SADEDUCTPAY target
         USING (
         <foreach collection="list" item="item" separator="UNION ALL">
@@ -79,7 +80,6 @@
         WHEN NOT MATCHED THEN
             INSERT (CD_DEDUCT, CD_EMP, DATE_ID, ALLOW_PAY)
             VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY)
-
     </update>
 
 </mapper>

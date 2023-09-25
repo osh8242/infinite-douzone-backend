@@ -54,7 +54,6 @@
             , i.NUM_MANYFAMILY
             , i.YN_UNIT
             , i.YN_FORLABOR
-            , i.MN_REDUCTION
         FROM EMP e LEFT OUTER JOIN SAEMPINFO i
             ON e.CD_EMP = i.CD_EMP LEFT OUTER JOIN EMPATTENDANCE c
             ON e.CD_EMP = c.CD_EMP LEFT OUTER JOIN "DATE" d

@@ -16,19 +16,21 @@ public class SaAllowPayService {
     private final SaDeductPayDao saDeductPayDao;
     private final SaEmpInfoMapper saEmpInfoMapper;
     private final SaAllowCalculationService saAllowCalculationService;
-    private SaDeductCalculationService saDeductCalculationService;
+    private final SaDeductCalculationService saDeductCalculationService;
 
     @Autowired
     public SaAllowPayService(
             SaAllowPayMapper saAllowPayMapper,
             SaDeductPayDao saDeductPayDao,
             SaEmpInfoMapper saEmpInfoMapper,
-            SaAllowCalculationService saAllowCalculationService
+            SaAllowCalculationService saAllowCalculationService,
+            SaDeductCalculationService saDeductCalculationService
     ) {
         this.saAllowPayMapper = saAllowPayMapper;
         this.saDeductPayDao = saDeductPayDao;
         this.saEmpInfoMapper = saEmpInfoMapper;
         this.saAllowCalculationService = saAllowCalculationService;
+        this.saDeductCalculationService = saDeductCalculationService;
     }
 
     public Map<String, Object> getSalaryAllInfoByDate(Map<String, String> requestMap) {
