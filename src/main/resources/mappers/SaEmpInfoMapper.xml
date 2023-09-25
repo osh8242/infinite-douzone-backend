@@ -16,6 +16,7 @@
         SELECT e.CD_EMP
             , e.NM_KRNAME AS "NM_EMP"
             , e.RANK_NO
+            , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = e.RANK_NO) AS "RANK_NO_NAME"
             , e.JOB_OK
         FROM EMP e
         WHERE e.DA_ENTER &lt; #{paymentDate}
@@ -109,6 +110,12 @@
             #{param.cdEmp}, #{param.dateId}
         </foreach>
         )
+    </delete>
+
+    <!-- DateId 삭제-->
+    <delete id="deleteDateId" parameterType="String">
+        DELETE FORM "DATE"
+        WHERE DATE_ID = #{dateId}
     </delete>
 
 </mapper>
