@@ -295,7 +295,8 @@ ADD CONSTRAINT "PK_EMPPHOTO" PRIMARY KEY ("CD_EMP");
 ALTER TABLE "HRHR"."EMPPHOTO"
 ADD CONSTRAINT "FK_EMPPHOTO_EMPADD" 
 FOREIGN KEY ("CD_EMP") 
-REFERENCES "HRHR"."EMPADD" ("CD_EMP");
+REFERENCES "HRHR"."EMPADD" ("CD_EMP")
+    ON DELETE CASCADE;
 --------------------------------------------------------
 --  DDL for Table EMP_PAYROLL_CRITERIA
 --------------------------------------------------------

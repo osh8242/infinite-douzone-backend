@@ -1,5 +1,6 @@
 package com.douzone.rest.datasource;
 
+
 import com.douzone.rest.company.vo.DataSourceVo;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -132,7 +133,9 @@ public class DataSourceConfig {
     private Map<String, DataSourceVo> createDataSourceVoMapFromTargetDataSources() {
         Map<String, DataSourceVo> dataSourceVoMap = new HashMap<>();
         for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
-            dataSourceVoMap.put((String) entry.getKey(), (DataSourceVo) entry.getValue());
+            HikariDataSource hikariDataSource = (HikariDataSource) entry.getValue();
+            DataSourceVo dataSourceVo = new DataSourceVo(hikariDataSource.getUsername(), hikariDataSource.getPassword());
+            dataSourceVoMap.put((String) entry.getKey(), dataSourceVo);
         }
         return dataSourceVoMap;
     }

@@ -15,7 +15,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     @Autowired
-    private DataSourceConfig dataSourceVo;
+    private DataSourceConfig dataSourceConfig;
 
     @PostMapping("/createNewSchema")
     public String createNewSchema(@RequestBody Map<String, String> object){
@@ -25,7 +25,7 @@ public class CompanyController {
         System.out.println("password = " + password);
         try {
             companyService.createNewSchema(companyCode, password);
-            dataSourceVo.addNewDataSource(companyCode, password);
+            dataSourceConfig.addNewDataSource(companyCode, password);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

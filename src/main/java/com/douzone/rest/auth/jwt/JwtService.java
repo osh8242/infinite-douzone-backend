@@ -48,7 +48,7 @@ public class JwtService {
         String token = Jwts.builder()
                 .setSubject(subject)  // 토큰 주체 설정 (id 별 토큰 발급을 위한)
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // 토큰 만료 시간 설정
-                .signWith(SignatureAlgorithm.HS256, Base64.getDecoder().decode(SECRET_KEY))  // HS256 알고리즘과 시크릿 키로 서명 설정
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)  // HS256 알고리즘과 시크릿 키로 서명 설정
                 .compact();  // 토큰 문자열로 변환
         redisTemplate.opsForValue().set(subject, token, expirationTime, TimeUnit.MILLISECONDS);
         return token;
@@ -65,7 +65,7 @@ public class JwtService {
         try {
             System.out.println("JwtService.getUsernameFromToken");
             String subject = Jwts.parser()
-                    .setSigningKey(Base64.getDecoder().decode(SECRET_KEY))
+                    .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
