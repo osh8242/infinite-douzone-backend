@@ -77,20 +77,6 @@ public class SaAllowCalculationService {
         return result;
     }
 
-    // 4대보험 변경사항 재계산
-    private int reCalculateInsuranceChange(){
-        int result = 0;
-        try {
-            System.out.println("4대보험 변경사항 재계산 구현중..."); // 4대보험 변경사항만 재계산
-            // nationalPension 서연언니 국민연금 여부 필드
-
-        }catch (Exception e){
-            e.getStackTrace();
-            System.out.println("reCalculateInsuranceChange에서 재계산됨");
-        }
-        return result;
-    }
-
     // 과세 비과세 재계산
     private int reCalculateSalaryPayment() {
         System.out.println("과세 비과세 재계산, 사원정보 변경 재계산, 통상시급 계산");

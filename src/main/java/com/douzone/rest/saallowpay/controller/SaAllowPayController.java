@@ -133,10 +133,10 @@ public class SaAllowPayController {
     }
 
     @PostMapping("/setCopyLastMonthData")
-    public int setCopyLastMonthData(@RequestBody Map<String, String> requestMap) {
+    public int setCopyLastMonthData(@RequestBody SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            result = saAllowPayService.setCopyLastMonthData(requestMap);
+            result = saAllowPayService.setCopyLastMonthData(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }

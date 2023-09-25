@@ -172,11 +172,11 @@ public class SaAllowPayService {
     }
 
 
-    public int setCopyLastMonthData(Map<String, String> requestMap) {
+    public int setCopyLastMonthData(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            saAllowPayMapper.setDateId(requestMap);
-            result = saAllowPayMapper.setCopyLastMonthData(requestMap);
+            saAllowPayMapper.makeOneMonthLaterDateId(saAllowPay); // dateId 만들어주기
+            result = saAllowPayMapper.setCopyLastMonthData(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }

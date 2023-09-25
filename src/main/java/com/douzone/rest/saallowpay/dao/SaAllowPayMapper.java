@@ -20,12 +20,13 @@ public interface SaAllowPayMapper {
     int deleteSalAllowPay(SaAllowPay saAllowPay);   // 급여항목 지우기
     int updateDate(Map<String, String> requestMap); // 완료여부 고치기
 
-    Map<String, String> setDateId(Map<String,String> requestMap); // date Id 만들기
-    int setCopyLastMonthData(Map<String, String> requestMap); // 전월데이터 복사
+
+    int setCopyLastMonthData(SaAllowPay saAllowPay); // 전월데이터 복사
 
     Map<String, String> getSumAllowPayByYnTax(Map<String, String> requestMap); // (날짜별 사원별) 과세 비과세 합
 
     void makeDateId(SaAllowPay saAllowPay);
+    void makeOneMonthLaterDateId(SaAllowPay saAllowPay);
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
     Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
