@@ -1,4 +1,4 @@
-package com.douzone.rest.jwt.config;
+package com.douzone.rest.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

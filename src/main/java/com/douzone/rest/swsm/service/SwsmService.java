@@ -1,13 +1,9 @@
 package com.douzone.rest.swsm.service;
 
-import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.empadd.dao.EmpAddDao;
+import com.douzone.rest.swsm.dao.SwsmDao;
 import com.douzone.rest.swsm.vo.Swsm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.douzone.rest.swsm.dao.SwsmDao;
-import com.douzone.rest.swsm.dao.SwsmDao;
 
 import java.util.List;
 
@@ -16,14 +12,6 @@ public class SwsmService {
     @Autowired
     private SwsmDao swsmDao;
 
-    //    private SwsmDao swsmDao;
-//    @Autowired
-//    public SwsmService(SwsmDao swsmDao) {
-//        this.swsmDao = swsmDao;
-//    }
-//    public Swsm getSwsmByCdEmp(Swsm swsm) {
-//        return swsmDao.getSwsmByCdEmp(swsm);
-//    }
     public int updateSwsm(Swsm swsm) {
         System.out.println("Swsm swsm service update -----");
         System.out.println(swsm);

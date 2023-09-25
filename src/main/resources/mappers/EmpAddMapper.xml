@@ -97,6 +97,8 @@
             <if test="tyEmploy != null">TY_EMPLOY = #{tyEmploy},</if>
             <if test="tyReligion != null">TY_RELIGION = #{tyReligion},</if>
             <if test="zipHome != null">ZIP_HOME = #{zipHome},</if>
+            <if test="addHome1 != null">ADD_HOME1 = #{addHome1},</if>
+            <if test="addHome2 != null">ADD_HOME2 = #{addHome2},</if>
             <if test="zipOrgin != null">ZIP_ORGIN = #{zipOrgin},</if>
             <if test="addOrgin1 != null">ADD_ORGIN1 = #{addOrgin1},</if>
             <if test="addOrgin2 != null">ADD_ORGIN2 = #{addOrgin2},</if>

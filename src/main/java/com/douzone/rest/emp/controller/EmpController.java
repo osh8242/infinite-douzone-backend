@@ -1,6 +1,5 @@
 package com.douzone.rest.emp.controller;
 
-import com.douzone.rest.company.config.RoutingCompanyDataSource;
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.emp.vo.EmpMenuUsage;
@@ -15,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/emp")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpController {
 
     private EmpService empservice;
