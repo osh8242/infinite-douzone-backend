@@ -7,13 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -102,5 +100,36 @@ public class EmpPhotoController {
             System.out.println("파일 저장 중 에러 발생 : " + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 중 에러 발생");
         }
+    }
+
+    @DeleteMapping("/deleteEmpPhoto")
+    public ResponseEntity<Integer> deleteEmpPhoto(@RequestBody EmpPhoto empPhoto) {
+        int result = 0;
+        empPhoto = empPhotoService.getEmpPhotoByCdEmp(empPhoto.getCdEmp());
+
+        try {
+            // 파일 경로와 UUID를 사용하여 전체 파일 경로를 구성
+            Path filePath = Paths.get(empPhoto.getFilePath() +
+                    empPhoto.getUuid() +
+                    empPhoto
+                            .getNmPhoto()
+                            .substring(empPhoto.getNmPhoto()
+                                    .lastIndexOf('.')));
+            System.out.println("filePath = " + filePath);
+            // 파일이 실제로 존재하는지 확인
+            if (Files.exists(filePath)) {
+                // 파일 삭제
+                Files.delete(filePath);
+                result = 1; // 파일 삭제 성공
+                EmpPhoto newEmpPhoto = new EmpPhoto();
+                newEmpPhoto.setCdEmp(empPhoto.getCdEmp());
+                result += empPhotoService.updateEmpPhoto(newEmpPhoto) == 1 ? 1 : 0;
+                System.out.println("result = " + result);
+            }
+        } catch (IOException e) {
+            System.out.println("파일 삭제 중 에러 발생 : " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+        }
+        return ResponseEntity.ok(result);
     }
 }

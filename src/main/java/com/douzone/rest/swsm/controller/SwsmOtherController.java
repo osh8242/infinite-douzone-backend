@@ -1,8 +1,6 @@
 package com.douzone.rest.swsm.controller;
 
-import com.douzone.rest.empadd.vo.EmpAdd;
 import com.douzone.rest.swsm.service.SwsmOtherService;
-import com.douzone.rest.swsm.vo.Swsm;
 import com.douzone.rest.swsm.vo.SwsmOther;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +34,7 @@ public class SwsmOtherController {
 
     @PostMapping("/insertSwsmOther")
     public ResponseEntity<Integer> insertSwsmOther(@RequestBody SwsmOther swsmOther) {
+        System.out.println("parameter insertSwsmOther: ");
         int result = 0;
         result = swsmOtherService.insertSwsmOther(swsmOther);
         return ResponseEntity.ok(result);

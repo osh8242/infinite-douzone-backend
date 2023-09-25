@@ -18,6 +18,8 @@ public class EmpAdd {
     private String nmSpecial;
     private String tyReligion;
     private String zipHome;
+    private String addHome1;
+    private String addHome2;
     private String zipOrgin;
     private String addOrgin1;
     private String addOrgin2;
@@ -48,4 +50,5 @@ public class EmpAdd {
     private String rankNo;
     private String daEnter;
     private String daRetire;
+    private String nmKrname;
 }
