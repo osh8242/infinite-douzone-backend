@@ -35,7 +35,7 @@
             SUM(CASE WHEN p.YN_TAX = 'N' THEN ALLOW_PAY ELSE '0' END) AS "sumByN",
             SUM(ALLOW_PAY) AS "sumAllowPay"
         FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
-        ON s.CD_ALLOW= p.CD_ALLOW
+        ON s.CD_ALLOW= p.CD_ALLOW  AND s.YN_TAX = p.YN_TAX
         WHERE 1=1
         <if test="cdEmp     != null and cdEmp   != '' and dateId    != null and dateId  !=''">
             AND p.CD_EMP = #{cdEmp} AND DATE_ID = #{dateId}
@@ -71,6 +71,8 @@
             VALUES (source.CD_ALLOW, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY , source.YN_TAX)
     </update>
 
+
+
     <!-- 지급액 통계 리스트 -->
     <select id="getSalAllowPaySum" parameterType="java.util.Map" resultType="map">
         SELECT
@@ -94,13 +96,16 @@
                     AND TO_DATE(e.DA_RETIRE, 'YYYY-MM-DD') &lt; TO_DATE( #{allowMonth}, 'YYYY-MM')
                 </if>
             </if>
-            <if test="allowYearFlag  ==  'true'">>
+            <if test="allowYearFlag  ==  'true'">
                 AND d.ALLOW_YEAR = #{allowYear}
                 <if test="nowFlag  == 'true'">
                     AND TO_DATE(e.DA_RETIRE, 'YYYY') &lt; TO_DATE( #{allowYear}, 'YYYY')
                 </if>
             </if>
+        WHERE 1=1
+        <if test="salDivision   != null and salDivision    != ''"> AND a.SAL_DIVISION = #{salDivision} </if>
         GROUP BY a.CD_ALLOW, a.YN_TAX
+        ORDER BY "nmAllow"
     </select>
 
     <!-- 급여리스트 삭제 -->
@@ -239,6 +244,26 @@
         INSERT INTO "DATE" (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
         VALUES (#{allowYear}, #{allowMonth}, #{paymentDate}, DATE_SEQ.nextval)
     </insert>
+
+    <update id="makeOneMonthLaterDateId" parameterType="SaAllowPay">
+        MERGE INTO "DATE" target
+        USING (
+        SELECT DISTINCT
+        d.ALLOW_YEAR
+        , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
+        , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
+        FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
+        ON d.DATE_ID = p.DATE_ID
+        WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
+        ) source
+        ON (target.ALLOW_YEAR = source.ALLOW_YEAR
+        AND target."MONTH" = source."MONTH"
+        AND target."DATE" = source."DATE"
+        )
+        WHEN NOT MATCHED THEN
+        INSERT (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
+        VALUES (source.ALLOW_YEAR, source."MONTH", source."DATE", DATE_SEQ.nextval)
+    </update>
 
     <!-- dateId 가져오기 -->
     <select id="getDateId" parameterType="java.util.Map" resultType="string">
