@@ -63,16 +63,12 @@ public class SaAllowCalculationService {
 
         for (String option : selectOptionList) {
             switch (option) {
-                case "calculateHourlyWage" :  reCalculateHourlyWage();  // 통상시급 재계산
                 case "editEmpInfo":         // 사원정보 변경 진 메뉴 생산직여부, 4대보험 여부 계산
                 case "calculateTaxYn":      // 과세 비과세 재계산
                     result = reCalculateSalaryPayment();
                     break;
                 case "incomeTax":           // 소득세 재계산
                     result = reCalculateIncomeTax();
-                    break;
-                case "nationalPensionChange" :   // 4대보험만 변경
-                    result = reCalculateInsuranceChange();
                     break;
                 default:
                     break;
@@ -191,27 +187,6 @@ public class SaAllowCalculationService {
             System.out.println("getSalAllowPaySumByEmp에서 터짐");
         }
 
-        return result;
-    }
-
-    // 통상시급 재계산
-    private int reCalculateHourlyWage() {
-        System.out.println("통상시급 재계산");
-
-        int result = 0;
-        try {
-            // 통상시급 = 통상포함 선택된 수당 / 정기근로시간 (월 소정 근로시간 = 209시간)
-            Map<String,String> requestMap = new HashMap<>();
-            requestMap.put("allowYear", this.allowYear);
-            requestMap.put("cdEmp", this.cdEmp);
-
-            // 통상임금 update 시켜주기
-            result = saAllowPayMapper.updateHourlyWage(requestMap);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("reCalculateHourlyWage()에서 터짐");
-        }
         return result;
     }
 

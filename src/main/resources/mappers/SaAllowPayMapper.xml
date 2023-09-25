@@ -139,17 +139,17 @@
     </select>
 
     <!-- 통상시급 재계산 (월 소정 근로시간 = 209시간) -->
-    <update id="updateHourlyWage" parameterType="java.util.Map">
-        UPDATE SAEMPINFO SET HOURLYWAGE = (
-            SELECT CAST(SUM(p.ALLOW_PAY) / CAST(SUBSTR(d."MONTH", 1, 4) / 209 AS NUMERIC) AS INTEGER)
-            FROM SAALLOWPAY p JOIN "DATE" d
-                ON p.DATE_ID = d.DATE_ID
-                    AND d.ALLOW_YEAR = #{allowYear}
-                    AND CD_EMP = #{cdEmp}
-            LEFT OUTER JOIN SAALLOW s ON s.CD_ALLOW = p.CD_ALLOW AND s.COMMONLY_YN = 'Y'
-            GROUP BY d."MONTH"
-        )
-    </update>
+<!--    <update id="updateHourlyWage" parameterType="java.util.Map">-->
+<!--        UPDATE SAEMPINFO SET HOURLYWAGE = (-->
+<!--            SELECT CAST(SUM(p.ALLOW_PAY) / CAST(SUBSTR(d."MONTH", 1, 4) / 209 AS NUMERIC) AS INTEGER)-->
+<!--            FROM SAALLOWPAY p JOIN "DATE" d-->
+<!--                ON p.DATE_ID = d.DATE_ID-->
+<!--                    AND d.ALLOW_YEAR = #{allowYear}-->
+<!--                    AND CD_EMP = #{cdEmp}-->
+<!--            LEFT OUTER JOIN SAALLOW s ON s.CD_ALLOW = p.CD_ALLOW AND s.COMMONLY_YN = 'Y'-->
+<!--            GROUP BY d."MONTH"-->
+<!--        )-->
+<!--    </update>-->
 
     <!-- DATE 테이블 완료 여부 수정 -->
     <update id="updateDate" parameterType="java.util.Map">
@@ -259,5 +259,15 @@
             AND p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" IN (SELECT "MONTH" FROM "DATE" WHERE DATE_ID = #{dateId}))
         </if>
         AND s.YN_TAX = 'Y'
+    </select>
+
+    <select id = "getNonTaxSalAllowList" parameterType="java.util.Map" resultType="hashmap">
+        SELECT
+            CD_ALLOW as "cdAllow"
+            , NM_ALLOW as "nmAllow"
+            , SAL_DIVISION as "nonTaxDivison"
+            , NONTAX_LIMIT as "nonTaxLimit"
+        FROM SAALLOW
+        WHERE YN_TAX = 'N'
     </select>
 </mapper>

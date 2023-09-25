@@ -16,7 +16,6 @@ public interface SaAllowPayMapper {
     List<Map<String, String>> getsalAllowList(Map<String, String> requestMap);  // 전체 급여항목 리스트 조회
     List<Map<String, String>> getNonTaxSalAllowList(Map<String, String> requestMap);    // 비과세 항목 리스트
     int mergeSalAllowPay(List<SaAllowPay> newSaAllowPayList );  // 급여항목 입력 + 수정
-    int updateHourlyWage(Map<String, String> requestMap);   // 통상임금 재계산
     SaAllow getSalAllowInfo(SaAllowPay saAllowPay); // 급여자료
     int deleteSalAllowPay(SaAllowPay saAllowPay);   // 급여항목 지우기
     int updateDate(Map<String, String> requestMap); // 완료여부 고치기

@@ -56,7 +56,8 @@
             NM_DEDUCT AS "nmDeduct",
             YN_BONUS AS "ynBonus",
             YN_SAL AS "ynSal",
-            RATE AS "rate"
+            RATE AS "rate",
+            CASE WHEN CD_DEDUCT = 'DEDUCT_INCOME' OR CD_DEDUCT = 'DEDUCT_LOCALINCOME' THEN RATE ELSE '과세합계 *' || RATE END AS "calculation"
         FROM SADEDUCT
         ORDER BY NM_DEDUCT
     </select>
