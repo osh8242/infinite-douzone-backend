@@ -16,7 +16,10 @@ public class SaEmpInfo {
     private String ynOverwork;          // 연장근로비과세
     private String daRetire;            // 퇴사날짜
     private String cdOccup;             // 직종
+
     private String rankNo;              // 직급
+    private String rankNoName;          // 직급이름
+
     private String cdDept;              // 부서
     private String nmDept;              // 부서이름
     private String cdField;             // 현장
