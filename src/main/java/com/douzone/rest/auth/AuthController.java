@@ -25,16 +25,30 @@ public class AuthController {
         System.out.println("parameter login info: ");
         System.out.println(user);
         ResponseVo response = authService.findUser(user);
+        System.out.println(response);
 
         if (response.getMessage().equals("SUCCESS")) {
-                        HttpHeaders headers = new HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
+            System.out.println("responseeeeeeeeeee login");
+            System.out.println(response);
+            System.out.println(response.getToken());
             headers.set("Authorization", "Bearer " + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
+        //      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/register")
+    public String Register(@RequestBody UserVo user) {
+        System.out.println("Register Parameter: " + user);
+        int resultMsg = authService.register(user);
+        System.out.println("result Msg: " + resultMsg);
+        if (resultMsg == 1) return "SUCCESS";
+        else return "FAIL";
+//        return resultMsg;
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
@@ -49,12 +63,12 @@ public class AuthController {
         // TODO : send Email Sevice 구현
         System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
-            emailService.sendSimpleMessage(
+        emailService.sendSimpleMessage(
 //                    "llikepsh515@gmail.com".trim(),
-                    "llikepsh515@gmail.com",
-                    "Testing sendEmail",
-                    "hi im seoyeonlee hehe"
-            );
+                "llikepsh515@gmail.com",
+                "Testing sendEmail",
+                "hi im seoyeonlee hehe"
+        );
 //        }
 
         ResponseVo response = new ResponseVo();

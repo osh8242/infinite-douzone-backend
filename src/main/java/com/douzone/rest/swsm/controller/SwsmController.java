@@ -36,6 +36,8 @@ public class SwsmController {
 
     @PostMapping("/getSwsmByCdEmp")
     public ResponseEntity<Swsm> getAllSwsmByCdEmp(@RequestBody Swsm swsm) {
+        System.out.println("Controllerrr parameter;");
+        System.out.println(swsm);
         Swsm reswsm = swsmService.getSwsmByCdEmp(swsm);
         if(reswsm == null) {
             throw new ResponseStatusException(

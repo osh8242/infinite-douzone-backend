@@ -16,6 +16,16 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
+    public int register(UserVo user){
+        System.out.println("Service resgither");
+        System.out.println(user);
+//        hashed_password = bcrypt.hashpw(a.encode('utf-8'), bcrypt.gensalt())
+//        user.setUserPwd();
+        int result=userDao.register(user);
+        System.out.println("reulst:::"+result);
+        return result;
+    }
+
     public ResponseVo findUser(UserVo userVo) {
         ResponseVo response = new ResponseVo();
         UserVo user = userDao.findUser(userVo);

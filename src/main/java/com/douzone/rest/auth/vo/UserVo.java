@@ -18,4 +18,5 @@ public class UserVo {
     private String birth;
     private String gender;
     private String phone;
+    private String empImg;
 }
