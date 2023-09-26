@@ -36,8 +36,7 @@
     </select>
 
     <insert id="insertEmpAdd" parameterType="EmpAdd">
-        INSERT ALL
-        INTO empadd
+        INSERT INTO empadd
         (
         cd_Emp, nm_ChName, nm_EnName, yn_DrawContracts, dc_MidRetire, fg_Wedding,
         fg_Disorder, da_Birth, str_Hobby, nm_Special, ty_Religion, zip_Home, add_Home1, add_Home2,
@@ -72,9 +71,6 @@
         #{telHome3, jdbcType=VARCHAR}, #{celEmp1, jdbcType=VARCHAR},
         #{celEmp2, jdbcType=VARCHAR}, #{celEmp3, jdbcType=VARCHAR}
         )
-        INTO EMPPHOTO (cd_emp)
-        VALUES (#{cdEmp, jdbcType=VARCHAR})
-        SELECT 1 FROM DUAL
     </insert>
 
 

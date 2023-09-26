@@ -16,12 +16,14 @@ import java.util.Map;
 @Configuration
 public class DataSourceConfig {
 
-    private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@localhost:1521:oracle";
-    //private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=gf2a91e2c0ac50a_oshdb_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))";
-    private final String DRIVER_CLASS_NAME = "net.sf.log4jdbc.sql.jdbcapi.DriverSpy";
     Map<Object, Object> targetDataSources = new HashMap<>();
     RoutingCompanyDataSource routingCompanyDataSource;
-    //    private final String PASSWORD = "1004";
+
+    //application.properties에서 설정
+    @Value("${spring.datasource.driver-class-name}")
+    private String DRIVER_CLASS_NAME;
+    @Value("${spring.datasource.url}")
+    private String DATA_SOURCE_URL;
     @Value("${spring.datasource.username}")
     private String USERNAME;
     @Value("${spring.datasource.password}")
