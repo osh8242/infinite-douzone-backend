@@ -1,5 +1,6 @@
 package com.douzone.rest.auth.jwt;
 
+import com.douzone.rest.auth.vo.UserVo;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,10 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.douzone.rest.auth.jwt.JwtProperties.*;
+import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String HEADER_STRING = "Authorization";
-    private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtService jwtService;
 
     public JwtAuthenticationFilter(JwtService jwtService){
@@ -35,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Authentication authentication = getAuthentication(request);
 
+        // ??
         if(authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -45,9 +48,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-            String user = jwtService.parseToken(token.replace(TOKEN_PREFIX, ""));
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            UserVo userVo = jwtService.parseToken(token.replace(TOKEN_PREFIX, ""));
+            request.setAttribute("companyCode", userVo.getCompanyCode());
+            if (userVo != null) {
+                return new UsernamePasswordAuthenticationToken(userVo.getUserId(), null, new ArrayList<>());
             }
             return null;
         }
