@@ -16,4 +16,5 @@ public interface SaDeductPayDao {
     List<Map<String, String>> getsalDeductList(Map<String, String> requestMap);
 
     int mergeSaDeductPayList(List<SaDeductPay> saDeductPayList);
+    int mergeSalDeductPay(SaDeductPay saDeductPay);
 }

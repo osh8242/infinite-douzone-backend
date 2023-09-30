@@ -30,4 +30,8 @@ public interface SaAllowPayMapper {
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
     Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
+    int insertSalAllow(SaAllowPay saAllowPay);
+    int updateSalAllow(SaAllowPay saAllowPay);
+    int deleteSalAllow(SaAllowPay saAllowPay);
+    int updateNonTaxLimit(SaAllowPay saAllowPay);
 }

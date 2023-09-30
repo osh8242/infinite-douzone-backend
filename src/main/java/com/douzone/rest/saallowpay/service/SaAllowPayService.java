@@ -3,6 +3,7 @@ package com.douzone.rest.saallowpay.service;
 import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,6 @@ public class SaAllowPayService {
 
         try {
             Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
-            System.out.println("dateInfo");
-            System.out.println(dateInfo);
             resultMap.put("dateInfo", dateInfo);
             resultMap.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
 
@@ -66,11 +65,11 @@ public class SaAllowPayService {
             resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
             resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));              // 사원 상세 정보
 
-            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
-            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
-            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
-
-            resultMap.put("totalSalPaydata", totalSalPaydata);
+//            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
+//            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
+//            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
+//
+//            resultMap.put("totalSalPaydata", totalSalPaydata);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -88,16 +87,12 @@ public class SaAllowPayService {
                 makeDateId(saAllowPay);
             }
 
-            int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay);
+            int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
 
             if(mergeSalaryAllowPayResult > 0) {
-                saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 inesert or update
+                saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
                 dateId = saAllowPay.getDateId();
             }
-
-
-            //List<SaDeductPay> salartyDeductPayList = saDeductCalculationService.salaryDeductPayList(saAllowPay.getAllowPay(),saAllowPay.getDateId());
-            //result = saDeductPayDao.updateSaDeductPayList(salartyDeductPayList);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -199,6 +194,53 @@ public class SaAllowPayService {
             System.out.println("setDateId에서 터짐.");
         }
         return newDateId;
+    }
+
+
+    public int insertSalAllow(SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.insertSalAllow(saAllowPay);
+            if("N".equals(saAllowPay.getYnTax())){
+                saAllowPay.setYnTax("Y");
+                result = saAllowPayMapper.insertSalAllow(saAllowPay);
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return result;
+    }
+
+    public int updateSalAllow(SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.updateSalAllow(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteSalAllow(SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.deleteSalAllow(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public int updateNonTaxLimit(SaAllowPay saAllowPay){
+        int result = 0;
+        try {
+            result = saAllowPayMapper.updateNonTaxLimit(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
     }
 
 }

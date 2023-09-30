@@ -1,7 +1,9 @@
 package com.douzone.rest.saallowpay.controller;
 
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,7 @@ public class SaAllowPayController {
         Map<String, Object> result = new HashMap<>();
         try {
             result = saAllowPayService.getSalaryAllInfoByDate(requestMap);
+
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -142,4 +145,49 @@ public class SaAllowPayController {
         }
         return result;
     }
+
+    @PostMapping("/insertSalAllow")
+    public int insertSalAllow(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayService.insertSalAllow(saAllowPay);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+    @PutMapping("/updateSalAllow")
+    public int updateSalAllow(@RequestBody SaAllowPay saAllowPay){
+        int result = 0;
+        try {
+            System.out.println("here");
+            result = saAllowPayService.updateSalAllow(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+    @DeleteMapping("deleteSalAllow")
+    public int deleteSalAllow(@RequestBody SaAllowPay saAllowPay){
+        int result = 0;
+        try {
+            result = saAllowPayService.deleteSalAllow(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @PutMapping("updateNonTaxLimit")
+    public int updateNonTaxLimit(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayService.updateNonTaxLimit(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
 }
