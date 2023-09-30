@@ -9,6 +9,10 @@
         select * from Member where user_id = #{userId}
     </select>
 
+    <select id="findEmail" resultType="UserVo">
+        select * from Member where email = #{email}
+    </select>
+
     <insert id="register" parameterType="UserVo">
         INSERT INTO MEMBER
         (
@@ -17,7 +21,7 @@
         USER_PWD,
         USER_NAME,
         EMAIL,
-        BIRTH,
+        PHONE,
         GENDER
         )
         VALUES
@@ -27,7 +31,7 @@
         #{userPwd, jdbcType=VARCHAR},
         #{userName, jdbcType=VARCHAR},
         #{email, jdbcType=VARCHAR},
-        #{birth, jdbcType=VARCHAR},
+        #{phone, jdbcType=VARCHAR},
         #{gender, jdbcType=VARCHAR}
         )
     </insert>

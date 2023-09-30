@@ -51,6 +51,28 @@ public class AuthController {
 //        return resultMsg;
     }
 
+    @PostMapping("/checkVaildId")
+    public String checkVaildId(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkVaildId(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
+    }
+
+    @PostMapping("/checkVaildEmail")
+    public String checkVaildEmail(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkVaildEmail(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
+    }
+
     @CrossOrigin(origins = "http://localhost:3000/")
     @PostMapping("/findEmail")
     public ResponseEntity<ResponseVo> findEmail(@RequestBody UserVo user) {

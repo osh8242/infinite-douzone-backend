@@ -5,6 +5,7 @@ import com.douzone.rest.auth.jwt.JwtService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +17,33 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    public int register(UserVo user){
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+
+    public int register(UserVo user) {
         System.out.println("Service resgither");
         System.out.println(user);
+        int result;
+        ResponseVo response = new ResponseVo();
+        UserVo findUserId = userDao.findUser(user);
+        if (findUserId != null) {
+            System.out.println("already exist ID");
+            result = 0;
+        } else {
+            // bcryptpasswordEncoder
+            String encodedPassword = passwordEncoder.encode(user.getUserPwd());
+            System.out.println("암호화 비밀번호 출력");
+            System.out.println(encodedPassword);
+            user.setUserPwd(encodedPassword);
+
+            result = userDao.register(user);
+            System.out.println("no one id  so reulst:::" + result);
+        }
+
 //        hashed_password = bcrypt.hashpw(a.encode('utf-8'), bcrypt.gensalt())
 //        user.setUserPwd();
-        int result=userDao.register(user);
-        System.out.println("reulst:::"+result);
+
         return result;
     }
 
@@ -45,5 +66,28 @@ public class AuthService {
             response.setMessage("CHECK_PWD");
         }
         return response;
+    }
+
+    public int checkVaildId(UserVo user) {
+        int result;
+        System.out.println("servicee idddd check param:"+user);
+        UserVo userResult = userDao.findUser(user);
+        if (userResult == null)
+            result = 1;
+        else
+            result = 0;
+
+        return result;
+    }
+    public int checkVaildEmail (UserVo user) {
+        int result;
+        System.out.println("servicee idddd check param:"+user);
+        UserVo userResult = userDao.findEmail(user);
+        if (userResult == null)
+            result = 1;
+        else
+            result = 0;
+
+        return result;
     }
 }
