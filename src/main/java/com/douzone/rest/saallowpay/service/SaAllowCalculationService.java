@@ -31,9 +31,14 @@ public class SaAllowCalculationService {
     }
 
     // 직접 입력한 급여항목 insert or update
-    public int mergeNewSalaryAllowPay(SaAllowPay saAllowPay) {
+    public int mergeNewSalaryAllowPay(SaAllowPay saAllowPay) throws Exception {
 
         this.dateId = saAllowPay.getDateId();
+
+
+//        String ff= EncryptionUtils.encrypt(saAllowPay.getDateId());
+//        String ss = EncryptionUtils.decrypt(ff);
+
         this.cdEmp = saAllowPay.getCdEmp();
         this.cdAllow = saAllowPay.getCdAllow();
 
@@ -79,7 +84,7 @@ public class SaAllowCalculationService {
 
     // 과세 비과세 재계산
     private int reCalculateSalaryPayment() {
-        System.out.println("과세 비과세 재계산, 사원정보 변경 재계산, 통상시급 계산");
+        System.out.println("과세 비과세 재계산");
         int result = 0;
 
         try {
@@ -107,7 +112,7 @@ public class SaAllowCalculationService {
         return result;
     }
 
-    // 소득세 재계산 - 전월데이터 복사때문에 생긴 메뉴로 추청... 기준은 간이세액 )
+    // 소득세 재계산
     private int reCalculateIncomeTax() {
         System.out.println("소득세 재계산");
 
@@ -131,16 +136,21 @@ public class SaAllowCalculationService {
             if (NON_TAXABLE.equals(salAllowInfo.getYnTax())) {
                 deleteSalAllowPay(saAllowPay);  // 해당 사원의 해당날짜 모든 지급항목 삭제
 
-                int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());    // 한달 한도
-                int allowPaySumByEmp =  getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합
                 int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
 
-                if (allowPaySumByEmp + allowPay > limit) {
-                    salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
-                    salaryAllowList.add(createSalAllowPay(TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
-
-                } else {
+                if (salAllowInfo.getNonTaxLimit() == null) {
                     salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(allowPay)));
+                } else {
+                    int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());   // 한달 한도
+                    int allowPaySumByEmp = getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합
+
+                    if (allowPaySumByEmp + allowPay > limit) {
+                        salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
+                        salaryAllowList.add(createSalAllowPay(TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
+
+                    } else {
+                        salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(allowPay)));
+                    }
                 }
 
             } else {
