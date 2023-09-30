@@ -43,11 +43,12 @@ public class AuthService {
 
         if (user == null) {
             response.setMessage("CHECK_ID");
-        } else if (user.getUserPwd().equals(userVo.getUserPwd())) {
-            // JWT 토큰
-            String jwtToken = jwtService.generateToken(user.getCompanyCode(), user.getUserId());
-            System.out.println("TOKEN...");
-            System.out.println(jwtToken);
+            return response;
+        }
+
+        if (passwordEncoder.matches(userVo.getUserPwd(), user.getUserPwd())) {
+            String jwtToken = jwtService.generateAccessToken(user.getUserId(), user.getCompanyCode());
+            logger.info("Generated token: {}", jwtToken);
             response.setMessage("SUCCESS");
             response.setToken(jwtToken);
             response.setUser(user);
