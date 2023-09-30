@@ -47,7 +47,7 @@ public class AuthService {
         }
 
         if (passwordEncoder.matches(userVo.getUserPwd(), user.getUserPwd())) {
-            String jwtToken = jwtService.generateAccessToken(user.getUserId());
+            String jwtToken = jwtService.generateAccessToken(user.getUserId(), user.getCompanyCode());
             logger.info("Generated token: {}", jwtToken);
             response.setMessage("SUCCESS");
             response.setToken(jwtToken);

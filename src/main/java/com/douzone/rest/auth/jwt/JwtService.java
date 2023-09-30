@@ -26,9 +26,9 @@ public class JwtService {
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7;
 
 
-    public String generateAccessToken(String userId) {
+    public String generateAccessToken(String userId, String companyCode) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(userId+"_"+companyCode)
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
