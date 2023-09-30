@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -25,6 +28,7 @@ public class AuthController {
         System.out.println("parameter login info: ");
         System.out.println(user);
         ResponseVo response = authService.findUser(user);
+        System.out.println("response");
         System.out.println(response);
 
         if (response.getMessage().equals("SUCCESS")) {
@@ -32,14 +36,36 @@ public class AuthController {
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
             System.out.println("responseeeeeeeeeee login");
             System.out.println(response);
+
             System.out.println(response.getToken());
+            System.out.println("succeess token: "+response.getToken());
             headers.set("Authorization", "Bearer " + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-        //      return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+
+        @PostMapping("/cookieLogin")
+        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+            System.out.println("d---------------------------d");
+            ResponseVo response = authService.findUser(user);
+
+            if (response.getMessage().equals("SUCCESS")) {
+                System.out.println("SUCCCEESSS COKIIIEEE");
+                Cookie tokenCookie = new Cookie("authToken", response.getToken());
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+
+                httpResponse.addCookie(tokenCookie);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) {
@@ -55,7 +81,7 @@ public class AuthController {
     public String checkVaildId(@RequestBody UserVo user) {
         String result = "";
         System.out.println("check id consripll parm ; " + user);
-        int checkIdResult = authService.checkVaildId(user);
+        int checkIdResult = authService.checkValidId(user);
         if (checkIdResult == 1)
             result = "SUCCESS";
         else result = "FAIL";
@@ -66,7 +92,7 @@ public class AuthController {
     public String checkVaildEmail(@RequestBody UserVo user) {
         String result = "";
         System.out.println("check id consripll parm ; " + user);
-        int checkIdResult = authService.checkVaildEmail(user);
+        int checkIdResult = authService.checkValidEmail(user);
         if (checkIdResult == 1)
             result = "SUCCESS";
         else result = "FAIL";

@@ -22,7 +22,7 @@
         USER_NAME,
         EMAIL,
         PHONE,
-        GENDER
+        THEME
         )
         VALUES
         (
@@ -32,7 +32,7 @@
         #{userName, jdbcType=VARCHAR},
         #{email, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
-        #{gender, jdbcType=VARCHAR}
+        #{theme, jdbcType=VARCHAR}
         )
     </insert>
 
