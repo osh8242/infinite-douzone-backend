@@ -23,6 +23,7 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
         System.out.println("parameter login info: ");
@@ -45,7 +46,6 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
-
 
         @PostMapping("/cookieLogin")
         @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")

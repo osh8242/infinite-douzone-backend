@@ -18,7 +18,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final JwtService jwtService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService){
+        System.out.println("jwt service");
         this.jwtService = jwtService;
     }
 
@@ -40,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
     }
-
 
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
