@@ -54,6 +54,8 @@ public class EmpAddController {
 
     @PostMapping("/insertEmpAdd")
     public ResponseEntity<Integer> insertEmpAdd(@RequestBody EmpAdd empAdd) {
+        System.out.println("EmpAddController.insertEmpAdd");
+        System.out.println("empAdd = " + empAdd);
         int result = 0;
         result = empAddService.insertEmpAdd(empAdd);
         return ResponseEntity.ok(result);

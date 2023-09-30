@@ -22,22 +22,17 @@ public class SaDeductPayService {
         return saDeductPayDao.getSaDeductPayByCdEmp(requestMap);
     }
 
-//    public int updateSaDeductPay(Map<String, Object> requestMap) {
-//        int result = 0;
-//
-//        List<Map<String, Object>> updateDeductPayList = (ArrayList<Map<String, Object>>) requestMap.get("calData");
-//
-//        for (Map<String, Object> saDeductPay : updateDeductPayList) {
-//            saDeductPay.put("allowMonth", requestMap.get("allowMonth"));
-//            saDeductPay.put("cdEmp", requestMap.get("cdEmp"));
-//            saDeductPayDao.updateSaDeductPay(saDeductPay);
-//        }
-//
-//        return result;
-//    }
-
     public List<Map<String, String>> getSalDeductPaySum(Map<String, String> requestMap) {
         return saDeductPayDao.getSalDeductPaySum(requestMap);
     }
 
+    public List<Map<String, String>> getsalDeductList(Map<String, String> map){
+        List<Map<String, String>> result = new ArrayList<>();
+        try {
+            result = saDeductPayDao.getsalDeductList(map);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
 }

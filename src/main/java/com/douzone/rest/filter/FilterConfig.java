@@ -29,12 +29,6 @@ public class FilterConfig {
 //        return registrationBean;
 //    }
 
-    @Bean
-    public FilterRegistrationBean<DataSourceFilter> dataSourceFilterRegistrationBean(DataSourceFilter dataSourceFilter) {
-        FilterRegistrationBean<DataSourceFilter> registrationBean = new FilterRegistrationBean<>(dataSourceFilter);
-        registrationBean.setOrder(2);
-        return registrationBean;
-    }
 
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtAuthenticationFilterRegistrationBean(JwtService jwtService) {
@@ -44,8 +38,16 @@ public class FilterConfig {
 
         registrationBean.addUrlPatterns("/*");
 
-        registrationBean.setOrder(3);
+        registrationBean.setOrder(2);
 
         return registrationBean;
     }
+
+    @Bean
+    public FilterRegistrationBean<DataSourceFilter> dataSourceFilterRegistrationBean(DataSourceFilter dataSourceFilter) {
+        FilterRegistrationBean<DataSourceFilter> registrationBean = new FilterRegistrationBean<>(dataSourceFilter);
+        registrationBean.setOrder(3);
+        return registrationBean;
+    }
+
 }

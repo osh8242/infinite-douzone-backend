@@ -1,4 +1,4 @@
-//package com.douzone.rest.jwt;
+//package com.douzone.jwt;
 //
 //import io.jsonwebtoken.Jwts;
 //import io.jsonwebtoken.SignatureAlgorithm;

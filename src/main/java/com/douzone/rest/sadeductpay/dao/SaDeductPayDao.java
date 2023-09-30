@@ -10,7 +10,10 @@ import java.util.Map;
 public interface SaDeductPayDao {
 
     List<SaDeductPay> getSaDeductPayByCdEmp(Map<String, String> requestMap); // 공제항목 리스트 조회
-    public void updateSaDeductPay(Map<String, Object> saDeductPay); //수정
+
     List<Map<String, String>> getSalDeductPaySum(Map<String, String> requestMap);
 
+    List<Map<String, String>> getsalDeductList(Map<String, String> requestMap);
+
+    int mergeSaDeductPayList(List<SaDeductPay> saDeductPayList);
 }

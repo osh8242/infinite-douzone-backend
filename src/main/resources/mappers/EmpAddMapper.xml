@@ -9,7 +9,11 @@
     </select>
 
     <select id="getEmpAddListForHrManagement" parameterType="map" resultType="EmpAdd">
-        SELECT empadd.cd_emp, emp.nm_krname, emp.job_ok
+        SELECT empadd.cd_emp, nm_krname, job_ok,
+        da_retire, no_social, da_enter, fg_sex,
+        zip_home,
+        tel_home1, tel_home2, tel_home3,
+        cel_emp1, cel_emp2, cel_emp3
         FROM empadd
         INNER JOIN (
         SELECT cd_emp, nm_krname, job_ok
@@ -32,30 +36,44 @@
     </select>
 
     <insert id="insertEmpAdd" parameterType="EmpAdd">
-        INSERT INTO empadd VALUES (
-        #{cdEmp, jdbcType=VARCHAR},          #{nmChName, jdbcType=VARCHAR},
-        #{nmEnName, jdbcType=VARCHAR},       #{ynDrawContracts, jdbcType=VARCHAR},
-        #{dcMidRetire, jdbcType=VARCHAR},    #{fgWedding, jdbcType=VARCHAR},
-        #{fgDisorder, jdbcType=VARCHAR},     #{daBirth, jdbcType=DATE},
-        #{strHobby, jdbcType=VARCHAR},       #{nmSpecial, jdbcType=VARCHAR},
-        #{tyReligion, jdbcType=VARCHAR},     #{zipHome, jdbcType=VARCHAR},
-        #{zipOrgin, jdbcType=VARCHAR},       #{addOrgin1, jdbcType=VARCHAR},
-        #{addOrgin2, jdbcType=VARCHAR},      #{mnKeepGarden, jdbcType=NUMERIC},
-        #{mnKeepEstate, jdbcType=NUMERIC},   #{fgOwnHouse, jdbcType=VARCHAR},
-        #{telOffice1, jdbcType=VARCHAR},     #{telOffice2, jdbcType=VARCHAR},
-        #{telOffice3, jdbcType=VARCHAR},     #{telExtens, jdbcType=VARCHAR},
-        #{tyMilit, jdbcType=VARCHAR},        #{whyMltOff, jdbcType=VARCHAR},
-        #{daMltBegin, jdbcType=DATE},        #{daMltEnd, jdbcType=DATE},
-        #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
-        #{strMltDisch, jdbcType=VARCHAR},    #{cdMltRank, jdbcType=VARCHAR}),
-        #{fgMltType, jdbcType=VARCHAR},      #{nmMltBranc, jdbcType=VARCHAR},
-        #{noSocial, jdbcType=VARCHAR},      #{fgSex, jdbcType=VARCHAR},
-        #{cdDept, jdbcType=VARCHAR},      #{rankNo, jdbcType=VARCHAR},
-        #{daEnter, jdbcType=VARCHAR},      #{daRetire, jdbcType=VARCHAR}),
-        #{telHome1, jdbcType=VARCHAR},     #{telHome2, jdbcType=VARCHAR},
-        #{telHome3, jdbcType=VARCHAR},       #{celEmp1, jdbcType=VARCHAR},
-        #{celEmp2, jdbcType=VARCHAR},       #{celEmp3, jdbcType=VARCHAR}
+        INSERT INTO empadd
+        (
+        cd_Emp, nm_ChName, nm_EnName, yn_DrawContracts, dc_MidRetire, fg_Wedding,
+        fg_Disorder, da_Birth, str_Hobby, nm_Special, ty_Religion, zip_Home, add_Home1, add_Home2,
+        zip_Orgin, add_Orgin1, add_Orgin2, mn_KeepGarden, mn_KeepEstate, fg_OwnHouse,
+        tel_Office1, tel_Office2, tel_Office3, tel_Extens, ty_Milit, why_MltOff,
+        da_MltBegin, da_MltEnd, fg_MltType, nm_MltBranc, str_MltDisch, cd_MltRank,
+        no_Social, fg_Sex, cd_Dept, rank_No, da_Enter, da_Retire, tel_Home1,
+        tel_Home2, tel_Home3, cel_Emp1, cel_Emp2, cel_Emp3
+        )
+        VALUES
+        (
+        #{cdEmp, jdbcType=VARCHAR}, #{nmChName, jdbcType=VARCHAR},
+        #{nmEnName, jdbcType=VARCHAR}, #{ynDrawContracts, jdbcType=VARCHAR},
+        #{dcMidRetire, jdbcType=VARCHAR}, #{fgWedding, jdbcType=VARCHAR},
+        #{fgDisorder, jdbcType=VARCHAR}, #{daBirth, jdbcType=DATE},
+        #{strHobby, jdbcType=VARCHAR}, #{nmSpecial, jdbcType=VARCHAR},
+        #{tyReligion, jdbcType=VARCHAR}, #{zipHome, jdbcType=VARCHAR},
+        #{addHome1, jdbcType=VARCHAR}, #{addHome2, jdbcType=VARCHAR},
+        #{zipOrgin, jdbcType=VARCHAR}, #{addOrgin1, jdbcType=VARCHAR},
+        #{addOrgin2, jdbcType=VARCHAR}, #{mnKeepGarden, jdbcType=NUMERIC},
+        #{mnKeepEstate, jdbcType=NUMERIC}, #{fgOwnHouse, jdbcType=VARCHAR},
+        #{telOffice1, jdbcType=VARCHAR}, #{telOffice2, jdbcType=VARCHAR},
+        #{telOffice3, jdbcType=VARCHAR}, #{telExtens, jdbcType=VARCHAR},
+        #{tyMilit, jdbcType=VARCHAR}, #{whyMltOff, jdbcType=VARCHAR},
+        #{daMltBegin, jdbcType=DATE}, #{daMltEnd, jdbcType=DATE},
+        #{fgMltType, jdbcType=VARCHAR}, #{nmMltBranc, jdbcType=VARCHAR},
+        #{strMltDisch, jdbcType=VARCHAR}, #{cdMltRank, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR}, #{fgSex, jdbcType=VARCHAR},
+        #{cdDept, jdbcType=VARCHAR}, #{rankNo, jdbcType=VARCHAR},
+        #{daEnter, jdbcType=VARCHAR}, #{daRetire, jdbcType=VARCHAR},
+        #{telHome1, jdbcType=VARCHAR}, #{telHome2, jdbcType=VARCHAR},
+        #{telHome3, jdbcType=VARCHAR}, #{celEmp1, jdbcType=VARCHAR},
+        #{celEmp2, jdbcType=VARCHAR}, #{celEmp3, jdbcType=VARCHAR}
+        )
     </insert>
+
+
 
     <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
         DELETE FROM empadd WHERE CD_EMP = #{cdEmp}
@@ -76,6 +94,8 @@
             <if test="tyEmploy != null">TY_EMPLOY = #{tyEmploy},</if>
             <if test="tyReligion != null">TY_RELIGION = #{tyReligion},</if>
             <if test="zipHome != null">ZIP_HOME = #{zipHome},</if>
+            <if test="addHome1 != null">ADD_HOME1 = #{addHome1},</if>
+            <if test="addHome2 != null">ADD_HOME2 = #{addHome2},</if>
             <if test="zipOrgin != null">ZIP_ORGIN = #{zipOrgin},</if>
             <if test="addOrgin1 != null">ADD_ORGIN1 = #{addOrgin1},</if>
             <if test="addOrgin2 != null">ADD_ORGIN2 = #{addOrgin2},</if>

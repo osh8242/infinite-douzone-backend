@@ -1,4 +1,4 @@
-//package com.douzone.rest.jwt;
+//package com.douzone.jwt;
 //
 //import jakarta.servlet.http.HttpServletResponse;
 //import org.springframework.beans.factory.annotation.Autowired;
