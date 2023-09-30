@@ -187,7 +187,7 @@ public class SaAllowPayService {
         try {
             saAllowPayMapper.makeDateId(saAllowPay);
             newDateId = saAllowPay.getDateId();
-            System.out.println("newDateId");
+
 
         }catch (Exception e){
             e.getStackTrace();
