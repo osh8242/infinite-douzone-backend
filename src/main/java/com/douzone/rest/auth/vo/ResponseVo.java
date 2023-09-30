@@ -14,4 +14,4 @@ public class ResponseVo {
         private String message;
         private String token;
         private UserVo user;
-    }
+}

@@ -1,5 +1,13 @@
 package com.douzone.rest.auth.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.douzone.rest.auth.vo.UserVo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
@@ -24,6 +32,10 @@ public class JwtService {
     public JwtService(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+    private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
+
+    // 시크릿 키 생성. HS512 알고리즘을 위한 키 크기에 맞게 생성
+    private static final byte[] SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
 
     // 시크릿 키 생성. HS256 알고리즘을 위한 키 크기에 맞게 생성
 //    private static final byte[] SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
@@ -52,8 +64,29 @@ public class JwtService {
                 .compact();  // 토큰 문자열로 변환
         redisTemplate.opsForValue().set(subject, token, expirationTime, TimeUnit.MILLISECONDS);
         return token;
+
+    public String generateAccessToken(String userId) {
+        return Jwts.builder()
+                .setSubject(userId)
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
     }
 
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            logger.error("Token has expired: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Token structure is invalid: {}", e.getMessage());
+        } catch (SignatureException e) {
+            logger.error("Token signature is invalid: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error validating token: {}", e.getMessage());
+        }
+        return false;
     // 액세스 토큰 생성
     public String generateToken(String companyCode, String userId) {
         return generateToken(companyCode, userId, ACCESS_TOKEN_EXPIRATION_TIME);
@@ -96,6 +129,15 @@ public class JwtService {
         }
     }
 
+    public String parseToken(String token) {
+        if (validateToken(token)) {
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        }
+        return null;
     //시크릿 키 반환
     public String getSecretKey() {
         return SECRET_KEY;
