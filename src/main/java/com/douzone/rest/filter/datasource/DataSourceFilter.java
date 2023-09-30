@@ -1,13 +1,11 @@
 package com.douzone.rest.filter.datasource;
 
 import com.douzone.rest.company.config.CompanyContextHolder;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 
 @Component
 public class DataSourceFilter implements Filter {
@@ -16,9 +14,7 @@ public class DataSourceFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         System.out.println("DataSourceFilter.doFilter");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String companyCode = (String) httpRequest.getAttribute("companyCode");
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        ((HttpServletResponse) response).addHeader("companyCode", companyCode);
+        String companyCode = httpRequest.getParameter("companyCode");
         System.out.println("companyCode = " + companyCode);
 
         try {

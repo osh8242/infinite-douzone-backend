@@ -1,14 +1,16 @@
 package com.douzone.rest.auth;
 
-import com.douzone.rest.auth.jwt.JwtProperties;
 import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,16 +23,80 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
-    public String login(@RequestBody UserVo user, HttpServletResponse response) {
+    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
         System.out.println("parameter login info: ");
         System.out.println(user);
-        ResponseVo responseVo = authService.findUser(user);
-        System.out.println("responseVo.getToken() = " + responseVo.getToken());
-        response.addHeader(JwtProperties.HEADER_STRING, responseVo.getToken());
-        response.addHeader("Access-Control-Expose-Headers", JwtProperties.HEADER_STRING);
+        ResponseVo response = authService.findUser(user);
+        System.out.println("response");
+        System.out.println(response);
 
-        return responseVo.getMessage();
+        if (response.getMessage().equals("SUCCESS")) {
+            HttpHeaders headers = new HttpHeaders();
+            // ResponseVo에서 토큰을 가져와서 헤더에 추가
+            System.out.println("responseeeeeeeeeee login");
+            System.out.println(response);
+
+            System.out.println(response.getToken());
+            System.out.println("succeess token: "+response.getToken());
+            headers.set("Authorization", "Bearer " + response.getToken());
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+        @PostMapping("/cookieLogin")
+        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+            System.out.println("d---------------------------d");
+            ResponseVo response = authService.findUser(user);
+
+            if (response.getMessage().equals("SUCCESS")) {
+                System.out.println("SUCCCEESSS COKIIIEEE");
+                Cookie tokenCookie = new Cookie("authToken", response.getToken());
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+
+                httpResponse.addCookie(tokenCookie);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+    @PostMapping("/register")
+    public String Register(@RequestBody UserVo user) {
+        System.out.println("Register Parameter: " + user);
+        int resultMsg = authService.register(user);
+        System.out.println("result Msg: " + resultMsg);
+        if (resultMsg == 1) return "SUCCESS";
+        else return "FAIL";
+//        return resultMsg;
+    }
+
+    @PostMapping("/checkVaildId")
+    public String checkVaildId(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkValidId(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
+    }
+
+    @PostMapping("/checkVaildEmail")
+    public String checkVaildEmail(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkValidEmail(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
     }
 
     @CrossOrigin(origins = "http://localhost:3000/")
@@ -45,12 +111,12 @@ public class AuthController {
         // TODO : send Email Sevice 구현
         System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
-            emailService.sendSimpleMessage(
+        emailService.sendSimpleMessage(
 //                    "llikepsh515@gmail.com".trim(),
-                    "llikepsh515@gmail.com",
-                    "Testing sendEmail",
-                    "hi im seoyeonlee hehe"
-            );
+                "llikepsh515@gmail.com",
+                "Testing sendEmail",
+                "hi im seoyeonlee hehe"
+        );
 //        }
 
         ResponseVo response = new ResponseVo();

@@ -27,6 +27,8 @@ public class SwsmOtherController {
 
     @PostMapping("/getSwsmOtherByCdEmp")
     public ResponseEntity<List<SwsmOther>> getSwsmOtherByCdEmp(@RequestBody SwsmOther swsmOther) {
+//        System.out.println("par   aaaammmetttterr::");
+//        System.out.println(swsmOther);
         List<SwsmOther> swsmOtherList = swsmOtherService.getSwsmOtherByCdEmp(swsmOther);
         return ResponseEntity.status(HttpStatus.OK).body(swsmOtherList);
     }
