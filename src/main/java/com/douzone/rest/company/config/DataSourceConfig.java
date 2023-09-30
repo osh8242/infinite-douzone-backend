@@ -2,7 +2,6 @@ package com.douzone.rest.company.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,8 +26,7 @@ public class DataSourceConfig {
 //        DataSource company2DataSource = createDataSource("HR102", "1004");
 //        DataSource company3DataSource = createDataSource("HR103", "1004");
 //        DataSource company4DataSource = createDataSource("HR104", "1004");
-
-        targetDataSources.put("HR", company0DataSource);
+            targetDataSources.put("HR", company0DataSource);
 //        targetDataSources.put("HR101", company1DataSource);
 //        targetDataSources.put("HR102", company2DataSource);
 //        targetDataSources.put("HR103", company3DataSource);

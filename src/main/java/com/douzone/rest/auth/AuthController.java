@@ -103,19 +103,19 @@ public class AuthController {
     @PostMapping("/findEmail")
     public ResponseEntity<ResponseVo> findEmail(@RequestBody UserVo user) {
         System.out.println("parameter email info: ");
-        System.out.println(user);  // UserVo 객체에 getEmail 메서드가 있어야 합니다.
+        System.out.println(user);
 //        UserVo u = new UserVo("1", "2", "3", "seoyeonev@gmail.com");
 //        ResponseVo response = new ResponseVo();
         // TODO : 동일 이메일 있을 경우 , 이메일 보내기
 
         // TODO : send Email Sevice 구현
-        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
+//        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
         emailService.sendSimpleMessage(
 //                    "llikepsh515@gmail.com".trim(),
                 "llikepsh515@gmail.com",
-                "Testing sendEmail",
-                "hi im seoyeonlee hehe"
+                "[무한더존] 요청하신 아이디를 발송해 드립니다.",
+                "teest"
         );
 //        }
 

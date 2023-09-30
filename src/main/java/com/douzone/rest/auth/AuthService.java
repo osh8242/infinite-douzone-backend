@@ -68,4 +68,8 @@ public class AuthService {
         UserVo userResult = userDao.findEmail(user);
         return userResult == null ? 1 : 0;
     }
+
+    public UserVo IdByEmail(UserVo user){
+        return userDao.findEmail(user);
+    }
 }
