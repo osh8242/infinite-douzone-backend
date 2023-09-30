@@ -2,7 +2,7 @@ package com.douzone.rest.datasource;
 
 import com.douzone.rest.company.vo.DataSourceVo;
 import com.douzone.rest.datasource.service.DataSourceService;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
