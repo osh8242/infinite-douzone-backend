@@ -22,5 +22,10 @@ public class SaAllowPay {
     private String salDivision;
     private String calculation;
 
+    private String commonlyYn;
+    private String monthlyYn;
+    private String nontaxLimit;
+
+
 
 }
