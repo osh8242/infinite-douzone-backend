@@ -59,6 +59,11 @@ public class AuthService {
         return response;
     }
 
+
+    public int checkValidCd(UserVo user) {
+        UserVo userResult = userDao.findUserByCd(user);
+        return userResult == null ? 1 : 0;
+    }
     public int checkValidId(UserVo user) {
         UserVo userResult = userDao.findUser(user);
         return userResult == null ? 1 : 0;

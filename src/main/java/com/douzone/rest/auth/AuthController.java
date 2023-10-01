@@ -3,6 +3,7 @@ package com.douzone.rest.auth;
 import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
+import com.douzone.rest.company.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private EmailService emailService;
@@ -68,7 +72,8 @@ public class AuthController {
         }
 
     @PostMapping("/register")
-    public String Register(@RequestBody UserVo user) {
+    public String Register(@RequestBody UserVo user) throws Exception {
+        companyService.createNewSchema(user.getCompanyCode(), user.getUserPwd());
         System.out.println("Register Parameter: " + user);
         int resultMsg = authService.register(user);
         System.out.println("result Msg: " + resultMsg);
@@ -76,6 +81,18 @@ public class AuthController {
         else return "FAIL";
 //        return resultMsg;
     }
+
+    @PostMapping("/checkVaildCd")
+    public String checkVaildCd(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkValidCd(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
+    }
+
 
     @PostMapping("/checkVaildId")
     public String checkVaildId(@RequestBody UserVo user) {
@@ -108,14 +125,15 @@ public class AuthController {
 //        ResponseVo response = new ResponseVo();
         // TODO : 동일 이메일 있을 경우 , 이메일 보내기
 
+        UserVo result=authService.IdByEmail(user);
+
         // TODO : send Email Sevice 구현
 //        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
         emailService.sendSimpleMessage(
-//                    "llikepsh515@gmail.com".trim(),
                 "llikepsh515@gmail.com",
                 "[무한더존] 요청하신 아이디를 발송해 드립니다.",
-                "teest"
+                "요청하신 아이디를 발송해 드립니다.\n ID: "+result.getUserId()
         );
 //        }
 
