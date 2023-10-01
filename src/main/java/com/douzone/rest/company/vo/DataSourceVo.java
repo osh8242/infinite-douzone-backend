@@ -7,11 +7,17 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@AllArgsConstructor
 public class DataSourceVo implements Serializable {
     @Serial
     private static final long serialVersionUID  = 1L;
 
     private String companyCode;
     private String password;
+    private Integer status;
+
+    public DataSourceVo(String companyCode, String password) {
+        this.companyCode = companyCode;
+        this.password = password;
+        this.status = 1;
+    }
 }

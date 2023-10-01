@@ -63,6 +63,9 @@ public class EmpPhotoController {
         EmpPhoto empPhoto = null;
         try {
             empPhoto = objectMapper.readValue(pkValueJsonString, EmpPhoto.class);
+            EmpPhoto oldEmpPhoto = empPhotoService.getEmpPhotoByCdEmp(empPhoto.getCdEmp());
+            System.out.println("oldEmpPhoto = " + oldEmpPhoto);
+            if(oldEmpPhoto == null) empPhotoService.insertEmpPhoto(empPhoto);
             System.out.println(empPhoto.toString());
         } catch (JsonProcessingException e) {
             System.out.println("objectMapper 에러 발생 : " + e);
