@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SwsmService {
@@ -33,6 +34,18 @@ public class SwsmService {
 //        }
 
         return r;
+    }
+
+    public int insertSwsm(Swsm swsm){
+        int result = 0;
+        result = swsmDao.insertSwsm(swsm);
+        return result;
+    }
+
+    public List<Swsm> getSwsmListForSwsm(Map<String, String> map){
+        List<Swsm> swsms = null;
+        swsms = swsmDao.getSwsmListForSwsm(map);
+        return swsms;
     }
 
     public int insertSwsmEmp(Swsm swsm) {

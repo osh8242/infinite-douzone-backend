@@ -6,7 +6,6 @@ import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,13 @@ public class EmpService {
         return result;
     }
 
+    public List<Emp> getEmpListForSwsm(Map<String, Object> map){
+        System.out.println("EmpService.getEmpListForSwsm");
+        System.out.println("paraaamaaaeeeter: ");
+        System.out.println(map);
+        List<Emp> result = empDao.getEmpListForSwsm(map);
+        return result;
+    }
     public Emp getEmpByCdEmp(Emp emp){
         System.out.println("Emp Service -----");
         Emp resultEmp = empDao.getEmpByCdEmp(emp);

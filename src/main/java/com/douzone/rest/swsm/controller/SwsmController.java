@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/swsm")
@@ -47,7 +49,24 @@ public class SwsmController {
             return ResponseEntity.status(HttpStatus.OK).body(reswsm);
     }
 
+    @GetMapping("/getSwsmListForSwsm")
+    public ResponseEntity<List<Swsm>> getSwsmListForSwsm(@RequestParam(name = "job") String job
+                                                                   ) {
+        Map<String, String> map = new HashMap<>();
+        map.put("incomeClassfication", job.trim());
+        List<Swsm> list = null;
+        list = swsmService.getSwsmListForSwsm(map);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
+    @PostMapping("/insertSwsm")
+    public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm) {
+        System.out.println("EmpAddController.insertEmpAdd");
+        System.out.println("swsm = " + swsm);
+        int result = 0;
+        result = swsmService.insertSwsm(swsm);
+        return ResponseEntity.ok(result);
+    }
     @PutMapping("/updateSwsm")
     public int updateSwsm(@RequestBody Swsm swsm){
         System.out.println("controller update : parameter"+swsm);

@@ -8,10 +8,69 @@
         select * from Swsm where CD_EMP = #{cdEmp}
     </select>
 
+    <select id="getSwsmListForSwsm" parameterType="map" resultType="Swsm">
+        SELECT swsm.cd_emp, emp.nm_krname, emp.no_social
+        FROM swsm
+        INNER JOIN (
+        SELECT cd_emp, nm_krname, income_classfication
+        FROM EMP
+        WHERE income_classfication = #{incomeClassfication}
+        ) emp ON swsm.cd_emp = emp.cd_emp
+    </select>
+
     <select id="getAllSwsm" resultType="Swsm">
         Select *
         FROM SWSM
     </select>
+
+    <insert id="insertSwsm" parameterType="Swsm">
+        INSERT INTO swsm
+        (
+        INCOME_CLASSFICATION, WITHHOLDING_YEAR, DATE_OF_CREATION, CD_EMP, OTHER_BENEFITS_ITEM,
+        OTHER_BENEFITS_AMOUNT, NM_KRNAME, RESIDENT_STATE, RRN, SALARY_AMOUNT, BONUS_AMOUNT,
+        START_EMP_CONTRACT_PERIOD, END_EMP_CONTRACT_PERIOD, POST_CODE, ADDRESS, JOB_DESCRIPTION,
+        START_BREAK_TIME, END_BREAK_TIME, WORKING_DAY, DAY_OFF, SALARY_TYPE, OTHER_BENEFITS,
+        BONUS_PAYMENT_STATUS, SALARY_PAYMENT_DATE_TYPE, PAYMENT_DATE, PAYMENT_METHOD,
+        EMP_INSURANCE, COMPENSATION_INSURANCE, NATIONAL_PENSION, HEALTH_INSURANCE, ADD_DETAIL,
+        START_WORKTIME, END_WORKTIME
+        )
+        VALUES
+        (
+        #{INCOME_CLASSFICATION, jdbcType=VARCHAR},
+        #{WITHHOLDING_YEAR, jdbcType=VARCHAR},
+        #{DATE_OF_CREATION, jdbcType=VARCHAR},
+        #{CD_EMP, jdbcType=VARCHAR},
+        #{OTHER_BENEFITS_ITEM, jdbcType=VARCHAR},
+        #{OTHER_BENEFITS_AMOUNT, jdbcType=VARCHAR},
+        #{NM_KRNAME, jdbcType=VARCHAR},
+        #{RESIDENT_STATE, jdbcType=VARCHAR},
+        #{RRN, jdbcType=VARCHAR},
+        #{SALARY_AMOUNT, jdbcType=VARCHAR},
+        #{BONUS_AMOUNT, jdbcType=VARCHAR},
+        #{START_EMP_CONTRACT_PERIOD, jdbcType=VARCHAR},
+        #{END_EMP_CONTRACT_PERIOD, jdbcType=VARCHAR},
+        #{POST_CODE, jdbcType=VARCHAR},
+        #{ADDRESS, jdbcType=VARCHAR},
+        #{JOB_DESCRIPTION, jdbcType=VARCHAR},
+        #{START_BREAK_TIME, jdbcType=VARCHAR},
+        #{END_BREAK_TIME, jdbcType=VARCHAR},
+        #{WORKING_DAY, jdbcType=VARCHAR},
+        #{DAY_OFF, jdbcType=VARCHAR},
+        #{SALARY_TYPE, jdbcType=VARCHAR},
+        #{OTHER_BENEFITS, jdbcType=VARCHAR},
+        #{BONUS_PAYMENT_STATUS, jdbcType=VARCHAR},
+        #{SALARY_PAYMENT_DATE_TYPE, jdbcType=VARCHAR},
+        #{PAYMENT_DATE, jdbcType=VARCHAR},
+        #{PAYMENT_METHOD, jdbcType=VARCHAR},
+        #{EMP_INSURANCE, jdbcType=VARCHAR},
+        #{COMPENSATION_INSURANCE, jdbcType=VARCHAR},
+        #{NATIONAL_PENSION, jdbcType=VARCHAR},
+        #{HEALTH_INSURANCE, jdbcType=VARCHAR},
+        #{ADD_DETAIL, jdbcType=VARCHAR},
+        #{START_WORKTIME, jdbcType=VARCHAR},
+        #{END_WORKTIME, jdbcType=VARCHAR}
+        )
+    </insert>
 
     <update id="updateSwsm" parameterType="Swsm">
         update SWSM

@@ -8,6 +8,11 @@
         FROM EMP
     </select>
 
+    <select id="getEmpListForSwsm" parameterType="map" resultType="Emp">
+        SELECT *
+        FROM EMP WHERE income_classfication = #{incomeClassfication}
+    </select>
+
     <select id="getEmpListForHrManagement" parameterType="map" resultType="Emp">
         SELECT *
         FROM EMP WHERE JOB_OK = #{jobOk}
@@ -44,6 +49,7 @@
         yn_for,
         no_social,
         <if test="jobOk != null">job_ok,</if>
+        <if test="incomeClassfication != null">income_classfication,</if>
         <if test="daEnter != null">da_enter,</if>
         fg_sex,
         abb_nation,
@@ -115,6 +121,7 @@
         #{ynFor, jdbcType=VARCHAR},
         #{noSocial, jdbcType=VARCHAR},
         <if test="jobOk != null">#{jobOk, jdbcType=VARCHAR},</if>
+        <if test="incomeClassfication != null">#{incomeClassfication, jdbcType=VARCHAR},</if>
         <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
         #{fgSex, jdbcType=VARCHAR},
         #{abbNation, jdbcType=VARCHAR},
@@ -198,6 +205,7 @@
         <if test="ynFor != null">yn_for = #{ynFor, jdbcType=VARCHAR},</if>
         <if test="noSocial != null">no_social = #{noSocial, jdbcType=VARCHAR},</if>
         <if test="jobOk != null">job_ok = #{jobOk, jdbcType=VARCHAR},</if>
+        <if test="incomeClassfication != null">income_classfication = #{incomeClassfication, jdbcType=VARCHAR},</if>
         <if test="daEnter != null">da_enter = #{daEnter, jdbcType=VARCHAR},</if>
         <if test="fgSex != null">fg_sex = #{fgSex, jdbcType=VARCHAR},</if>
         <if test="abbNation != null">abb_nation = #{abbNation, jdbcType=VARCHAR},</if>
