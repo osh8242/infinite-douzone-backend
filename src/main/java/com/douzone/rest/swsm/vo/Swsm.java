@@ -1,12 +1,8 @@
 package com.douzone.rest.swsm.vo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 public class Swsm {
     String withholdingYear; // "원천년도"
     String dateOfCreation; // "작성년월"
