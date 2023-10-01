@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SaAllowCalculationService {
     private final SaAllowPayMapper saAllowPayMapper;
+    private final SaDeductCalculationService saDeductCalculationService;
+
     private String cdEmp;
     private String dateId;
     private String cdAllow;
@@ -26,18 +29,20 @@ public class SaAllowCalculationService {
     private static final String NON_TAXABLE = "N";
 
     @Autowired
-    public SaAllowCalculationService(SaAllowPayMapper saAllowPayMapper) {
+    public SaAllowCalculationService(
+            SaAllowPayMapper saAllowPayMapper,
+            SaDeductCalculationService saDeductCalculationService
+    ) {
+
         this.saAllowPayMapper = saAllowPayMapper;
+        this.saDeductCalculationService = saDeductCalculationService;
     }
+
 
     // 직접 입력한 급여항목 insert or update
     public int mergeNewSalaryAllowPay(SaAllowPay saAllowPay) throws Exception {
 
         this.dateId = saAllowPay.getDateId();
-
-
-//        String ff= EncryptionUtils.encrypt(saAllowPay.getDateId());
-//        String ss = EncryptionUtils.decrypt(ff);
 
         this.cdEmp = saAllowPay.getCdEmp();
         this.cdAllow = saAllowPay.getCdAllow();
@@ -46,6 +51,8 @@ public class SaAllowCalculationService {
         try {
 
             List<SaAllowPay> newSalaryAllowPayList = makeCalculationAllowPayData(saAllowPay);   // 수당 리스트
+
+            saAllowPayMapper.deleteSalAllowPay(saAllowPay); // 수당 delete
             result = saAllowPayMapper.mergeSalAllowPay(newSalaryAllowPayList);   // 수당 insert or update
 
         }catch (Exception e) {
@@ -60,7 +67,7 @@ public class SaAllowCalculationService {
 
         int result = 0;
         this.cdEmp = (String) requestMap.get("cdEmp");
-        this.dateId = (String) requestMap.get("dateId");
+        this.dateId = requestMap.get("dateId").toString();;
         this.allowMonth = (String) requestMap.get("allowMonth");
         this.allowYear = (String) requestMap.get("allowYear");
 
@@ -68,12 +75,12 @@ public class SaAllowCalculationService {
 
         for (String option : selectOptionList) {
             switch (option) {
-                case "editEmpInfo":         // 사원정보 변경 진 메뉴 생산직여부, 4대보험 여부 계산
-                case "calculateTaxYn":      // 과세 비과세 재계산
-                    result = reCalculateSalaryPayment();
+                case "editEmpInfo":               // 사원정보 변경 진 메뉴 생산직여부
+                case "recalculateTaxYn":          // 과세 비과세 재계산
+                    result = recalculateTaxYn();
                     break;
-                case "incomeTax":           // 소득세 재계산
-                    result = reCalculateIncomeTax();
+                case "recalculateDeductInfo":       // 공제항목 재계산
+                    result = recalculateDeductInfo();
                     break;
                 default:
                     break;
@@ -83,26 +90,28 @@ public class SaAllowCalculationService {
     }
 
     // 과세 비과세 재계산
-    private int reCalculateSalaryPayment() {
+    private int recalculateTaxYn() {
         System.out.println("과세 비과세 재계산");
         int result = 0;
 
         try {
-            // 선택한 지급일의 내역 다시 불러오기
+            // 선택한 지급일의 지급내역 다시 불러오기
             SaAllowPay salAllowPay = new SaAllowPay();
             salAllowPay.setCdEmp(this.cdEmp);
             salAllowPay.setDateId(this.dateId);
 
             List<SaAllowPay> reCalculateAllowPayList = new ArrayList<>();
 
-            for (SaAllowPay saAllowPay : getSalAllowPayList(salAllowPay)){
-                for (SaAllowPay reCalculateAllowPay : makeCalculationAllowPayData(saAllowPay)){
-                    reCalculateAllowPayList.add(reCalculateAllowPay);
+            if(getSalAllowPayList(salAllowPay)!=null) {
+                for (SaAllowPay saAllowPay : getSalAllowPayList(salAllowPay)) {
+                    for (SaAllowPay reCalculateAllowPay : makeCalculationAllowPayData(saAllowPay)) {
+                        reCalculateAllowPayList.add(reCalculateAllowPay);
+                    }
                 }
-            }
 
-            // 해당날짜의 과세 비과세 재계산 내역 update
-            result = saAllowPayMapper.mergeSalAllowPay(reCalculateAllowPayList);
+                // 해당날짜의 과세 비과세 재계산 내역 update
+                result = saAllowPayMapper.mergeSalAllowPay(reCalculateAllowPayList);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -112,13 +121,17 @@ public class SaAllowCalculationService {
         return result;
     }
 
-    // 소득세 재계산
-    private int reCalculateIncomeTax() {
-        System.out.println("소득세 재계산");
+    //  공제항목 재계산
+    private int recalculateDeductInfo() {
+        System.out.println("공제항목 재계산");
 
         int result = 0;
         try {
-            System.out.println("소득세 재계산 구현중...");
+            SaAllowPay salAllowPay = new SaAllowPay();
+            salAllowPay.setCdEmp(this.cdEmp);
+            salAllowPay.setDateId(this.dateId);
+
+            saDeductCalculationService.mergeNewDeductAllowPay(salAllowPay);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -130,6 +143,7 @@ public class SaAllowCalculationService {
     private List<SaAllowPay> makeCalculationAllowPayData(SaAllowPay saAllowPay){
 
         List<SaAllowPay> salaryAllowList = new ArrayList<>();
+
         try {
             SaAllow salAllowInfo = getSalAllowInfo(saAllowPay); // 지급항목의 정보
 
@@ -139,22 +153,22 @@ public class SaAllowCalculationService {
                 int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
 
                 if (salAllowInfo.getNonTaxLimit() == null) {
-                    salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(allowPay)));
+                    salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(allowPay)));
                 } else {
                     int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());   // 한달 한도
                     int allowPaySumByEmp = getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합
 
                     if (allowPaySumByEmp + allowPay > limit) {
-                        salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
-                        salaryAllowList.add(createSalAllowPay(TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
 
                     } else {
-                        salaryAllowList.add(createSalAllowPay(NON_TAXABLE, String.valueOf(allowPay)));
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(allowPay)));
                     }
                 }
 
             } else {
-                salaryAllowList.add(createSalAllowPay(TAXABLE, saAllowPay.getAllowPay()));
+                salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),TAXABLE, saAllowPay.getAllowPay()));
             }
 
         }catch (Exception e){
@@ -187,10 +201,10 @@ public class SaAllowCalculationService {
     }
 
     // 입력/수정할 saAllowPay row 만들기
-    private SaAllowPay createSalAllowPay(String ynTax, String allowPay) {
+    private SaAllowPay createSalAllowPay(String cdAllow, String ynTax, String allowPay) {
         SaAllowPay newSaAllowPay = new SaAllowPay();
         try {
-            newSaAllowPay.setCdAllow(this.cdAllow);
+            newSaAllowPay.setCdAllow(cdAllow);
             newSaAllowPay.setCdEmp(this.cdEmp);
             newSaAllowPay.setDateId(this.dateId);
             newSaAllowPay.setYnTax(ynTax);
@@ -205,17 +219,24 @@ public class SaAllowCalculationService {
     // 해당 지급일의 사원의 지급내역 리스트 불러오기
     // 필수 값 : cdEmp, dateId
     private List<SaAllowPay> getSalAllowPayList(SaAllowPay saAllowPay) {
+        List<SaAllowPay> resultList = null;
         try {
             Map<String,String> requestMap = new HashMap<>();
 
             requestMap.put("cdEmp", saAllowPay.getCdEmp());
             requestMap.put("dateId", saAllowPay.getDateId());
-            return saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
+
+            //List<SaAllowPay> a = saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
+            resultList =  saAllowPayMapper.getSalAlLowPayListByEmp(requestMap).stream()
+                    .filter(s -> s.getCdEmp() != null)
+                    .collect(Collectors.toList());
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("getSalAllowPayList에서 터짐.");
             return null;
         }
+        return resultList;
     }
     
     // 해당 지급항목의 정보 불러오기

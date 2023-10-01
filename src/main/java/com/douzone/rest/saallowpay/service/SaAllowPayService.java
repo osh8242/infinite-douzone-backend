@@ -7,6 +7,7 @@ import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -87,11 +88,14 @@ public class SaAllowPayService {
                 makeDateId(saAllowPay);
             }
 
-            int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
-
-            if(mergeSalaryAllowPayResult > 0) {
-                saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
-                dateId = saAllowPay.getDateId();
+            if("".equals(saAllowPay.getAllowPay())){
+                saAllowPayMapper.deleteSalAllowPay(saAllowPay);
+            } else {
+                int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
+                if (mergeSalaryAllowPayResult > 0) {
+                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
+                    dateId = saAllowPay.getDateId();
+                }
             }
 
         } catch (Exception e) {
@@ -170,8 +174,16 @@ public class SaAllowPayService {
     public int setCopyLastMonthData(SaAllowPay saAllowPay) {
         int result = 0;
         try {
+            // 전월 데이터 불러오기
+
+            // 이번달 월 모든 급여항목 공제항목 삭제
+
+            // 이번달 dateId 만들어주기
             saAllowPayMapper.makeOneMonthLaterDateId(saAllowPay); // dateId 만들어주기
+
+            // 전월데이터 복사본 insert 시키기
             result = saAllowPayMapper.setCopyLastMonthData(saAllowPay);
+
         } catch (Exception e) {
             e.getStackTrace();
         }

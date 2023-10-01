@@ -104,4 +104,11 @@
         VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, #{allowPay})
     </update>
 
+    <insert id="insertDeduct" parameterType="SaAllowPay">
+        INSERT INTO SADEDUCT (CD_DEDUCT, NM_DEDUCT, YN_BONUS, YN_SAL, RATE, STATIC)
+        VALUES (
+            SALARYDEDUCT_SEQ.nextval, #{nmDeduct}, #{ynBonus}, #{ynSal}, #{rate}, 'N'
+        )
+    </insert>
+
 </mapper>

@@ -37,7 +37,6 @@ public class SaEmpInfoController {
         int result = 0;
 
         try {
-            Thread.sleep(2000); // 2초 대기
             result = saEmpInfoService.deleteSaEmpList(deleteEmpList);
         } catch (Exception e) {
             e.getStackTrace();
