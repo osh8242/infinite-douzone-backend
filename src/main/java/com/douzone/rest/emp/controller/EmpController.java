@@ -48,26 +48,26 @@ public class EmpController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/getEmpListForSwsm")
-    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
-        if (job.equals("empAll")) {
-            System.out.println("empall임");
-            System.out.println(empservice.getAllEmp());
-            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
-        } else {
-            System.out.println("EmpController.getEmpListByJobClassfication");
-            System.out.println("incomeClassfication || job = " + job);
-            Map<String, Object> map = new HashMap<>();
-            map.put("incomeClassfication", job.trim());
-            List<Emp> list = null;
-            list = empservice.getEmpListForSwsm(map);
-
-            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
-            System.out.println(list);
-
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        }
-    }
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println(empservice.getAllEmp());
+//            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            List<Emp> list = null;
+//            list = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(list);
+//
+//            return new ResponseEntity<>(list, HttpStatus.OK);
+//        }
+//    }
 
     @PostMapping("/getEmpByCdEmp")
     public ResponseEntity<Emp> getEmpByCdEmp(@RequestBody Emp emp){
