@@ -1,18 +1,15 @@
 package com.douzone.rest.filter.jwt;
 
 import com.douzone.rest.auth.jwt.JwtService;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 
-@Component
+
 public class JwtFilter implements Filter {
 
-    @Autowired
     private JwtService jwtService;
 
     @Override

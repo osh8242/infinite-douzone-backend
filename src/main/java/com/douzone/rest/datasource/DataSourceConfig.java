@@ -37,7 +37,7 @@ public class DataSourceConfig {
         Map<Object, Object> targetDataSources = new HashMap<>();
 
         // 디폴트(기본) 데이터소스
-        DataSource dataSource = createDataSource(USERNAME, PASSWORD);
+        DataSource dataSource = createDataSource("ADMIN", PASSWORD);
         targetDataSources.put("default", dataSource);
 
 //        // 데이터소스 목록 파일에서 데이터소스 목록을 불러오기
