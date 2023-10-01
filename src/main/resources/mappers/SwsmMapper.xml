@@ -77,7 +77,6 @@
         set
         <if test="withholdingYear != null">withholding_year = #{withholdingYear}, </if>
         <if test="dateOfCreation != null">date_of_creation = #{dateOfCreation}, </if>
-<!--        <if test="incomeClassfication != null">income_classfication = #{incomeClassfication}, </if>-->
         <if test="nmKrname != null">nm_krname = #{nmKrname}, </if>
         <if test="residentState != null">resident_state = #{residentState}, </if>
         <if test="noSocial != null">no_social = #{noSocial}, </if>
