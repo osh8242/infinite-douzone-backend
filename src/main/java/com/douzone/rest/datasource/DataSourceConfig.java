@@ -15,11 +15,11 @@ import java.util.Map;
 @Configuration
 public class DataSourceConfig {
 
-    private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@localhost:1521:oracle";
-    //private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=gf2a91e2c0ac50a_oshdb_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))";
+//    private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@localhost:1521:oracle";
+    private final String DATA_SOURCE_URL = "jdbc:log4jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=gf2a91e2c0ac50a_oshdb_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))";
     private final String DRIVER_CLASS_NAME = "net.sf.log4jdbc.sql.jdbcapi.DriverSpy";
-    private final String PASSWORD = "1004";
-    //    private final String PASSWORD = "DouzoneTeam3";
+//    private final String PASSWORD = "1004";
+        private final String PASSWORD = "DouzoneTeam3";
     private final Map<Object, Object> targetDataSources = new HashMap<>();
 
     private RoutingCompanyDataSource routingCompanyDataSource;
@@ -72,7 +72,6 @@ public class DataSourceConfig {
         return new HikariDataSource(hikariConfig);
     }
 
-    // 데이터소스 목록에 데이터소스 추가
     // 데이터소스 목록에 데이터소스 추가
     public void addNewDataSource(String companyCode, String password) {
         DataSource newDataSource = createDataSource(companyCode, password);
