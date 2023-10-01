@@ -126,14 +126,16 @@ public class AuthController {
         // TODO : 동일 이메일 있을 경우 , 이메일 보내기
 
         UserVo result=authService.IdByEmail(user);
+        System.out.println("reseeeitt emailllld");
+        System.out.println(result);
 
         // TODO : send Email Sevice 구현
 //        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
         emailService.sendSimpleMessage(
-                "llikepsh515@gmail.com",
+                user.getEmail(),
                 "[무한더존] 요청하신 아이디를 발송해 드립니다.",
-                "요청하신 아이디를 발송해 드립니다.\n ID: "+result.getUserId()
+                "\n요청하신 아이디를 발송해 드립니다.\n ID: "+result.getUserId()
         );
 //        }
 
