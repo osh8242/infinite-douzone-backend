@@ -28,7 +28,7 @@
     </select>
 
 
-    <select id="getEmpByCdEmp" parameterType="Emp">
+    <select id="getEmpByCdEmp" parameterType="Emp" resultType="Emp">
         SELECT
             *
         FROM EMP
@@ -41,7 +41,7 @@
         WHERE ${columnName} = #{columnValue}
     </select>
 
-    <update id="insertEmp" parameterType="Emp">
+    <insert id="insertEmp" parameterType="Emp">
         INSERT ALL
         INTO EMP(
         cd_emp,
@@ -121,7 +121,12 @@
         #{nmKrname, jdbcType=VARCHAR},
         #{ynFor, jdbcType=VARCHAR},
         #{noSocial, jdbcType=VARCHAR},
-        <if test="jobOk != null">#{jobOk, jdbcType=VARCHAR},</if>
+        <if test="jobOk != null and jobOk != ''">
+            #{jobOk, jdbcType=VARCHAR},
+        </if>
+        <if test="jobOk == null or jobOk == ''">
+            'Y',
+        </if>
         <if test="incomeClassfication != null">#{incomeClassfication, jdbcType=VARCHAR},</if>
         <if test="dateOfcreate != null">#{dateOfcreate, jdbcType=VARCHAR},</if>
         <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
@@ -195,7 +200,7 @@
             VALUES (#{cdEmp, jdbcType=VARCHAR}, null)
         </if>
         SELECT 1 FROM DUAL
-    </update>
+    </insert>
 
 
 

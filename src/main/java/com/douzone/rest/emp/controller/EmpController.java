@@ -86,14 +86,16 @@ public class EmpController {
 
     @PostMapping("insertEmp")
     public int insertEmp(@RequestBody Emp emp) {
-        System.out.println("Emp insert Controller -----");
+        System.out.println("EmpController.insertEmp");
+        System.out.println("emp = " + emp);
         int result = empservice.insertEmp(emp);
         return result;
     }
 
     @PutMapping("/updateEmp")
     public int updateEmp(@RequestBody Emp emp){
-        System.out.println("Emp update Controller -----");
+        System.out.println("EmpController.updateEmp");
+        System.out.println("emp = " + emp);
         int result = empservice.updateEmp(emp);
         return result;
     }
