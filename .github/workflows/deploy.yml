@@ -44,3 +44,4 @@ jobs:
           pkill java
           nohup java -jar /home/ubuntu/temp/build/libs/infinite-douzone-backend-0.0.1-SNAPSHOT.jar &
           sleep 10
+      timeout-minutes: 1
