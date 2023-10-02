@@ -72,8 +72,10 @@ public class SaEmpInfoService {
     public int deleteSaEmpList(List<Map<String,String>> deleteEmpList) {
         int result = 0;
         try {
-            saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList);
-            saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);
+
+            result = saEmpInfoMapper.deleteDateId(deleteEmpList.get(0).get("dateId"));   // dateId 삭제
+            result = saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList); // 급여지급 삭제
+            result = saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);   // 공제 지급 삭제
         } catch (Exception e) {
             e.getStackTrace();
         }

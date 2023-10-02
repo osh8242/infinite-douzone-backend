@@ -35,4 +35,15 @@ public class SaDeductPayService {
         }
         return result;
     }
+    public int mergeSalDeductPay(SaDeductPay saDeductPay){
+        int result = 0;
+        try {
+            result = saDeductPayDao.mergeSalDeductPay(saDeductPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
 }

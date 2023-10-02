@@ -1,6 +1,8 @@
 package com.douzone.rest.sadeductpay.controller;
 
+import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.service.SaDeductPayService;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,17 @@ public class SaDeductPayController {
         try {
             result = saDeductPayService.getsalDeductList(reqestMap);
         }catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @PostMapping("/mergeSalDeductPay")
+    public int mergeSalDeductPay(@RequestBody SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayService.mergeSalDeductPay(saDeductPay);
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
