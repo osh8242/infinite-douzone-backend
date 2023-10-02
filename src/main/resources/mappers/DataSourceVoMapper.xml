@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.datasource.dao.DataSourceDao">
+    <select id="getAllDataSourceVo"  resultType="DataSourceVo">
+        SELECT *
+        FROM DATASOURCE
+    </select>
+
+    <insert id="insertDataSourceVo"  parameterType="DataSourceVo">
+        INSERT INTO DATASOURCE (
+            COMPANY_CODE,
+            PASSWORD
+        )
+        VALUES (
+            #{companyCode, jdbcType=VARCHAR},
+            #{password, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateDataSourceVo" parameterType="DataSourceVo">
+        UPDATE DATASOURCE
+        <set>
+            <if test="password != null">password = #{password, jdbcType=VARCHAR},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE COMPANY_CODE = #{companyCode, jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteDataSourceVo"  parameterType="DataSourceVo">
+        DELETE FROM DATASOURCE WHERE COMPANY_CODE = #{companyCode, jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

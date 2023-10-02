@@ -36,11 +36,10 @@
     </select>
 
     <insert id="insertEmpAdd" parameterType="EmpAdd">
-        INSERT ALL
-        INTO empadd
+        INSERT INTO empadd
         (
         cd_Emp, nm_ChName, nm_EnName, yn_DrawContracts, dc_MidRetire, fg_Wedding,
-        fg_Disorder, da_Birth, str_Hobby, nm_Special, ty_Religion, zip_Home,
+        fg_Disorder, da_Birth, str_Hobby, nm_Special, ty_Religion, zip_Home, add_Home1, add_Home2,
         zip_Orgin, add_Orgin1, add_Orgin2, mn_KeepGarden, mn_KeepEstate, fg_OwnHouse,
         tel_Office1, tel_Office2, tel_Office3, tel_Extens, ty_Milit, why_MltOff,
         da_MltBegin, da_MltEnd, fg_MltType, nm_MltBranc, str_MltDisch, cd_MltRank,
@@ -55,6 +54,7 @@
         #{fgDisorder, jdbcType=VARCHAR}, #{daBirth, jdbcType=DATE},
         #{strHobby, jdbcType=VARCHAR}, #{nmSpecial, jdbcType=VARCHAR},
         #{tyReligion, jdbcType=VARCHAR}, #{zipHome, jdbcType=VARCHAR},
+        #{addHome1, jdbcType=VARCHAR}, #{addHome2, jdbcType=VARCHAR},
         #{zipOrgin, jdbcType=VARCHAR}, #{addOrgin1, jdbcType=VARCHAR},
         #{addOrgin2, jdbcType=VARCHAR}, #{mnKeepGarden, jdbcType=NUMERIC},
         #{mnKeepEstate, jdbcType=NUMERIC}, #{fgOwnHouse, jdbcType=VARCHAR},
@@ -71,9 +71,6 @@
         #{telHome3, jdbcType=VARCHAR}, #{celEmp1, jdbcType=VARCHAR},
         #{celEmp2, jdbcType=VARCHAR}, #{celEmp3, jdbcType=VARCHAR}
         )
-        INTO EMPPHOTO (cd_emp)
-        VALUES (#{cdEmp, jdbcType=VARCHAR})
-        SELECT 1 FROM DUAL
     </insert>
 
 

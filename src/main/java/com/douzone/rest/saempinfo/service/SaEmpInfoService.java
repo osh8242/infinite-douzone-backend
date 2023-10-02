@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,18 +35,19 @@ public class SaEmpInfoService {
 
         Map<String, Object> result = new HashMap<>();
         try {
-            String dateId = saEmpInfoMapper.getDateId(requestMap);
-            if(dateId!=null) {
-                requestMap.put("dateId", dateId);
-                result.put("dateId", dateId);
+            Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
+
+            if(dateInfo!=null) {
+                requestMap.put("dateId", dateInfo.get("dateId"));
+                result.put("dateId", dateInfo);
                 result.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
 
                 Map<String, Object> totalSalPaydata = new HashMap<>();
                 totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
                 totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
                 result.put("totalSalPaydata",totalSalPaydata);
-
             }
+
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -67,19 +69,20 @@ public class SaEmpInfoService {
         return result;
     }
 
-    public int deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+    public int deleteSaEmpList(List<Map<String,String>> deleteEmpList) {
         int result = 0;
         try {
-            saEmpInfoMapper.deleteSaEmpInfo(saEmpInfo);
+            saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList);
+            saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
-    public void updateEmpInfo(SaEmpInfo saEmpInfo) {
+    public void updateSaEmpInfo(SaEmpInfo saEmpInfo) {
         try {
-            saEmpInfoMapper.updateEmpInfo(saEmpInfo);
+            saEmpInfoMapper.updateSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }

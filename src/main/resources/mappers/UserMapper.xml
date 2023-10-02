@@ -9,4 +9,31 @@
         select * from Member where user_id = #{userId}
     </select>
 
+    <select id="findEmail" resultType="UserVo">
+        select * from Member where email = #{email}
+    </select>
+
+    <insert id="register" parameterType="UserVo">
+        INSERT INTO MEMBER
+        (
+        COMPANY_CODE,
+        USER_ID,
+        USER_PWD,
+        USER_NAME,
+        EMAIL,
+        PHONE,
+        THEME
+        )
+        VALUES
+        (
+        #{companyCode, jdbcType=VARCHAR},
+        #{userId, jdbcType=VARCHAR},
+        #{userPwd, jdbcType=VARCHAR},
+        #{userName, jdbcType=VARCHAR},
+        #{email, jdbcType=VARCHAR},
+        #{phone, jdbcType=VARCHAR},
+        #{theme, jdbcType=VARCHAR}
+        )
+    </insert>
+
 </mapper>

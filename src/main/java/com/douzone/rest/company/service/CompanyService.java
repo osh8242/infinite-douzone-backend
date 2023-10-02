@@ -1,5 +1,7 @@
 package com.douzone.rest.company.service;
 
+import com.douzone.rest.company.vo.DataSourceVo;
+import com.douzone.rest.datasource.service.DataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class CompanyService {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private DataSourceService dataSourceService;
 
     public void createNewSchema(String companyCode, String password) throws Exception {
         ClassPathResource sqlFilePath = new ClassPathResource("ddlQuery.sql");
@@ -60,6 +65,9 @@ public class CompanyService {
 
             }
             conn.commit();  // 트랜잭션 커밋
+            dataSourceService.insertDataSourceVo(new DataSourceVo(companyCode, password));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

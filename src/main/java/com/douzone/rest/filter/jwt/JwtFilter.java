@@ -1,18 +1,15 @@
 package com.douzone.rest.filter.jwt;
 
 import com.douzone.rest.auth.jwt.JwtService;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+
 public class JwtFilter implements Filter {
 
-    @Autowired
     private JwtService jwtService;
 
     @Override
@@ -43,7 +40,7 @@ public class JwtFilter implements Filter {
         System.out.println("httpRequest.getHeader(\"Authorization\") = " + httpRequest.getHeader("Authorization"));
         String token = httpRequest.getHeader("Authorization").trim().split(" ")[1];
         System.out.println("getHeader(Authorization) = " + token);
-        if (token != null && jwtService.validateToken(token, httpRequest)) {
+        if (token != null && jwtService.validateToken(token)) {
             System.out.println("유효한 토큰입니다");
             chain.doFilter(httpRequest, response);
         } else {
