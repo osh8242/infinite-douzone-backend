@@ -18,6 +18,7 @@ public interface SwsmDao {
     List<Swsm> getCodeNameRrnByWithholdingYear(Swsm swsm);
     public List<Swsm> getSwsmListForSwsm(Map<String, String> map);
 
+    public int deleteSwsmByCdEmp(Swsm swsm);
     int insertSwsmEmp(Swsm swsm);
 
     int updateSwsmByEmp(Swsm swsm);

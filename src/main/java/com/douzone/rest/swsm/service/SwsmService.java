@@ -58,7 +58,11 @@ public class SwsmService {
         return null;
     }
 
-
+    public int deleteSwsm(Swsm swsm){
+        int result = 0;
+        result = swsmDao.deleteSwsmByCdEmp(swsm);
+        return result;
+    }
 
     public int insertSwsmEmp(Swsm swsm) {
         return swsmDao.insertSwsmEmp(swsm);

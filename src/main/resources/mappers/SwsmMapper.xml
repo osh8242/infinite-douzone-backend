@@ -8,6 +8,13 @@
         select * from Swsm where CD_EMP = #{cdEmp}
     </select>
 
+
+
+    <delete id="deleteSwsmByCdEmp" parameterType="Swsm">
+        DELETE FROM swsm WHERE CD_EMP = #{cdEmp}
+    </delete>
+
+
     <select id="getSwsmListForSwsm" parameterType="map" resultType="Swsm">
         SELECT swsm.cd_emp, emp.nm_krname, emp.no_social
         FROM swsm
