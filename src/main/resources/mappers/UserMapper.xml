@@ -5,6 +5,10 @@
 
 <mapper namespace="com.douzone.rest.auth.dao.UserDao">
 
+    <select id="findUserByCd" resultType="UserVo">
+        select * from Member where company_code = #{companyCode}
+    </select>
+
     <select id="findUser" resultType="UserVo">
         select * from Member where user_id = #{userId}
     </select>
