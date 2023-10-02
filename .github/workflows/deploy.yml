@@ -42,4 +42,4 @@ jobs:
         key: ${{ secrets.AWS_SERVER_SSH_KEY }}
         script: |
           bash /home/ubuntu/start_server.sh
-      timeout-minutes: 2
+      timeout-minutes: 3
