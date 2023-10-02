@@ -77,4 +77,10 @@
         WHERE DATE_ID = #{dateId}
     </delete>
 
+    <select id="countSaAllowByDateId" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM SAALLOWPAY
+        WHERE DATE_ID = #{dateId}
+    </select>
+
 </mapper>

@@ -118,6 +118,19 @@
         AND CD_EMP = #{cdEmp}
     </delete>
 
+    <insert id="insertSalAllowPay" parameterType="SaAllowPay">
+        INSERT INTO SAALLOWPAY (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
+        VALUES (#{cdDeduct}, #{dateId}, #{cdEmp}, #{allowPay})
+    </insert>
+
+    <update id="updateSalAllowPay" parameterType="SaAllowPay">
+        UPDATE SAALLOWPAY
+        SET ALLOWPAY = #{allowPay}
+        WHERE CD_DEDUCT = #{cdDeduct}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </update>
+
     <!-- 지급일 리스트(코드도움창) -->
     <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
         SELECT d."DATE" AS "paymentDate"
@@ -230,14 +243,14 @@
     <update id="makeOneMonthLaterDateId" parameterType="SaAllowPay">
         MERGE INTO "DATE" target
         USING (
-        SELECT
-        DISTINCT
-        d.ALLOW_YEAR
-        , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
-        , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
-        FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
-        ON d.DATE_ID = p.DATE_ID
-        WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
+            SELECT
+            DISTINCT
+            d.ALLOW_YEAR
+            , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
+            , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
+            FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
+            ON d.DATE_ID = p.DATE_ID
+            WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
         ) source
         ON (target.ALLOW_YEAR = source.ALLOW_YEAR
         AND target."MONTH" = source."MONTH"
@@ -283,15 +296,20 @@
     </select>
 
     <!-- 수당등록 -->
-    <insert id="insertSalAllow" parameterType="SaAllowPay">
+    <insert id="insertSalAllow" parameterType="SaAllow">
         INSERT INTO SAALLOW (CD_ALLOW, NM_ALLOW, YN_TAX, SAL_DIVISION, COMMONLY_YN, MONTHLY_YN)
         VALUES (
-            SALARYALLOW_SEQ.nextval, #{nmAllow}, #{ynTax}, #{salDivision}, #{commonlyYn}, #{monthlyYn}
+            #{cdAllow}, #{nmAllow}, #{ynTax}, #{salDivision}, #{commonlyYn}, #{monthlyYn}
         )
     </insert>
 
+    <select id ="createSallowSeq" resultType="String">
+        SELECT TO_CHAR(MAX(TO_NUMBER(CD_ALLOW))+1) AS MAX_CD_ALLOW_STR
+        FROM SAALLOW
+    </select>
+
     <!-- 수당 수정 -->
-    <update id="updateSalAllow" parameterType="SaAllowPay">
+    <update id="updateSalAllow" parameterType="SaAllow">
         UPDATE SAALLOW
         <set>
             <if test="nmAllow != null">NM_ALLOW = #{nmAllow},</if>
@@ -299,15 +317,17 @@
             <if test="salDivision != null">SAL_DIVISION = #{salDivision},</if>
             <if test="commonlyYn != null">COMMONLY_YN = #{commonlyYn},</if>
             <if test="monthlyYn != null">MONTHLY_YN = #{monthlyYn},</if>
-            <if test="nontaxLimit != null">NONTAX_LIMIT= #{nontaxLimit},</if>
+            <if test="nonTaxLimit != null">NONTAX_LIMIT= #{nonTaxLimit},</if>
         </set>
         WHERE CD_ALLOW = #{cdAllow}
+        AND YN_TAX = #{originYnTax}
     </update>
 
     <!-- 수당 삭제 -->
-    <delete id="deleteSalAllow" parameterType="SaAllowPay">
+    <delete id="deleteSalAllow" parameterType="SaAllow">
         DELETE FROM SAALLOW
         WHERE CD_ALLOW = #{cdAllow}
+        AND YN_TAX = #{ynTax}
     </delete>
 
     <!-- 비과세 감면설정 한도 update-->
@@ -316,5 +336,20 @@
         SET NONTAX_LIMIT = #{nontaxLimit}
         WHERE CD_ALLOW = #{cdAllow} AND YN_TAX = 'N'
     </update>
+
+    <select id="getSalAllow" parameterType="SaAllow" resultType="SaAllow">
+        SELECT YN_TAX
+        FROM (
+        SELECT s.CD_ALLOW,
+        CASE
+        WHEN s.YN_TAX = 'Y' THEN 'Y'
+        WHEN s.YN_TAX = 'N' THEN 'N'
+        END AS YN_TAX,
+        ROW_NUMBER() OVER (ORDER BY s.CD_ALLOW) AS rn
+        FROM SAALLOW s
+        WHERE CD_ALLOW = #{cdAllow}
+        ) tmp
+        WHERE rn = 1
+    </select>
 
 </mapper>

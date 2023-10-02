@@ -18,6 +18,9 @@ public interface SaAllowPayMapper {
     int mergeSalAllowPay(List<SaAllowPay> newSaAllowPayList );  // 급여항목 입력 + 수정
     SaAllow getSalAllowInfo(SaAllowPay saAllowPay); // 급여자료
     int deleteSalAllowPay(SaAllowPay saAllowPay);   // 급여항목 지우기
+    int insertSalAllowPay(SaAllowPay saAllowPay);   //급여항목
+    int updateSalAllowPay(SaAllowPay saAllowPay);
+
     int updateDate(Map<String, String> requestMap); // 완료여부 고치기
 
 
@@ -30,8 +33,11 @@ public interface SaAllowPayMapper {
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
     Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
-    int insertSalAllow(SaAllowPay saAllowPay);
-    int updateSalAllow(SaAllowPay saAllowPay);
-    int deleteSalAllow(SaAllowPay saAllowPay);
+    int insertSalAllow(SaAllow saAllow);
+    int updateSalAllow(SaAllow saAllow);
+    int deleteSalAllow(SaAllow saAllow);
     int updateNonTaxLimit(SaAllowPay saAllowPay);
+
+    String createSallowSeq();
+    SaAllow getSalAllow(SaAllow saAllow);
 }

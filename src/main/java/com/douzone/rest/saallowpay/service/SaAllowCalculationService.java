@@ -91,7 +91,7 @@ public class SaAllowCalculationService {
 
     // 과세 비과세 재계산
     private int recalculateTaxYn() {
-        System.out.println("과세 비과세 재계산");
+        System.out.println("####과세 비과세 재계산####");
         int result = 0;
 
         try {
@@ -123,7 +123,7 @@ public class SaAllowCalculationService {
 
     //  공제항목 재계산
     private int recalculateDeductInfo() {
-        System.out.println("공제항목 재계산");
+        System.out.println("####공제항목 재계산####");
 
         int result = 0;
         try {
@@ -153,7 +153,7 @@ public class SaAllowCalculationService {
                 int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
 
                 if (salAllowInfo.getNonTaxLimit() == null) {
-                    salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(allowPay)));
+                    salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(allowPay)));
                 } else {
                     int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());   // 한달 한도
                     int allowPaySumByEmp = getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합

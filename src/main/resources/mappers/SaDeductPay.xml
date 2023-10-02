@@ -58,9 +58,13 @@
             YN_BONUS AS "ynBonus",
             YN_SAL AS "ynSal",
             RATE AS "rate",
+            STATIC AS "static",
             CASE WHEN CD_DEDUCT = 'DEDUCT_INCOME' OR CD_DEDUCT = 'DEDUCT_LOCALINCOME' THEN RATE ELSE '과세합계 *' || RATE END AS "calculation"
         FROM SADEDUCT
-        ORDER BY NM_DEDUCT
+        <if test="static != null">
+            WHERE STATIC = #{static}
+        </if>
+        ORDER BY CD_DEDUCT
     </select>
 
     <update id="mergeSaDeductPayList" parameterType="list">
@@ -87,28 +91,72 @@
     <update id="mergeSalDeductPay" parameterType="SaDeductPay">
         MERGE INTO SADEDUCTPAY target
         USING (
-            SELECT CD_DEDUCT, DATE_ID, CD_EMP
+            SELECT CD_DEDUCT, DATE_ID, CD_EMP, ALLOW_PAY
             FROM SADEDUCTPAY
             WHERE CD_DEDUCT = #{cdDeduct}
             AND DATE_ID = #{dateId}
             AND CD_EMP = #{cdEmp}
+            AND ALLOW_PAY = #{allowPay}
         ) source
         ON (target.CD_DEDUCT = source.CD_DEDUCT
-            AND target.DATE_ID = source.DATE_ID
-            AND target.CD_EMP = source.CD_EMP
+        AND target.DATE_ID = source.DATE_ID
+        AND target.CD_EMP = source.CD_EMP
         )
         WHEN MATCHED THEN
-        UPDATE SET target.ALLOW_PAY = #{allowPay}
+        UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
         WHEN NOT MATCHED THEN
-        INSERT (CD_DEDUCT, CD_EMP, DATE_ID, ALLOW_PAY)
-        VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, #{allowPay})
+        INSERT (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
+        VALUES (source.CD_DEDUCT, source.DATE_ID, source.CD_EMP, source.ALLOW_PAY)
     </update>
 
-    <insert id="insertDeduct" parameterType="SaAllowPay">
+    <insert id="insertSaDeduct" parameterType="SaDeductPay">
         INSERT INTO SADEDUCT (CD_DEDUCT, NM_DEDUCT, YN_BONUS, YN_SAL, RATE, STATIC)
         VALUES (
             SALARYDEDUCT_SEQ.nextval, #{nmDeduct}, #{ynBonus}, #{ynSal}, #{rate}, 'N'
         )
     </insert>
 
+    <update id = "updateSaDeduct" parameterType="SaDeductPay">
+        UPDATE SADEDUCT
+        <set>
+            <if test="nmDeduct != null">NM_DEDUCT = #{nmDeduct},</if>
+            <if test="ynBonus != null">YN_BONUS = #{ynBonus},</if>
+            <if test="ynSal != null">YN_SAL = #{ynSal},</if>
+            <if test="rate != null">RATE = #{rate},</if>
+        </set>
+        WHERE CD_DEDUCT = #{cdDeduct}
+    </update>
+
+    <delete id="deleteSaDeduct" parameterType="SaDeductPay">
+        DELETE FROM SADEDUCT
+        WHERE CD_DEDUCT = #{cdDeduct}
+    </delete>
+
+    <insert id ="insertSaDeductPay" parameterType="SaDeductPay">
+        INSERT INTO SADEDUCTPAY (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
+        VALUES (#{cdDeduct}, #{dateId}, #{cdEmp}, #{allowPay})
+    </insert>
+
+    <update id ="updateSaDeductPay" parameterType="SaDeductPay">
+        UPDATE SADEDUCTPAY
+        SET ALLOW_PAY = #{allowPay}
+        WHERE CD_DEDUCT = #{cdDeduct}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </update>
+
+    <delete id ="deleteSaDeductPay" parameterType="SaDeductPay">
+        DELETE FROM SADEDUCTPAY
+        WHERE CD_DEDUCT = #{cdDeduct}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </delete>
+
+    <select id="getCountSaDeductPay" parameterType="SaDeductPay" resultType="int">
+        SELECT COUNT(*)
+        FROM SADEDUCTPAY
+        WHERE CD_DEDUCT = #{cdDeduct}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </select>
 </mapper>

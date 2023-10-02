@@ -1,6 +1,7 @@
 package com.douzone.rest.saallowpay.service;
 
 import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
+import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
 import com.douzone.rest.sadeductpay.vo.SaDeductPay;
@@ -209,13 +210,16 @@ public class SaAllowPayService {
     }
 
 
-    public int insertSalAllow(SaAllowPay saAllowPay) {
+    public int insertSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
-            result = saAllowPayMapper.insertSalAllow(saAllowPay);
-            if("N".equals(saAllowPay.getYnTax())){
-                saAllowPay.setYnTax("Y");
-                result = saAllowPayMapper.insertSalAllow(saAllowPay);
+            saAllow.setCdAllow(saAllowPayMapper.createSallowSeq());
+
+            System.out.println(saAllow.toString());
+            result = saAllowPayMapper.insertSalAllow(saAllow);
+            if("N".equals(saAllow.getYnTax())){
+                saAllow.setYnTax("Y");
+                result = saAllowPayMapper.insertSalAllow(saAllow);
             }
         } catch (Exception e) {
             e.getStackTrace();
@@ -224,20 +228,46 @@ public class SaAllowPayService {
         return result;
     }
 
-    public int updateSalAllow(SaAllowPay saAllowPay) {
+    public int updateSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
-            result = saAllowPayMapper.updateSalAllow(saAllowPay);
+
+            SaAllow oriSallow = saAllowPayMapper.getSalAllow(saAllow);
+
+            if(!oriSallow.getYnTax().equals(saAllow.getYnTax())){
+
+                saAllow.setOriginYnTax(oriSallow.getYnTax());
+
+                if ("Y".equals(saAllow.getYnTax())) {
+                    result = saAllowPayMapper.deleteSalAllow(saAllow);
+                }
+
+                saAllowPayMapper.updateSalAllow(saAllow);
+
+                if ("N".equals(saAllow.getYnTax())) {
+                    saAllow.setYnTax("Y");
+                    result = saAllowPayMapper.insertSalAllow(saAllow);
+                }
+
+            }else {
+                saAllow.setOriginYnTax(saAllow.getYnTax());
+                saAllowPayMapper.updateSalAllow(saAllow);
+            }
+            result = saAllowPayMapper.updateSalAllow(saAllow);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
-    public int deleteSalAllow(SaAllowPay saAllowPay) {
+    public int deleteSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
-            result = saAllowPayMapper.deleteSalAllow(saAllowPay);
+            result = saAllowPayMapper.deleteSalAllow(saAllow);
+            if("N".equals(saAllow.getYnTax())){
+                saAllow.setYnTax("Y");
+                saAllowPayMapper.deleteSalAllow(saAllow);
+            }
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -254,5 +284,28 @@ public class SaAllowPayService {
         }
         return result;
     }
+
+//    private int insertSalAllowPay(SaAllowPay saAllowPay){
+//        int result = 0;
+//        try {
+//            saAllowPayMapper.insertSalAllowPay(saAllowPay);
+//        }catch (Exception e){
+//            e.getStackTrace();
+//            System.out.println("insertSalAllowPay에서 터짐.");
+//        }
+//        return result;
+//    }
+//
+//    private int updateSalAllowPay(SaAllowPay saAllowPay){
+//        int result = 0;
+//        try {
+//            saAllowPayMapper.updateSalAllowPay(saAllowPay);
+//        }catch (Exception e){
+//            e.getStackTrace();
+//            System.out.println("updateSalAllowPay 터짐.");
+//        }
+//        return result;
+//    }
+
 
 }
