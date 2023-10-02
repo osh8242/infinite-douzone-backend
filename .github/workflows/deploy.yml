@@ -41,6 +41,5 @@ jobs:
         username: ${{ secrets.AWS_SERVER_USER }}
         key: ${{ secrets.AWS_SERVER_SSH_KEY }}
         script: |
-          pkill java
-          nohup java -jar /home/ubuntu/temp/build/libs/infinite-douzone-backend-0.0.1-SNAPSHOT.jar & disown
-          exit 0
+          bash /home/ubuntu/start_server.sh
+      timeout-minutes: 2
