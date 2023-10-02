@@ -1,16 +1,22 @@
 package com.douzone.rest.swsm.service;
 
+import com.douzone.rest.emp.dao.EmpDao;
+import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.swsm.dao.SwsmDao;
 import com.douzone.rest.swsm.vo.Swsm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SwsmService {
     @Autowired
     private SwsmDao swsmDao;
+
+    @Autowired
+    private EmpDao empDao;
 
     public int updateSwsm(Swsm swsm) {
         System.out.println("Swsm swsm service update -----");
@@ -34,6 +40,25 @@ public class SwsmService {
 
         return r;
     }
+
+    public int insertSwsm(Swsm swsm){
+        int result = 0;
+        result = swsmDao.insertSwsm(swsm);
+        return result;
+    }
+
+    public List<Swsm> getSwsmListForSwsm(Map<String, String> map){
+        List<Swsm> swsms = null;
+        swsms = swsmDao.getSwsmListForSwsm(map);
+        return swsms;
+    }
+
+    public List<Emp> onlyExistSwsmList(String job){
+
+        return null;
+    }
+
+
 
     public int insertSwsmEmp(Swsm swsm) {
         return swsmDao.insertSwsmEmp(swsm);
