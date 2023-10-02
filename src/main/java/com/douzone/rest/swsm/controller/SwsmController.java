@@ -141,17 +141,12 @@ public class SwsmController {
         System.out.println(dateEnd);
         System.out.println(job);
 
-
         List<Emp> listByJobList = new ArrayList<>();
         if (job.equals("empAll")) {
             System.out.println("empall dateList임");
             System.out.println(empservice.getAllEmp());
 
             listByJobList = empservice.getAllEmp();
-
-        
-
-
 
         } else {
             System.out.println("EmpController.getEmpListByJobClassfication");
@@ -164,7 +159,7 @@ public class SwsmController {
         // 기간 조회
         List<Emp> resultList = new ArrayList<>();
         for (Emp e : listByJobList) {
-            String temp = e.getDaEnter().substring(0, 7);
+            String temp = e.getDateOfcreate().substring(0, 7);
             if (date.compareTo(temp) <= 0) {
                 if (dateEnd.compareTo(temp) >= 0)
                     resultList.add(e);
