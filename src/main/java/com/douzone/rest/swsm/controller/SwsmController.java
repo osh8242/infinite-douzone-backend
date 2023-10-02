@@ -70,27 +70,182 @@ public class SwsmController {
     }
 
 
-    // 조회기준으로 가지고 온 리스트
-    @GetMapping("/getEmpListForSwsm")
-    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
+// 수정중
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job,
+//                                                       @RequestParam(name = "date") String date, @RequestParam(name = "dateEnd") String dateEnd) {
+//        System.out.println("dateEnd" + dateEnd);
+//        System.out.println("date:" + date);
+//
+//        List<Emp> jobList = new ArrayList<>();
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println("empService:::"+empservice.getAllEmp());
+//            jobList = empservice.getAllEmp();
+//            System.out.println("jobListreuslttt;;;"+jobList);
+//            // 임시 테스트로 all 에서만 혹인중
+//            for (Emp e : jobList) {
+//                System.out.println(e.getDaEnter()); // 입사년월
+//                String temp=e.getDaEnter();
+//
+//                System.out.println(temp);
+//                System.out.println("splitt resuttttlllttt");
+//                String tmp= temp.split("-")[1]+temp.split("-")[1];
+//            }
+//            return new ResponseEntity<>(jobList, HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            jobList = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(jobList);
+//
+//            return new ResponseEntity<>(jobList, HttpStatus.OK);
+//        }
+//    }
+
+
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println(empservice.getAllEmp());
+//            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            List<Emp> list = null;
+//            list = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(list);
+//
+//            return new ResponseEntity<>(list, HttpStatus.OK);
+//        }
+//    }
+
+    @GetMapping("/getEmpListForSwsmDate")
+    public ResponseEntity<List<Emp>> getEmpListForSwsmDate(@RequestParam(name = "job") String job, @RequestParam(name = "date", defaultValue = "default") String date, @RequestParam(name = "dateEnd", defaultValue = "default") String dateEnd) {
+        if (job == null || date == null || dateEnd == null) {
+            System.out.println("bad_+Requetst");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        System.out.println("dateee Test GO!");
+        System.out.println(date);
+        System.out.println(dateEnd);
+        System.out.println(job);
+
+
+        List<Emp> listByJobList = new ArrayList<>();
         if (job.equals("empAll")) {
-            System.out.println("empall임");
+            System.out.println("empall dateList임");
             System.out.println(empservice.getAllEmp());
-            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
+
+            listByJobList = empservice.getAllEmp();
+
+        
+
+
+
         } else {
             System.out.println("EmpController.getEmpListByJobClassfication");
             System.out.println("incomeClassfication || job = " + job);
             Map<String, Object> map = new HashMap<>();
             map.put("incomeClassfication", job.trim());
-            List<Emp> list = null;
-            list = empservice.getEmpListForSwsm(map);
-
-            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
-            System.out.println(list);
-
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            listByJobList = empservice.getEmpListForSwsm(map);
         }
+
+        // 기간 조회
+        List<Emp> resultList = new ArrayList<>();
+        for (Emp e : listByJobList) {
+            String temp = e.getDaEnter().substring(0, 7);
+            if (date.compareTo(temp) <= 0) {
+                if (dateEnd.compareTo(temp) >= 0)
+                    resultList.add(e);
+            }
+        }
+
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
+
+
+    // 조회 조회기준으로 가지고 온 리스트
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job,
+//                                                       @RequestParam(name = "date") String date, @RequestParam(name = "dateEnd") String dateEnd) {
+//        System.out.println("dateEnd" + dateEnd);
+//        System.out.println("date:" + date);
+//
+//        List<Emp> jobList = new ArrayList<>();
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println(empservice.getAllEmp());
+//            jobList = empservice.getAllEmp();
+//
+//            // 임시 테스트로 all 에서만 혹인중
+//            for (Emp e : jobList) {
+//                System.out.println(e.getDaEnter());
+//            }
+//            return new ResponseEntity<>(jobList, HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            jobList = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(jobList);
+//
+//            return new ResponseEntity<>(jobList, HttpStatus.OK);
+//        }
+//        result = checkPeriod(jobList, date, dateEnd);
+//        // success 면 그 해당하는 emp만 반환
+//        if (result.equals("SUCCESS")) {
+//            return new ResponseEntity<>(jobList, HttpStatus.OK);
+//        } else {
+// }
+//        }
+
+
+    /// check period
+
+
+    // null 이면 http not oke returnhhh
+
+
+//    public List<Emp> checkPeriod(List<Emp> list, String date, String dateEnd) {
+//        return null;
+//    }
+
+
+//    // 조회기준으로 가지고 온 리스트
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println(empservice.getAllEmp());
+//            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            List<Emp> list = null;
+//            list = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(list);
+//
+//            return new ResponseEntity<>(list, HttpStatus.OK);
+//        }
+//    }
 
     // 조회기준으로 가지고 온 리스트
 //    @GetMapping("/getEmpListForSwsm")
@@ -121,7 +276,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getSwsmListForSwsm(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList =  new ArrayList<>();
+        List<Emp> empList = new ArrayList<>();
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
@@ -139,7 +294,7 @@ public class SwsmController {
         }
 
         List<Emp> list = new ArrayList<>();
-        for(Emp e: empList){
+        for (Emp e : empList) {
             Swsm swsm = new Swsm();
             swsm.setCdEmp(e.getCdEmp());
 
@@ -158,7 +313,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getCodeHelperList(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList =  new ArrayList<>();
+        List<Emp> empList = new ArrayList<>();
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
@@ -176,7 +331,7 @@ public class SwsmController {
         }
 
         List<Emp> list = new ArrayList<>();
-        for(Emp e: empList){
+        for (Emp e : empList) {
             Swsm swsm = new Swsm();
             swsm.setCdEmp(e.getCdEmp());
 
@@ -194,7 +349,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getExceptList(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList =  new ArrayList<>();
+        List<Emp> empList = new ArrayList<>();
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
@@ -212,7 +367,7 @@ public class SwsmController {
         }
 
         List<Emp> list = new ArrayList<>();
-        for(Emp e: empList){
+        for (Emp e : empList) {
             Swsm swsm = new Swsm();
             swsm.setCdEmp(e.getCdEmp());
 
@@ -225,8 +380,6 @@ public class SwsmController {
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
-
 
 
     @PutMapping("/updateSwsm")
