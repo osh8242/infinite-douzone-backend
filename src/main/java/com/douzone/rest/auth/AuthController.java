@@ -4,6 +4,9 @@ import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
 import com.douzone.rest.company.service.CompanyService;
+import com.douzone.rest.company.vo.DataSourceVo;
+import com.douzone.rest.datasource.DataSourceConfig;
+import com.douzone.rest.datasource.service.DataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +30,13 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
-//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
+    @Autowired
+    private DataSourceService dataSourceService;
+
+    @Autowired
+    private DataSourceConfig dataSourceConfig;
+
+    //    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
         System.out.println("parameter login info: ");
@@ -43,7 +52,7 @@ public class AuthController {
             System.out.println(response);
 
             System.out.println(response.getToken());
-            System.out.println("succeess token: "+response.getToken());
+            System.out.println("succeess token: " + response.getToken());
             headers.set("Authorization", "Bearer " + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
@@ -51,35 +60,47 @@ public class AuthController {
         }
     }
 
-        @PostMapping("/cookieLogin")
-        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-            System.out.println("d---------------------------d");
-            ResponseVo response = authService.findUser(user);
+    @PostMapping("/cookieLogin")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+        System.out.println("d---------------------------d");
+        ResponseVo response = authService.findUser(user);
 
-            if (response.getMessage().equals("SUCCESS")) {
-                System.out.println("SUCCCEESSS COKIIIEEE");
-                Cookie tokenCookie = new Cookie("authToken", response.getToken());
-                tokenCookie.setPath("/");
-                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+        if (response.getMessage().equals("SUCCESS")) {
+            System.out.println("SUCCCEESSS COKIIIEEE");
+            Cookie tokenCookie = new Cookie("authToken", response.getToken());
+            tokenCookie.setPath("/");
+            tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
 
-                httpResponse.addCookie(tokenCookie);
+            httpResponse.addCookie(tokenCookie);
 
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
+    }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
-        companyService.createNewSchema(user.getCompanyCode(), user.getUserPwd());
+        String password = user.getUserPwd();
         System.out.println("Register Parameter: " + user);
+        // 스키마 관리자 계정 등록
         int resultMsg = authService.register(user);
         System.out.println("result Msg: " + resultMsg);
-        if (resultMsg == 1) return "SUCCESS";
-        else return "FAIL";
-//        return resultMsg;
+        Integer schemaResult = null;
+        if (resultMsg == 1) {
+            String companyCode = user.getCompanyCode();
+            // 스키마 생성
+            schemaResult = companyService.createNewSchema(companyCode, password);
+            if (schemaResult == 1) {
+                int datasourceResult = dataSourceService.insertDataSourceVo(new DataSourceVo(companyCode, password));
+                if (datasourceResult == 1) {
+                    dataSourceConfig.addNewDataSource(companyCode, password);
+                    return "SUCCESS";
+                }
+                else return "INSERT DATASOURCE FAIL";
+            } else return "CREATE SCHEMA FAIL";
+        } else return "REGISTER FAIL";
     }
 
     @PostMapping("/checkVaildCd")
@@ -125,7 +146,7 @@ public class AuthController {
 //        ResponseVo response = new ResponseVo();
         // TODO : 동일 이메일 있을 경우 , 이메일 보내기
 
-        UserVo result=authService.IdByEmail(user);
+        UserVo result = authService.IdByEmail(user);
         System.out.println("reseeeitt emailllld");
         System.out.println(result);
 
@@ -135,7 +156,7 @@ public class AuthController {
         emailService.sendSimpleMessage(
                 user.getEmail(),
                 "[무한더존] 요청하신 아이디를 발송해 드립니다.",
-                "\n요청하신 아이디를 발송해 드립니다.\n ID: "+result.getUserId()
+                "\n요청하신 아이디를 발송해 드립니다.\n ID: " + result.getUserId()
         );
 //        }
 
