@@ -1,10 +1,14 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- Spring Security 로그 패턴 설정 -->
+<!--    <logger name="org.springframework.security" level="DEBUG"/>-->
+
+    <!-- 기타 로그 패턴 설정 -->
     <logger name="jdbc" level="OFF"/>
     <logger name="jdbc.sqlonly" level="OFF"/>
     <logger name="jdbc.sqltiming" level="DEBUG"/>
