@@ -227,7 +227,7 @@ public class SaAllowCalculationService {
             requestMap.put("dateId", saAllowPay.getDateId());
 
             //List<SaAllowPay> a = saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
-            resultList =  saAllowPayMapper.getSalAlLowPayListByEmp(requestMap).stream()
+            resultList =  saAllowPayMapper.getSalAlLowPayListByEmpForCalculation(requestMap).stream()
                     .filter(s -> s.getCdEmp() != null)
                     .collect(Collectors.toList());
 

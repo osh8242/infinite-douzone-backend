@@ -4,9 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
-    <!-- 급여지급액 리스트 -->
+    <!-- 진짜 급여지급액 리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY", a.CD_EMP
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY"
         FROM (
             SELECT
                 s.CD_ALLOW,
@@ -24,6 +24,33 @@
                 WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
                 GROUP BY CD_ALLOW, YN_TAX , CD_EMP
             ) p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
+        <if test="salDivision       != null and salDivision     != ''">
+            WHERE s.SAL_DIVISION = #{salDivision}
+        </if>
+        ) a
+        GROUP BY a.CD_ALLOW, a.NM_ALLOW
+    </select>
+
+    <!-- 계산용 급여지급액 리스트 -->
+    <select id="getSalAlLowPayListByEmpForCalculation" parameterType="java.util.Map" resultType="SaAllowPay">
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY", a.CD_EMP
+        FROM (
+        SELECT
+        s.CD_ALLOW,
+        s.NM_ALLOW,
+        s.YN_TAX,
+        p.ALLOW_PAY,
+        p.CD_EMP
+        FROM SAALLOW s LEFT OUTER JOIN (
+        SELECT
+        CD_EMP,
+        CD_ALLOW,
+        YN_TAX,
+        SUM(ALLOW_PAY) AS "ALLOW_PAY"
+        FROM SAALLOWPAY
+        WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
+        GROUP BY CD_ALLOW, YN_TAX , CD_EMP
+        ) p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
         <if test="salDivision       != null and salDivision     != ''">
             WHERE s.SAL_DIVISION = #{salDivision}
         </if>
@@ -304,7 +331,7 @@
     </insert>
 
     <select id ="createSallowSeq" resultType="String">
-        SELECT TO_CHAR(MAX(TO_NUMBER(CD_ALLOW))+1) AS MAX_CD_ALLOW_STR
+        SELECT TO_CHAR(NVL(MAX(TO_NUMBER(CD_ALLOW))+1, 200)) AS MAX_CD_ALLOW_STR
         FROM SAALLOW
     </select>
 

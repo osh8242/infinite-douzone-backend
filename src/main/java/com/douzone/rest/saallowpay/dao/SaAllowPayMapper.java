@@ -10,6 +10,7 @@ import java.util.Map;
 @Mapper
 public interface SaAllowPayMapper {
     List<SaAllowPay> getSalAlLowPayListByEmp(Map<String, String> requestMap);   // 급여항목 지급내역 리스트 조회
+    List<SaAllowPay> getSalAlLowPayListByEmpForCalculation(Map<String, String> requestMap);   // 급여항목 지급내역 리스트 조회
     List<Map<String, String>> getSalAllowPaySum(Map<String, String> requestMap);    // select_box 영역 전체 합 급여항목
 
     List<Map<String, String>> getPaymentDateList(Map<String, String> requestMap);   // 지급일 데이터 리스트_모달
