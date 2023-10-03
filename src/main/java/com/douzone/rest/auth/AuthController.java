@@ -34,7 +34,7 @@ public class AuthController {
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user, HttpServletRequest request) {
         System.out.println("parameter login info: ");
 
-        //Test
+        // TEST
         System.out.println("Client IP: " + request.getRemoteAddr());
         System.out.println("Requested URL: " + request.getRequestURL());
         System.out.println("Query String: " + request.getQueryString());
@@ -96,7 +96,7 @@ public class AuthController {
 
     @PostMapping("/checkVaildCd")
     public String checkVaildCd(@RequestBody UserVo user) {
-        String result = "";
+        String result;
         System.out.println("check id consripll parm ; " + user);
         int checkIdResult = authService.checkValidCd(user);
         if (checkIdResult == 1)
@@ -108,7 +108,7 @@ public class AuthController {
 
     @PostMapping("/checkVaildId")
     public String checkVaildId(@RequestBody UserVo user) {
-        String result = "";
+        String result ;
         System.out.println("check id consripll parm ; " + user);
         int checkIdResult = authService.checkValidId(user);
         if (checkIdResult == 1)
@@ -119,7 +119,7 @@ public class AuthController {
 
     @PostMapping("/checkVaildEmail")
     public String checkVaildEmail(@RequestBody UserVo user) {
-        String result = "";
+        String result ;
         System.out.println("check id consripll parm ; " + user);
         int checkIdResult = authService.checkValidEmail(user);
         if (checkIdResult == 1)
