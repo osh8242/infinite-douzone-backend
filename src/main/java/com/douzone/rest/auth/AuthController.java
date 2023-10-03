@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -38,7 +39,9 @@ public class AuthController {
 
     //    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
-    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
+    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user, HttpServletRequest request) {
+        String clientIP = request.getRemoteAddr();
+        System.out.println("clientIP = " + clientIP);
         System.out.println("parameter login info: ");
         System.out.println(user);
         ResponseVo response = authService.findUser(user);
@@ -93,8 +96,10 @@ public class AuthController {
             // 스키마 생성
             schemaResult = companyService.createNewSchema(companyCode, password);
             if (schemaResult == 1) {
+                // 데이터소스 DB에 등록
                 int datasourceResult = dataSourceService.insertDataSourceVo(new DataSourceVo(companyCode, password));
                 if (datasourceResult == 1) {
+                    // 데이터소스 서버에 등록
                     dataSourceConfig.addNewDataSource(companyCode, password);
                     return "SUCCESS";
                 }
