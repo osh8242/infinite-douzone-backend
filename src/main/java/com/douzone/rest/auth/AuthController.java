@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,25 +28,30 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+//    @Autowired
+//    private TokenBlacklistService tokenBlacklistService;
+
+
+
     //    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user, HttpServletRequest request) {
         System.out.println("parameter login info: ");
 
-        // TEST
-        System.out.println("Client IP: " + request.getRemoteAddr());
-        System.out.println("Requested URL: " + request.getRequestURL());
-        System.out.println("Query String: " + request.getQueryString());
-        System.out.println("Request Method: " + request.getMethod());
-
-        // Headers
-        System.out.println("=== Headers ===");
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            System.out.println(headerName + ": " + request.getHeader(headerName));
-        }
-        ResponseVo response = authService.findUser(user);
+//        // TEST
+//        System.out.println("Client IP: " + request.getRemoteAddr());
+//        System.out.println("Requested URL: " + request.getRequestURL());
+//        System.out.println("Query String: " + request.getQueryString());
+//        System.out.println("Request Method: " + request.getMethod());
+//
+//        // Headers
+//        System.out.println("=== Headers ===");
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            String headerName = headerNames.nextElement();
+//            System.out.println(headerName + ": " + request.getHeader(headerName));
+//        }
+            ResponseVo response = authService.findUser(user);
                if (response.getMessage().equals("SUCCESS")) {
             HttpHeaders headers = new HttpHeaders();
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
@@ -62,6 +66,18 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseVo> logout() {
+        System.out.println("logoutTesting...");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 로그아웃 시 토큰 강제 만료 후, 블랙리스트 추가
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+//        tokenBlacklistService.addTokenToBlacklist(token);
+//        return ResponseEntity.ok().body("Logged out successfully");
+//    }
 
         @PostMapping("/cookieLogin")
         @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
