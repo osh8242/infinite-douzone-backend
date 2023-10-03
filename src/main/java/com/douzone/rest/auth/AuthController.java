@@ -17,7 +17,7 @@ import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = {"http://localhost:3000", "http://osh8242.iptime.org"})
 public class AuthController {
 
     @Autowired
