@@ -93,7 +93,7 @@
     </select>
 
 
-    <select id="getEmpByCdEmp" parameterType="Emp">
+    <select id="getEmpByCdEmp" parameterType="Emp" resultType="Emp">
         SELECT
             cd_emp,
             nm_krname,
