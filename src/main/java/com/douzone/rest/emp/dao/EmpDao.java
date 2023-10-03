@@ -11,6 +11,9 @@ import java.util.Map;
 public interface EmpDao {
     public List<Emp> getAllEmp();
     public List<Emp> getEmpListForHrManagement(Map<String, Object> map);
+
+    public List<Emp> getEmpListForSwsm(Map<String, Object> map);
+
     public Emp getEmpByCdEmp(Emp emp);
     public List<Emp> getEmpListByVariable(Map<String, String> variable);
     public int insertEmp(Emp emp);

@@ -3,6 +3,7 @@ package com.douzone.rest.auth;
 import com.douzone.rest.auth.mail.EmailService;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
+import com.douzone.rest.company.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private EmailService emailService;
@@ -68,7 +72,8 @@ public class AuthController {
         }
 
     @PostMapping("/register")
-    public String Register(@RequestBody UserVo user) {
+    public String Register(@RequestBody UserVo user) throws Exception {
+        companyService.createNewSchema(user.getCompanyCode(), user.getUserPwd());
         System.out.println("Register Parameter: " + user);
         int resultMsg = authService.register(user);
         System.out.println("result Msg: " + resultMsg);
@@ -76,6 +81,18 @@ public class AuthController {
         else return "FAIL";
 //        return resultMsg;
     }
+
+    @PostMapping("/checkVaildCd")
+    public String checkVaildCd(@RequestBody UserVo user) {
+        String result = "";
+        System.out.println("check id consripll parm ; " + user);
+        int checkIdResult = authService.checkValidCd(user);
+        if (checkIdResult == 1)
+            result = "SUCCESS";
+        else result = "FAIL";
+        return result;
+    }
+
 
     @PostMapping("/checkVaildId")
     public String checkVaildId(@RequestBody UserVo user) {
@@ -103,73 +120,27 @@ public class AuthController {
     @PostMapping("/findEmail")
     public ResponseEntity<ResponseVo> findEmail(@RequestBody UserVo user) {
         System.out.println("parameter email info: ");
-        System.out.println(user);  // UserVo 객체에 getEmail 메서드가 있어야 합니다.
+        System.out.println(user);
 //        UserVo u = new UserVo("1", "2", "3", "seoyeonev@gmail.com");
 //        ResponseVo response = new ResponseVo();
         // TODO : 동일 이메일 있을 경우 , 이메일 보내기
 
+        UserVo result=authService.IdByEmail(user);
+        System.out.println("reseeeitt emailllld");
+        System.out.println(result);
+
         // TODO : send Email Sevice 구현
-        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
+//        System.out.println("Sending email to: " + "llikepsh515@gmail.com");
 //        if (user != null && user.getUserEmail() != null) {
         emailService.sendSimpleMessage(
-//                    "llikepsh515@gmail.com".trim(),
-                "llikepsh515@gmail.com",
-                "Testing sendEmail",
-                "hi im seoyeonlee hehe"
+                user.getEmail(),
+                "[무한더존] 요청하신 아이디를 발송해 드립니다.",
+                "\n요청하신 아이디를 발송해 드립니다.\n ID: "+result.getUserId()
         );
 //        }
 
         ResponseVo response = new ResponseVo();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-//    @PostMapping("/findEmail")
-//    public ResponseEntity<ResponseVo> findEmail(@RequestBody UserVo user) {
-//        System.out.println("parameter email info: " + user);
-//
-//        // TODO : 요청 데이터와 일치하는 이메일 찾는 로직 구현하기...
-//        // TODO : send Email Sevice 구현
-//        if (user != null && user.getUserEmail() != null) {
-//            emailService.sendSimpleMessage(
-//                    user.getUserEmail(),
-//                    "Your Subject Here",
-//                    "Your email body here..."
-//            );
-//        }
-//
-//        ResponseVo response = new ResponseVo();
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
-
-//        if ("SUCCESS".equals(response.getMessage())) {
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-//        }
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-
-//    @PostMapping("/login")
-//    public int login(@RequestParam String userId, @RequestParam String userPwd) {
-//        System.out.println("parameter login info: userId=" + userId + ", userPwd=" + userPwd);
-//        UserVo user = new UserVo();
-//        user.setUserId(userId);
-//        user.setUserPwd(userPwd);
-//        int result = authService.findUser(user);
-//        return 0;
-//    }
-
-
-//        public ResponseEntity<LoginResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
-//            User user = userRepository.findByUsername(loginRequest.getUsername());
-//            if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
-//                // 로그인 성공
-//                return ResponseEntity.ok(new LoginResponse("로그인 성공"));
-//            } else {
-//                // 로그인 실패
-//                return ResponseEntity.badRequest().body(new LoginResponse("로그인 실패"));
-//            }
-//        }
-//    }
 
 }
