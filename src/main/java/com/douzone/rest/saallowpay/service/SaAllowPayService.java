@@ -90,7 +90,10 @@ public class SaAllowPayService {
             }
 
             if("".equals(saAllowPay.getAllowPay())){
-                saAllowPayMapper.deleteSalAllowPay(saAllowPay);
+                if (saAllowPayMapper.deleteSalAllowPay(saAllowPay) > 0) {
+                    saAllowPay.setAllowPay("0");
+                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
+                }
             } else {
                 int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
                 if (mergeSalaryAllowPayResult > 0) {
