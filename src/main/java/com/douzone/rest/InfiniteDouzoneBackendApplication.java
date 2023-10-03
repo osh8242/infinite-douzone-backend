@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.douzone.rest.**.dao")
 public class InfiniteDouzoneBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InfiniteDouzoneBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InfiniteDouzoneBackendApplication.class, args);
+    }
 
 }

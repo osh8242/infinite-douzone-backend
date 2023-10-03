@@ -36,6 +36,9 @@ public class EmpController {
                                                                @RequestParam(name = "orderRef") String orderRef,
                                                                @RequestParam(name = "refYear", required = false) String refYear) {
         System.out.println("EmpController.getEmpListByJobOk");
+        System.out.println("jobOk = " + jobOk);
+        System.out.println("orderRef = " + orderRef);
+        System.out.println("refYear = " + refYear);
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
         if(refYear != null ) map.put("refYear", refYear.trim());
@@ -44,6 +47,27 @@ public class EmpController {
         list = empservice.getEmpListForHrManagement(map);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+//    @GetMapping("/getEmpListForSwsm")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
+//        if (job.equals("empAll")) {
+//            System.out.println("empall임");
+//            System.out.println(empservice.getAllEmp());
+//            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
+//        } else {
+//            System.out.println("EmpController.getEmpListByJobClassfication");
+//            System.out.println("incomeClassfication || job = " + job);
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("incomeClassfication", job.trim());
+//            List<Emp> list = null;
+//            list = empservice.getEmpListForSwsm(map);
+//
+//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
+//            System.out.println(list);
+//
+//            return new ResponseEntity<>(list, HttpStatus.OK);
+//        }
+//    }
 
     @PostMapping("/getEmpByCdEmp")
     public ResponseEntity<Emp> getEmpByCdEmp(@RequestBody Emp emp){
@@ -62,14 +86,16 @@ public class EmpController {
 
     @PostMapping("insertEmp")
     public int insertEmp(@RequestBody Emp emp) {
-        System.out.println("Emp insert Controller -----");
+        System.out.println("EmpController.insertEmp");
+        System.out.println("emp = " + emp);
         int result = empservice.insertEmp(emp);
         return result;
     }
 
     @PutMapping("/updateEmp")
     public int updateEmp(@RequestBody Emp emp){
-        System.out.println("Emp update Controller -----");
+        System.out.println("EmpController.updateEmp");
+        System.out.println("emp = " + emp);
         int result = empservice.updateEmp(emp);
         return result;
     }
@@ -84,7 +110,6 @@ public class EmpController {
 
     @GetMapping("/getEmpListForCodeHelper")
     public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
-        System.out.println(reqestMap.toString());
         List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

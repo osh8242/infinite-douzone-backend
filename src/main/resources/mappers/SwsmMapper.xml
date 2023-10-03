@@ -8,17 +8,82 @@
         select * from Swsm where CD_EMP = #{cdEmp}
     </select>
 
+
+
+    <delete id="deleteSwsmByCdEmp" parameterType="Swsm">
+        DELETE FROM swsm WHERE CD_EMP = #{cdEmp}
+    </delete>
+
+
+    <select id="getSwsmListForSwsm" parameterType="map" resultType="Swsm">
+        SELECT swsm.cd_emp, emp.nm_krname, emp.no_social
+        FROM swsm
+        INNER JOIN (
+        SELECT cd_emp, nm_krname, income_classfication
+        FROM EMP
+        WHERE income_classfication = #{incomeClassfication}
+        ) emp ON swsm.cd_emp = emp.cd_emp
+    </select>
+
     <select id="getAllSwsm" resultType="Swsm">
         Select *
         FROM SWSM
     </select>
+
+    <insert id="insertSwsm" parameterType="Swsm">
+        INSERT INTO swsm
+        (
+<!--        INCOME_CLASSFICATION,-->
+        WITHHOLDING_YEAR, DATE_OF_CREATION, CD_EMP, OTHER_BENEFITS_ITEM,
+        OTHER_BENEFITS_AMOUNT, NM_KRNAME, RESIDENT_STATE, NO_SOCIAL, SALARY_AMOUNT, BONUS_AMOUNT,
+        START_EMP_CONTRACT_PERIOD, END_EMP_CONTRACT_PERIOD, POST_CODE, ADDRESS, JOB_DESCRIPTION,
+        START_BREAK_TIME, END_BREAK_TIME, WORKING_DAY, DAY_OFF, SALARY_TYPE, OTHER_BENEFITS,
+        BONUS_PAYMENT_STATUS, SALARY_PAYMENT_DATE_TYPE, PAYMENT_DATE, PAYMENT_METHOD,
+        EMP_INSURANCE, COMPENSATION_INSURANCE, NATIONAL_PENSION, HEALTH_INSURANCE, ADD_DETAIL,
+        START_WORKTIME, END_WORKTIME
+        )
+        VALUES
+        (
+        #{withholdingYear, jdbcType=VARCHAR},
+        #{dateOfCreation, jdbcType=VARCHAR},
+        #{cdEmp, jdbcType=VARCHAR},
+        #{otherBenefitsItem, jdbcType=VARCHAR},
+        #{otherBenefitsAmount, jdbcType=VARCHAR},
+        #{nmKrname, jdbcType=VARCHAR},
+        #{residentState, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR},
+        #{salaryAmount, jdbcType=VARCHAR},
+        #{bonusAmount, jdbcType=VARCHAR},
+        #{startEmpContractPeriod, jdbcType=VARCHAR},
+        #{endEmpContractPeriod, jdbcType=VARCHAR},
+        #{postCode, jdbcType=VARCHAR},
+        #{address, jdbcType=VARCHAR},
+        #{jobDescription, jdbcType=VARCHAR},
+        #{startBreakTime, jdbcType=VARCHAR},
+        #{endBreakTime, jdbcType=VARCHAR},
+        #{workingDay, jdbcType=VARCHAR},
+        #{dayOff, jdbcType=VARCHAR},
+        #{salaryType, jdbcType=VARCHAR},
+        #{otherBenefits, jdbcType=VARCHAR},
+        #{bonusPaymentStatus, jdbcType=VARCHAR},
+        #{salaryPaymentDateType, jdbcType=VARCHAR},
+        #{paymentDate, jdbcType=VARCHAR},
+        #{paymentMethod, jdbcType=VARCHAR},
+        #{empInsurance, jdbcType=VARCHAR},
+        #{compensationInsurance, jdbcType=VARCHAR},
+        #{nationalPension, jdbcType=VARCHAR},
+        #{healthInsurance, jdbcType=VARCHAR},
+        #{addDetail, jdbcType=VARCHAR},
+        #{startWorktime, jdbcType=VARCHAR},
+        #{endWorktime, jdbcType=VARCHAR}
+        )
+    </insert>
 
     <update id="updateSwsm" parameterType="Swsm">
         update SWSM
         set
         <if test="withholdingYear != null">withholding_year = #{withholdingYear}, </if>
         <if test="dateOfCreation != null">date_of_creation = #{dateOfCreation}, </if>
-        <if test="incomeClassfication != null">income_classfication = #{incomeClassfication}, </if>
         <if test="nmKrname != null">nm_krname = #{nmKrname}, </if>
         <if test="residentState != null">resident_state = #{residentState}, </if>
         <if test="noSocial != null">no_social = #{noSocial}, </if>

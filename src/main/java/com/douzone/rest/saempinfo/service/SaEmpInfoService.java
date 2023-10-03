@@ -1,11 +1,11 @@
 package com.douzone.rest.saempinfo.service;
 
+import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
+import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import com.douzone.rest.saempinfo.vo.SaEmpInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,25 +16,42 @@ public class SaEmpInfoService {
 
     SaEmpInfoMapper saEmpInfoMapper;
 
+    SaAllowPayMapper saAllowPayMapper;
+
+    SaDeductPayDao saDeductPayDao;
+
     @Autowired
-    public SaEmpInfoService(SaEmpInfoMapper saEmpInfoMapper) {
+    public SaEmpInfoService(
+            SaAllowPayMapper saAllowPayMapper,
+            SaDeductPayDao saDeductPayDao,
+            SaEmpInfoMapper saEmpInfoMapper
+    ) {
+        this.saAllowPayMapper = saAllowPayMapper;
+        this.saDeductPayDao = saDeductPayDao;
         this.saEmpInfoMapper = saEmpInfoMapper;
     }
 
-    public Map<String, Object> getAll(Map<String, Object> reqestMap) {
+    public Map<String, Object> getAll(Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
-
         try {
-            String dateId = saEmpInfoMapper.getDateId(reqestMap);
-            reqestMap.put("dateId",dateId);
+            Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
 
-            result.put("dateId", dateId);
-            result.put("plist", saEmpInfoMapper.getSaEmpInfoList(reqestMap));
+            if(dateInfo!=null) {
+                requestMap.put("dateId", dateInfo.get("dateId"));
+                result.put("dateId", dateInfo);
+                result.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
+
+                Map<String, Object> totalSalPaydata = new HashMap<>();
+                totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap)); //지급항목
+                totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap)); //공제항목
+                result.put("totalSalPaydata",totalSalPaydata);
+            }
 
         }catch (Exception e){
             e.getStackTrace();
         }
+
         return result;
     }
 
@@ -42,17 +59,32 @@ public class SaEmpInfoService {
         return saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap);
     }
 
-    public void deleteSaEmpInfo(SaEmpInfo saEmpInfo) {
+    public int insertSaEmpInfo(SaEmpInfo saEmpInfo) {
+        int result = 0;
+        try{
+            result = saEmpInfoMapper.insertSaEmpInfo(saEmpInfo);
+        } catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteSaEmpList(List<Map<String,String>> deleteEmpList) {
+        int result = 0;
         try {
-            saEmpInfoMapper.deleteSaEmpInfo(saEmpInfo);
+
+            result = saEmpInfoMapper.deleteDateId(deleteEmpList.get(0).get("dateId"));   // dateId 삭제
+            result = saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList); // 급여지급 삭제
+            result = saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);   // 공제 지급 삭제
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return result;
     }
 
-    public void updateEmpInfo(SaEmpInfo saEmpInfo) {
+    public void updateSaEmpInfo(SaEmpInfo saEmpInfo) {
         try {
-            saEmpInfoMapper.updateEmpInfo(saEmpInfo);
+            saEmpInfoMapper.updateSaEmpInfo(saEmpInfo);
         } catch (Exception e) {
             e.getStackTrace();
         }

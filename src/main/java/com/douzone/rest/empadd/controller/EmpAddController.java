@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/empAdd")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class EmpAddController {
 
     @Autowired
@@ -55,6 +54,8 @@ public class EmpAddController {
 
     @PostMapping("/insertEmpAdd")
     public ResponseEntity<Integer> insertEmpAdd(@RequestBody EmpAdd empAdd) {
+        System.out.println("EmpAddController.insertEmpAdd");
+        System.out.println("empAdd = " + empAdd);
         int result = 0;
         result = empAddService.insertEmpAdd(empAdd);
         return ResponseEntity.ok(result);
@@ -69,7 +70,7 @@ public class EmpAddController {
 
     @PutMapping("/updateEmpAdd")
     public ResponseEntity<Integer> updateEmpAddByCD_EMP(@RequestBody EmpAdd empAdd){
-        System.out.println("EmpAddController.deleteEmpByCD_EMP");
+        System.out.println("EmpAddController.updateEmpAddByCD_EMP");
         System.out.println("empAdd = " + empAdd);
         int result = 0;
         result = empAddService.updateEmpAddByCdEmp(empAdd);

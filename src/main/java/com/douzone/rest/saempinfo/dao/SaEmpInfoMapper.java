@@ -8,13 +8,17 @@ import java.util.Map;
 
 @Mapper
 public interface SaEmpInfoMapper {
-    List<SaEmpInfo> getSaEmpInfoList(Map<String, Object> reqestMap);//리스트조회
+    List<SaEmpInfo> getSaEmpInfoList(Map<String, String> reqestMap);//리스트조회
 
     SaEmpInfo getSaEmpInfoByCdEmp(Map<String, String> requestMap);//하나조회
-    
-    void deleteSaEmpInfo(SaEmpInfo saEmpInfo);//삭제
 
-    void updateEmpInfo(SaEmpInfo saEmpInfo);//수정
+    int insertSaEmpInfo(SaEmpInfo saEmpInfo);//삽입
 
-    String getDateId(Map<String, Object> reqestMap);//날짜 id 검색
+    int deleteSaAllowPayEmpList(List<Map<String,String>> deleteEmpList);//삭제
+    int deleteSaDeductEmpList(List<Map<String,String>> deleteEmpList);//삭제
+
+    void updateSaEmpInfo(SaEmpInfo saEmpInfo);//수정
+
+    Map<String, String> getDateInfo(Map<String, String> reqestMap);//날짜 id 검색
+    int deleteDateId(String dateId);
 }
