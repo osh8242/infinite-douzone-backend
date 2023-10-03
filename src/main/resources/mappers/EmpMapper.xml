@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.emp.dao.EmpDao">
+
+    <select id="getAllEmp" resultType="Emp">
+        SELECT
+            *
+        FROM EMP
+    </select>
+
+    <select id="getEmpListForSwsm" parameterType="map" resultType="Emp">
+        SELECT *
+        FROM EMP WHERE income_classfication = #{incomeClassfication}
+    </select>
+
+    <select id="getEmpListForHrManagement" parameterType="map" resultType="Emp">
+        SELECT *
+        FROM EMP WHERE JOB_OK = #{jobOk}
+        <if test="refYear != null">
+            OR EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{refYear}
+        </if>
+        <if test="orderRef == 'cdEmp'">
+            ORDER BY CD_EMP
+        </if>
+        <if test="orderRef == 'nmKrname'">
+            ORDER BY NM_KRNAME
+        </if>
+    </select>
+
+
+    <select id="getEmpByCdEmp" parameterType="Emp" resultType="Emp">
+        SELECT
+            *
+        FROM EMP
+        WHERE cd_emp = #{cdEmp}
+    </select>
+
+    <select id="getEmpListByVariable" parameterType="hashmap">
+        SELECT *,
+        FROM EMP
+        WHERE ${columnName} = #{columnValue}
+    </select>
+
+    <insert id="insertEmp" parameterType="Emp">
+        INSERT ALL
+        INTO EMP(
+        cd_emp,
+        nm_krname,
+        yn_for,
+        no_social,
+        <if test="jobOk != null">job_ok,</if>
+        <if test="incomeClassfication != null">income_classfication,</if>
+        <if test="dateOfcreate != null">date_ofcreate,</if>
+        <if test="daEnter != null">da_enter,</if>
+        fg_sex,
+        abb_nation,
+        yn_resident,
+        str_39_1_1,
+        str_40_1_1,
+        cd_nation,
+        zip_home,
+        add_home1,
+        add_home2,
+        tel_home1,
+        tel_home2,
+        tel_home3,
+        cel_emp1,
+        cel_emp2,
+        cel_emp3,
+        em_emp,
+        id_msn,
+        cd_dept,
+        cd_occup,
+        rank_no,
+        cd_salcls,
+        cd_field,
+        cd_project,
+        da_retire,
+        cd_bank,
+        no_bnkacct,
+        nm_bnkowner,
+        mn_6_1_1,
+        cd_acctit1,
+        cd_acctit2,
+        fg_paysupply,
+        mn_mmaverage,
+        mn_natptarget,
+        mn_natpslev,
+        mn_hostarget,
+        mn_hos,
+        no_health,
+        mn_emptarget,
+        mn_emp,
+        yn_employ,
+        yn_ceo,
+        yn_sanjae,
+        yn_longinsur,
+        str_32_1_1,
+        str_33_1_1,
+        str_35_1_1,
+        mn_2_1_1,
+        mn_3_1_1,
+        str_1_1_1,
+        str_45_1_1,
+        str_46_1_1,
+        str_47_1_1,
+        mn_1_1_1,
+        yn_danil,
+        yn_iclman,
+        str_43_1_1,
+        str_44_1_1,
+        mn_iclpay,
+        str_34_1_1,
+        yn_forlabor,
+        yn_unit,
+        yn_overwork,
+        str_42_1_1,
+        mn_4_1_1
+        ) VALUES (
+        #{cdEmp, jdbcType=VARCHAR},
+        #{nmKrname, jdbcType=VARCHAR},
+        #{ynFor, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR},
+        <if test="jobOk != null and jobOk != ''">
+            #{jobOk, jdbcType=VARCHAR},
+        </if>
+        <if test="jobOk == null or jobOk == ''">
+            'Y',
+        </if>
+        <if test="incomeClassfication != null">#{incomeClassfication, jdbcType=VARCHAR},</if>
+        <if test="dateOfcreate != null">#{dateOfcreate, jdbcType=VARCHAR},</if>
+        <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
+        #{fgSex, jdbcType=VARCHAR},
+        #{abbNation, jdbcType=VARCHAR},
+        #{ynResident, jdbcType=VARCHAR},
+        #{str3911, jdbcType=VARCHAR},
+        #{str4011, jdbcType=VARCHAR},
+        #{cdNation, jdbcType=VARCHAR},
+        #{zipHome, jdbcType=VARCHAR},
+        #{addHome1, jdbcType=VARCHAR},
+        #{addHome2, jdbcType=VARCHAR},
+        #{telHome1, jdbcType=VARCHAR},
+        #{telHome2, jdbcType=VARCHAR},
+        #{telHome3, jdbcType=VARCHAR},
+        #{celEmp1, jdbcType=VARCHAR},
+        #{celEmp2, jdbcType=VARCHAR},
+        #{celEmp3, jdbcType=VARCHAR},
+        #{emEmp, jdbcType=VARCHAR},
+        #{idMsn, jdbcType=VARCHAR},
+        #{cdDept, jdbcType=VARCHAR},
+        #{cdOccup, jdbcType=VARCHAR},
+        #{rankNo, jdbcType=VARCHAR},
+        #{cdSalcls, jdbcType=VARCHAR},
+        #{cdField, jdbcType=VARCHAR},
+        #{cdProject, jdbcType=VARCHAR},
+        #{daRetire, jdbcType=VARCHAR},
+        #{cdBank, jdbcType=VARCHAR},
+        #{noBnkacct, jdbcType=VARCHAR},
+        #{nmBnkowner, jdbcType=VARCHAR},
+        #{mn611, jdbcType=VARCHAR},
+        #{cdAcctit1, jdbcType=VARCHAR},
+        #{cdAcctit2, jdbcType=VARCHAR},
+        #{fgPaysupply, jdbcType=VARCHAR},
+        #{mnMmaverage, jdbcType=VARCHAR},
+        #{mnNatptarget, jdbcType=VARCHAR},
+        #{mnNatpslev, jdbcType=VARCHAR},
+        #{mnHostarget, jdbcType=VARCHAR},
+        #{mnHos, jdbcType=VARCHAR},
+        #{noHealth, jdbcType=VARCHAR},
+        #{mnEmptarget, jdbcType=VARCHAR},
+        #{mnEmp, jdbcType=VARCHAR},
+        #{ynEmploy, jdbcType=VARCHAR},
+        #{ynCeo, jdbcType=VARCHAR},
+        #{ynSanjae, jdbcType=VARCHAR},
+        #{ynLonginsur, jdbcType=VARCHAR},
+        #{str3211, jdbcType=VARCHAR},
+        #{str3311, jdbcType=VARCHAR},
+        #{str3511, jdbcType=VARCHAR},
+        #{mn2111, jdbcType=VARCHAR},
+        #{mn3111, jdbcType=VARCHAR},
+        #{str1111, jdbcType=VARCHAR},
+        #{str4511, jdbcType=VARCHAR},
+        #{str4611, jdbcType=VARCHAR},
+        #{str4711, jdbcType=VARCHAR},
+        #{mn1111, jdbcType=VARCHAR},
+        #{ynDanil, jdbcType=VARCHAR},
+        #{ynIclman, jdbcType=VARCHAR},
+        #{str4311, jdbcType=VARCHAR},
+        #{str4411, jdbcType=VARCHAR},
+        #{mnIclpay, jdbcType=VARCHAR},
+        #{str3411, jdbcType=VARCHAR},
+        #{ynForlabor, jdbcType=VARCHAR},
+        #{ynUnit, jdbcType=VARCHAR},
+        #{ynOverwork, jdbcType=VARCHAR},
+        #{str4211, jdbcType=VARCHAR},
+        #{mn4111, jdbcType=VARCHAR}
+        )
+        <if test="cdEmp != null">
+            INTO EmpMenuUsage
+            VALUES (#{cdEmp, jdbcType=VARCHAR}, null)
+        </if>
+        SELECT 1 FROM DUAL
+    </insert>
+
+
+
+
+    <update id="updateEmp" parameterType="Emp">
+        UPDATE EMP
+        <set>
+            <if test="nmKrname != null">nm_krname = #{nmKrname, jdbcType=VARCHAR},</if>
+            <if test="ynFor != null">yn_for = #{ynFor, jdbcType=VARCHAR},</if>
+            <if test="noSocial != null">no_social = #{noSocial, jdbcType=VARCHAR},</if>
+            <if test="jobOk != null">job_ok = #{jobOk, jdbcType=VARCHAR},</if>
+            <if test="incomeClassfication != null">income_classfication = #{incomeClassfication, jdbcType=VARCHAR},</if>
+            <if test="dateOfcreate != null">date_ofcreate = #{dateOfcreate, jdbcType=VARCHAR},</if>
+            <if test="daEnter != null">da_enter = #{daEnter, jdbcType=VARCHAR},</if>
+            <if test="fgSex != null">fg_sex = #{fgSex, jdbcType=VARCHAR},</if>
+            <if test="abbNation != null">abb_nation = #{abbNation, jdbcType=VARCHAR},</if>
+            <if test="ynResident != null">yn_resident = #{ynResident, jdbcType=VARCHAR},</if>
+            <if test="str3911 != null">str_39_1_1 = #{str3911, jdbcType=VARCHAR},</if>
+            <if test="str4011 != null">str_40_1_1 = #{str4011, jdbcType=VARCHAR},</if>
+            <if test="cdNation != null">cd_nation = #{cdNation, jdbcType=VARCHAR},</if>
+            <if test="zipHome != null">zip_home = #{zipHome, jdbcType=VARCHAR},</if>
+            <if test="addHome1 != null">add_home1 = #{addHome1, jdbcType=VARCHAR},</if>
+            <if test="addHome2 != null">add_home2 = #{addHome2, jdbcType=VARCHAR},</if>
+            <if test="telHome1 != null">tel_home1 = #{telHome1, jdbcType=VARCHAR},</if>
+            <if test="telHome2 != null">tel_home2 = #{telHome2, jdbcType=VARCHAR},</if>
+            <if test="telHome3 != null">tel_home3 = #{telHome3, jdbcType=VARCHAR},</if>
+            <if test="celEmp1 != null">cel_emp1 = #{celEmp1, jdbcType=VARCHAR},</if>
+            <if test="celEmp2 != null">cel_emp2 = #{celEmp2, jdbcType=VARCHAR},</if>
+            <if test="celEmp3 != null">cel_emp3 = #{celEmp3, jdbcType=VARCHAR},</if>
+            <if test="emEmp != null">em_emp = #{emEmp, jdbcType=VARCHAR},</if>
+            <if test="idMsn != null">id_msn = #{idMsn, jdbcType=VARCHAR},</if>
+            <if test="cdDept != null">cd_dept = #{cdDept, jdbcType=VARCHAR},</if>
+            <if test="cdOccup != null">cd_occup = #{cdOccup, jdbcType=VARCHAR},</if>
+            <if test="rankNo != null">rank_no = #{rankNo, jdbcType=VARCHAR},</if>
+            <if test="cdSalcls != null">cd_salcls = #{cdSalcls, jdbcType=VARCHAR},</if>
+            <if test="cdField != null">cd_field = #{cdField, jdbcType=VARCHAR},</if>
+            <if test="cdProject != null">cd_project = #{cdProject, jdbcType=VARCHAR},</if>
+            <if test="daRetire != null">da_retire = #{daRetire, jdbcType=VARCHAR},</if>
+            <if test="cdBank != null">cd_bank = #{cdBank, jdbcType=VARCHAR},</if>
+            <if test="noBnkacct != null">no_bnkacct = #{noBnkacct, jdbcType=VARCHAR},</if>
+            <if test="nmBnkowner != null">nm_bnkowner = #{nmBnkowner, jdbcType=VARCHAR},</if>
+            <if test="mn611 != null">mn_6_1_1 = #{mn611, jdbcType=VARCHAR},</if>
+            <if test="cdAcctit1 != null">cd_acctit1 = #{cdAcctit1, jdbcType=VARCHAR},</if>
+            <if test="cdAcctit2 != null">cd_acctit2 = #{cdAcctit2, jdbcType=VARCHAR},</if>
+            <if test="fgPaysupply != null">fg_paysupply = #{fgPaysupply, jdbcType=VARCHAR},</if>
+            <if test="mnMmaverage != null">mn_mmaverage = #{mnMmaverage, jdbcType=VARCHAR},</if>
+            <if test="mnNatptarget != null">mn_natptarget = #{mnNatptarget, jdbcType=VARCHAR},</if>
+            <if test="mnNatpslev != null">mn_natpslev = #{mnNatpslev, jdbcType=VARCHAR},</if>
+            <if test="mnHostarget != null">mn_hostarget = #{mnHostarget, jdbcType=VARCHAR},</if>
+            <if test="mnHos != null">mn_hos = #{mnHos, jdbcType=VARCHAR},</if>
+            <if test="noHealth != null">no_health = #{noHealth, jdbcType=VARCHAR},</if>
+            <if test="mnEmptarget != null">mn_emptarget = #{mnEmptarget, jdbcType=VARCHAR},</if>
+            <if test="mnEmp != null">mn_emp = #{mnEmp, jdbcType=VARCHAR},</if>
+            <if test="ynEmploy != null">yn_employ = #{ynEmploy, jdbcType=VARCHAR},</if>
+            <if test="ynCeo != null">yn_ceo = #{ynCeo, jdbcType=VARCHAR},</if>
+            <if test="ynSanjae != null">yn_sanjae = #{ynSanjae, jdbcType=VARCHAR},</if>
+            <if test="ynLonginsur != null">yn_longinsur = #{ynLonginsur, jdbcType=VARCHAR},</if>
+            <if test="str3211 != null">str_32_1_1 = #{str3211, jdbcType=VARCHAR},</if>
+            <if test="str3311 != null">str_33_1_1 = #{str3311, jdbcType=VARCHAR},</if>
+            <if test="str3511 != null">str_35_1_1 = #{str3511, jdbcType=VARCHAR},</if>
+            <if test="mn2111 != null">mn_2_1_1 = #{mn2111, jdbcType=VARCHAR},</if>
+            <if test="mn3111 != null">mn_3_1_1 = #{mn3111, jdbcType=VARCHAR},</if>
+            <if test="str1111 != null">str_1_1_1 = #{str1111, jdbcType=VARCHAR},</if>
+            <if test="str4511 != null">str_45_1_1 = #{str4511, jdbcType=VARCHAR},</if>
+            <if test="str4611 != null">str_46_1_1 = #{str4611, jdbcType=VARCHAR},</if>
+            <if test="str4711 != null">str_47_1_1 = #{str4711, jdbcType=VARCHAR},</if>
+            <if test="mn1111 != null">mn_1_1_1 = #{mn1111, jdbcType=VARCHAR},</if>
+            <if test="ynDanil != null">yn_danil = #{ynDanil, jdbcType=VARCHAR},</if>
+            <if test="ynIclman != null">yn_iclman = #{ynIclman, jdbcType=VARCHAR},</if>
+            <if test="str4311 != null">str_43_1_1 = #{str4311, jdbcType=VARCHAR},</if>
+            <if test="str4411 != null">str_44_1_1 = #{str4411, jdbcType=VARCHAR},</if>
+            <if test="mnIclpay != null">mn_iclpay = #{mnIclpay, jdbcType=VARCHAR},</if>
+            <if test="str3411 != null">str_34_1_1 = #{str3411, jdbcType=VARCHAR},</if>
+            <if test="ynForlabor != null">yn_forlabor = #{ynForlabor, jdbcType=VARCHAR},</if>
+            <if test="ynUnit != null">yn_unit = #{ynUnit, jdbcType=VARCHAR},</if>
+            <if test="ynOverwork != null">yn_overwork = #{ynOverwork, jdbcType=VARCHAR},</if>
+            <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>
+            <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>
+            cd_emp = #{cdEmp}
+        </set>
+        WHERE cd_emp = #{cdEmp}
+    </update>
+
+
+    <delete id="deleteEmp" parameterType="Emp">
+        DELETE
+        FROM emp
+        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
+    </delete>
+
+    <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
+        SELECT e.cd_emp, e.nm_krname, em.use_menuList
+        FROM emp e
+                 RIGHT JOIN empMenuUsage em
+                            ON e.cd_emp = em.cd_emp
+        WHERE e.cd_emp = #{cdEmp}
+    </select>
+
+    <select id="getEmpListForCodeHelper" parameterType="java.util.Map">
+        select
+        CD_EMP,
+        NM_KRNAME,
+        NO_SOCIAL,
+        DA_RETIRE,
+        RANK_NO,
+        YN_FOR
+        from emp
+        where 1=1
+        <if test="jobOk     != null     and     jobOk       != ''">AND JOB_OK = #{jobOk}   </if>
+        <if test="refYear   != null     and     refYear     != ''">AND EXTRACT(YEAR FROM TO_DATE(DA_RETIRE, 'YYYY-MM-DD')) = #{refYear} </if>
+        <if test="ynFor     != null     and     ynFor       != ''">AND YN_FOR = #{ynFor} </if>
+
+        <!--        <if test="orderRef == 'cdEmp'"> ORDER BY CD_EMP</if>-->
+        <!--        <if test="orderRef == 'nmKrname'"> ORDER BY NM_KRNAME</if>-->
+        <!--        <if test="orderRef == 'noSocial'"> ORDER BY NO_SOCIAL</if>-->
+        <!--        <if test="orderRef == 'naRetire'"> ORDER BY DA_RETIRE</if>-->
+        <!--        <if test="orderRef == 'rankNo'"> ORDER BY RANK_NO</if>-->
+        <!--        <if test="orderRef == 'ynFor'"> ORDER BY YN_FOR</if>-->
+    </select>
+</mapper>

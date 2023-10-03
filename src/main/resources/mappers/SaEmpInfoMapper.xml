@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.rest.saempinfo.dao.SaEmpInfoMapper">
+
+    <select id="getDateInfo" parameterType="java.util.Map" resultType="hashmap">
+        SELECT DATE_ID as "dateId", YN_COMPLETE as "ynComplete"
+            FROM "DATE"
+        WHERE ALLOW_YEAR = #{allowYear}
+            AND "MONTH"=#{allowMonth}
+            AND "DATE"=#{paymentDate}
+    </select>
+
+    <select id="getSaEmpInfoList" parameterType="java.util.Map" resultType="SaEmpInfo">
+        SELECT e.CD_EMP
+            , e.NM_KRNAME AS "NM_EMP"
+            , e.RANK_NO
+            , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = e.RANK_NO) AS "RANK_NO_NAME"
+            , e.JOB_OK
+        FROM EMP e
+        WHERE e.DA_ENTER &lt; #{paymentDate}
+        AND (e.DA_RETIRE IS NULL OR e.DA_RETIRE &gt; #{paymentDate})
+        <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND e.CD_EMP       = #{searchCdEmp}      </if>
+        <if test="searchCdDept      != null and searchCdDept      != ''">   AND e.CD_DEPT      = #{searchCdDept}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND e.CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND e.YN_UNIT      = #{searchYnUnit}     </if>
+    </select>
+
+    <select id="getSaEmpInfoByCdEmp" parameterType="java.util.Map" resultType="SaEmpInfo">
+        SELECT
+            CD_EMP
+            , NM_KRNAME AS "NM_EMP"
+            , CD_DEPT
+            , (SELECT CODE_NAME FROM CODE WHERE CODE_ID = CD_DEPT) as "nmDept"
+            , CD_FIELD
+            , CD_PROJECT
+            , CD_OCCUP
+            , YN_FORLABOR
+            , DA_ENTER
+            , YN_RESIDENT
+            , YN_UNIT
+            , NO_SOCIAL
+            , DA_RETIRE
+            , YN_UNIT
+            , YN_FORLABOR
+        FROM EMP
+        WHERE CD_EMP  = #{cdEmp}
+        <if test="searchCdDept      != null and searchCdDept      != ''">   AND CD_DEPT      = #{searchCdDept}     </if>
+        <if test="searchRankNo      != null and searchRankNo      != ''">   AND RANK_NO      = #{searchRankNo}     </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND YN_UNIT      = #{searchYnUnit}     </if>
+        <if test="searchYnForlabor  != null and searchYnForlabor  != ''">   AND YN_FORLABOR  = #{searchYnForlabor} </if>
+    </select>
+
+    <delete id="deleteSaAllowPayEmpList" parameterType="list">
+        DELETE FROM SAALLOWPAY
+        WHERE (CD_EMP, DATE_ID) IN (
+        <foreach collection="list" item="param" open="(" separator="),(" close=")">
+            #{param.cdEmp}, #{param.dateId}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteSaDeductEmpList" parameterType="list">
+        DELETE FROM SADEDUCTPAY
+        WHERE (CD_EMP, DATE_ID) IN (
+        <foreach collection="list" item="param" open="(" separator="),(" close=")">
+            #{param.cdEmp}, #{param.dateId}
+        </foreach>
+        )
+    </delete>
+
+    <!-- DateId 삭제-->
+    <delete id="deleteDateId" parameterType="String">
+        DELETE FROM "DATE"
+        WHERE DATE_ID = #{dateId}
+    </delete>
+
+</mapper>

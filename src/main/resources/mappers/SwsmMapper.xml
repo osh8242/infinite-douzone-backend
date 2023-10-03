@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.swsm.dao.SwsmDao">
+    <select id="getSwsmByCdEmp" resultType="Swsm">
+        select * from Swsm where CD_EMP = #{cdEmp}
+    </select>
+
+
+
+    <delete id="deleteSwsmByCdEmp" parameterType="Swsm">
+        DELETE FROM swsm WHERE CD_EMP = #{cdEmp}
+    </delete>
+
+
+    <select id="getSwsmListForSwsm" parameterType="map" resultType="Swsm">
+        SELECT swsm.cd_emp, emp.nm_krname, emp.no_social
+        FROM swsm
+        INNER JOIN (
+        SELECT cd_emp, nm_krname, income_classfication
+        FROM EMP
+        WHERE income_classfication = #{incomeClassfication}
+        ) emp ON swsm.cd_emp = emp.cd_emp
+    </select>
+
+    <select id="getAllSwsm" resultType="Swsm">
+        Select *
+        FROM SWSM
+    </select>
+
+    <insert id="insertSwsm" parameterType="Swsm">
+        INSERT INTO swsm
+        (
+<!--        INCOME_CLASSFICATION,-->
+        WITHHOLDING_YEAR, DATE_OF_CREATION, CD_EMP, OTHER_BENEFITS_ITEM,
+        OTHER_BENEFITS_AMOUNT, NM_KRNAME, RESIDENT_STATE, NO_SOCIAL, SALARY_AMOUNT, BONUS_AMOUNT,
+        START_EMP_CONTRACT_PERIOD, END_EMP_CONTRACT_PERIOD, POST_CODE, ADDRESS, JOB_DESCRIPTION,
+        START_BREAK_TIME, END_BREAK_TIME, WORKING_DAY, DAY_OFF, SALARY_TYPE, OTHER_BENEFITS,
+        BONUS_PAYMENT_STATUS, SALARY_PAYMENT_DATE_TYPE, PAYMENT_DATE, PAYMENT_METHOD,
+        EMP_INSURANCE, COMPENSATION_INSURANCE, NATIONAL_PENSION, HEALTH_INSURANCE, ADD_DETAIL,
+        START_WORKTIME, END_WORKTIME
+        )
+        VALUES
+        (
+        #{withholdingYear, jdbcType=VARCHAR},
+        #{dateOfCreation, jdbcType=VARCHAR},
+        #{cdEmp, jdbcType=VARCHAR},
+        #{otherBenefitsItem, jdbcType=VARCHAR},
+        #{otherBenefitsAmount, jdbcType=VARCHAR},
+        #{nmKrname, jdbcType=VARCHAR},
+        #{residentState, jdbcType=VARCHAR},
+        #{noSocial, jdbcType=VARCHAR},
+        #{salaryAmount, jdbcType=VARCHAR},
+        #{bonusAmount, jdbcType=VARCHAR},
+        #{startEmpContractPeriod, jdbcType=VARCHAR},
+        #{endEmpContractPeriod, jdbcType=VARCHAR},
+        #{postCode, jdbcType=VARCHAR},
+        #{address, jdbcType=VARCHAR},
+        #{jobDescription, jdbcType=VARCHAR},
+        #{startBreakTime, jdbcType=VARCHAR},
+        #{endBreakTime, jdbcType=VARCHAR},
+        #{workingDay, jdbcType=VARCHAR},
+        #{dayOff, jdbcType=VARCHAR},
+        #{salaryType, jdbcType=VARCHAR},
+        #{otherBenefits, jdbcType=VARCHAR},
+        #{bonusPaymentStatus, jdbcType=VARCHAR},
+        #{salaryPaymentDateType, jdbcType=VARCHAR},
+        #{paymentDate, jdbcType=VARCHAR},
+        #{paymentMethod, jdbcType=VARCHAR},
+        #{empInsurance, jdbcType=VARCHAR},
+        #{compensationInsurance, jdbcType=VARCHAR},
+        #{nationalPension, jdbcType=VARCHAR},
+        #{healthInsurance, jdbcType=VARCHAR},
+        #{addDetail, jdbcType=VARCHAR},
+        #{startWorktime, jdbcType=VARCHAR},
+        #{endWorktime, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateSwsm" parameterType="Swsm">
+        update SWSM
+        set
+        <if test="withholdingYear != null">withholding_year = #{withholdingYear}, </if>
+        <if test="dateOfCreation != null">date_of_creation = #{dateOfCreation}, </if>
+        <if test="nmKrname != null">nm_krname = #{nmKrname}, </if>
+        <if test="residentState != null">resident_state = #{residentState}, </if>
+        <if test="noSocial != null">no_social = #{noSocial}, </if>
+        <if test="startEmpContractPeriod != null">start_emp_contract_period = #{startEmpContractPeriod}, </if>
+        <if test="endEmpContractPeriod != null">end_emp_contract_period = #{endEmpContractPeriod}, </if>
+        <if test="postCode != null">post_code = #{postCode}, </if>
+        <if test="address != null">address = #{address}, </if>
+        <if test="addDetail != null">add_detail = #{addDetail}, </if>
+        <if test="jobDescription != null">job_description = #{jobDescription}, </if>
+        <if test="startWorktime != null">start_worktime = #{startWorktime}, </if>
+        <if test="endWorktime != null">end_worktime = #{endWorktime}, </if>
+        <if test="startBreakTime != null">start_break_time = #{startBreakTime}, </if>
+        <if test="endBreakTime != null">end_break_time = #{endBreakTime}, </if>
+        <if test="workingDay != null">working_day = #{workingDay}, </if>
+        <if test="dayOff != null">day_off = #{dayOff}, </if>
+        <if test="salaryType != null">salary_type = #{salaryType}, </if>
+        <if test="salaryAmount != null">salary_amount = #{salaryAmount}, </if>
+        <if test="otherBenefits != null">other_benefits = #{otherBenefits}, </if>
+        <if test="otherBenefitsItem != null">other_benefits_item = #{otherBenefitsItem}, </if>
+        <if test="otherBenefitsAmount != null">other_benefits_amount = #{otherBenefitsAmount}, </if>
+        <if test="bonusPaymentStatus != null">bonus_payment_status = #{bonusPaymentStatus}, </if>
+        <if test="bonusAmount != null">bonus_amount = #{bonusAmount}, </if>
+        <if test="salaryPaymentDateType != null">salary_payment_date_type = #{salaryPaymentDateType}, </if>
+        <if test="paymentDate != null">payment_date = #{paymentDate}, </if>
+        <if test="paymentMethod != null">payment_method = #{paymentMethod}, </if>
+        <if test="empInsurance != null">emp_insurance = #{empInsurance}, </if>
+        <if test="compensationInsurance != null">compensation_insurance = #{compensationInsurance}, </if>
+        <if test="nationalPension != null">national_pension = #{nationalPension}, </if>
+        <if test="healthInsurance != null">health_insurance = #{healthInsurance}, </if>
+        CD_EMP = #{cdEmp}
+        WHERE cd_emp = #{cdEmp}
+    </update>
+
+    <!--    <select id="getCodeNameRrnByWithholdingYear" resultType="Swsm">-->
+    <!--        SELECT cd_emp, name, no_Social-->
+    <!--        where withholding_year=#{withholdingYear}-->
+    <!--        FROM SWSM-->
+    <!--    </select>-->
+
+    <!--    <insert id="insertSwsmEmp" parameterType="Swsm">-->
+    <!--        insert into swsm(cd_emp-->
+    <!--        ,withholding_year, no_Social)-->
+    <!--        values (#{cdEmp},#{withholdingYear},#{noSocial})-->
+    <!--    </insert>-->
+
+    <!--    <update id="updateSwsmByEmp">-->
+    <!--        update swsm set-->
+    <!--        income_classfication=(#{incomeClassfication}),-->
+    <!--        withholding_year=(#{withholdingYear}),-->
+    <!--        date_of_creation=(#{dateOfCreation}),-->
+    <!--        cd_emp=(#{cdEmp}),-->
+    <!--        other_benefits_item=(#{otherBenefitsItem}),-->
+    <!--        other_benefits_amount=(#{otherBenefitsAmount}),-->
+    <!--        name=(#{name}),-->
+    <!--        resident_state=(#{residentState}),-->
+    <!--        no_Social=(#{noSocial}),-->
+    <!--        salary_amount=(#{salaryAmount}),-->
+    <!--        bonus_amount=(#{bonusAmount}),-->
+    <!--        start_emp_contract_period=(#{startEmpContractPeriod}),-->
+    <!--        end_emp_contract_period=(#{endEmpContractPeriod}),-->
+    <!--        post_code=(#{postCode}),-->
+    <!--        address=(#{address}),-->
+    <!--        job_description=(#{jobDescription}),-->
+    <!--        start_break_time=(#{startBreakTime}),-->
+    <!--        end_break_time=(#{endBreakTime}),-->
+    <!--        working_day=(#{workingDay}),-->
+    <!--        day_off=(#{dayOff}),-->
+    <!--        salary_type=(#{salaryType}),-->
+    <!--        other_benefits=(#{otherBenefits}),-->
+    <!--        bonus_payment_status=(#{bonusPaymentStatus}),-->
+    <!--        salary_payment_date_type=(#{salaryPaymentDateType}),-->
+    <!--        payment_date=(#{paymentDate}),-->
+    <!--        payment_method=(#{paymentMethod}),-->
+    <!--        emp_insurance=(#{empInsurance}),-->
+    <!--        compensation_insurance=(#{compensationInsurance}),-->
+    <!--        national_pension=(#{nationalPension}),-->
+    <!--        health_insurance=(#{healthInsurance}),-->
+    <!--        add_detail=(#{addDetail})-->
+    <!--        where cd_emp = (#{cdEmp})-->
+    <!--    </update>-->
+
+
+    <!--    <update id="updateSwsm">-->
+    <!--        update swsm set-->
+    <!--        name='lee' where cd_emp = (#{cdEmp})-->
+    <!--    </update>-->
+
+
+    <!--    SELECT-->
+    <!--    INCOME_CLASSFICATION,-->
+    <!--    WITHHOLDING_YEAR,-->
+    <!--    DATE_OF_CREATION,-->
+    <!--    CD_EMP,-->
+    <!--    OTHER_BENEFITS_ITEM,-->
+    <!--    OTHER_BENEFITS_AMOUNT,-->
+    <!--    nm_krname,-->
+    <!--    RESIDENT_STATE,-->
+    <!--    no_Social,-->
+    <!--    SALARY_AMOUNT,-->
+    <!--    BONUS_AMOUNT,-->
+    <!--    START_EMP_CONTRACT_PERIOD,-->
+    <!--    END_EMP_CONTRACT_PERIOD,-->
+    <!--    POST_CODE,-->
+    <!--    ADDRESS,-->
+    <!--    JOB_DESCRIPTION,-->
+    <!--    START_BREAK_TIME,-->
+    <!--    END_BREAK_TIME,-->
+    <!--    WORKING_DAY,-->
+    <!--    DAY_OFF,-->
+    <!--    SALARY_TYPE,-->
+    <!--    OTHER_BENEFITS,-->
+    <!--    BONUS_PAYMENT_STATUS,-->
+    <!--    SALARY_PAYMENT_DATE_TYPE,-->
+    <!--    PAYMENT_DATE,-->
+    <!--    PAYMENT_METHOD,-->
+    <!--    EMP_INSURANCE,-->
+    <!--    COMPENSATION_INSURANCE,-->
+    <!--    NATIONAL_PENSION,-->
+    <!--    HEALTH_INSURANCE,-->
+    <!--    ADD_DETAIL-->
+
+
+    <!--    <insert id="insertSwsm" parameterType="Swsm">-->
+    <!--        insert into swsm(cd_emp)-->
+    <!--        values (#{cdEmp})-->
+    <!--    </insert>-->
+    <!--    <delete id="deleteSwsm">-->
+    <!--        delete from swsm where cd_emp=(#{cdEmp})-->
+    <!--    </delete>-->
+
+    <!--    <insert id="insertSwsmByEmp" parameterType="Swsm">-->
+    <!--        insert into swsm(income_classfication-->
+    <!--        ,withholding_year-->
+    <!--        ,date_of_creation-->
+    <!--        ,cd_emp-->
+    <!--        ,other_benefits_item-->
+    <!--        ,other_benefits_amount-->
+    <!--        ,name-->
+    <!--        ,resident_state-->
+    <!--        ,rrn-->
+    <!--        ,salary_amount-->
+    <!--        ,bonus_amount-->
+    <!--        ,start_emp_contract_period-->
+    <!--        ,end_emp_contract_period-->
+    <!--        ,post_code-->
+    <!--        ,address-->
+    <!--        ,job_description-->
+    <!--        ,start_break_time-->
+    <!--        ,end_break_time-->
+    <!--        ,working_day-->
+    <!--        ,day_off-->
+    <!--        ,salary_type-->
+    <!--        ,other_benefits-->
+    <!--        ,bonus_payment_status-->
+    <!--        ,salary_payment_date_type-->
+    <!--        ,payment_date-->
+    <!--        ,payment_method-->
+    <!--        ,emp_insurance-->
+    <!--        ,compensation_insurance-->
+    <!--        ,national_pension-->
+    <!--        ,health_insurance)-->
+    <!--        values (#{incomeClassfication}-->
+    <!--        ,#{withholdingYear}-->
+    <!--        ,#{dateOfCreation}-->
+    <!--        ,#{cdEmp}-->
+    <!--        ,#{otherBenefitsItem}-->
+    <!--        ,#{otherBenefitsAmount}-->
+    <!--        ,#{name}-->
+    <!--        ,#{residentState}-->
+    <!--        ,#{rrn}-->
+    <!--        ,#{salaryAmount}-->
+    <!--        ,#{bonusAmount}-->
+    <!--        ,#{startEmpContractPeriod}-->
+    <!--        ,#{endEmpContractPeriod}-->
+    <!--        ,#{postCode}-->
+    <!--        ,#{address}-->
+    <!--        ,#{jobDescription}-->
+    <!--        ,#{startBreakTime}-->
+    <!--        ,#{endBreakTime}-->
+    <!--        ,#{workingDay}-->
+    <!--        ,#{dayOff}-->
+    <!--        ,#{salaryType}-->
+    <!--        ,#{otherBenefits}-->
+    <!--        ,#{bonusPaymentStatus}-->
+    <!--        ,#{salaryPaymentDateType}-->
+    <!--        ,#{paymentDate}-->
+    <!--        ,#{paymentMethod}-->
+    <!--        ,#{empInsurance}-->
+    <!--        ,#{compensationInsurance}-->
+    <!--        ,#{nationalPension}-->
+    <!--        ,#{healthInsurance})-->
+    <!--    </insert>-->
+</mapper>

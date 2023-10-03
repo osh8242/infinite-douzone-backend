@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.swsm.dao.SwsmOtherDao">
+    <select id="getAllSwsmOther" resultType="SwsmOther">
+        SELECT
+        *
+        FROM SWSMOther
+    </select>
+    <select id="getSwsmOtherByCdEmp" resultType="SwsmOther">
+        SELECT
+        *
+        FROM SWSMOther
+        where CD_EMP = #{cdEmp}
+    </select>
+
+    <insert id="insertSwsmOther" parameterType="SwsmOther">
+        INSERT INTO SWSMOTHER(
+        cd_emp, other_type, other_money)
+        values(
+        #{cdEmp}, #{otherType}, #{otherMoney})
+    </insert>
+
+    <update id="updateSwsmOther" parameterType="SwsmOther">
+        update SwsmOther
+        set
+        <if test="otherType != null">other_type = #{otherType},</if>
+        <if test="otherMoney != null">other_money = #{otherMoney}</if>
+        WHERE cd_emp = #{cdEmp} AND seq_val=#{seqVal}
+    </update>
+
+    <delete id="deleteSwsmOther" parameterType="SwsmOther">
+        delete
+        from SwsmOther
+        where cd_emp=#{cdEmp} And seq_val=#{seqVal}
+    </delete>
+
+    <!--    <insert id="insertSwsmOther" parameterType="SwsmOther">-->
+    <!--        INSERT INTO SWSMOTHER(-->
+    <!--        cd_emp, other_type, other_money )-->
+    <!--        values(-->
+    <!--        #{cdEmp}, #{otherType}, #{otherMoney} )-->
+    <!--    </insert>-->
+
+    <!--    <update id="updateSwsmOther" parameterType="SwsmOther">-->
+    <!--        update SwsmOther-->
+    <!--        set-->
+    <!--        <if test="otherType != null">other_type = #{otherType},</if>-->
+    <!--        <if test="otherMoney != null">other_money = #{otherMoney},</if>-->
+    <!--&lt;!&ndash;        CD_EMP = #{cdEmp} AND seq_val=#{seqVal}&ndash;&gt;-->
+    <!--        WHERE cd_emp = #{cdEmp} AND seq_val=#{seqVal}-->
+    <!--    </update>-->
+
+
+    <!--    <select id="getSwsmOtherListByCdEmp" parameterType="SwsmOther">-->
+    <!--        SELECT-->
+    <!--        *-->
+    <!--        FROM SwsmOther-->
+    <!--        WHERE cd_emp = #{cdEmp}-->
+    <!--    </select>-->
+
+
+    <!--    <insert id="insertSwsmOther" parameterType="SwsmOther">-->
+    <!--        insert into swsmother(other_type ,other_money, cd_emp)-->
+    <!--        values (#{otherType}, #{otherMoney}, #{cdEmp)-->
+    <!--    </insert>-->
+
+</mapper>

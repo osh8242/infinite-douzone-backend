@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.rest.empfam.dao.EmpFamDao">
+    <select id="getAllEmpFam" resultType="EmpFam">
+        SELECT
+            *
+        FROM EmpFam
+    </select>
+
+    <select id="getEmpFamListByCdEmp" parameterType="EmpFam" resultType="EmpFam">
+        SELECT
+            *
+        FROM EMPFAM
+        WHERE cd_emp = #{cdEmp}
+    </select>
+
+    <insert id="insertEmpFam" parameterType="EmpFam">
+        INSERT INTO EMPFAM (
+            cd_emp,
+            cd_calrel,
+            cd_famrel,
+            nm_krname,
+            yn_for,
+            no_social,
+            fg_school,
+            fg_graduation,
+            yn_together,
+            yn_lunarbir,
+            da_birth,
+            cd_job,
+            nm_krcom,
+            cd_offpos
+        ) VALUES (
+             #{cdEmp, jdbcType=VARCHAR},
+             #{cdCalrel, jdbcType=VARCHAR},
+             #{cdFamrel, jdbcType=VARCHAR},
+             #{nmKrname, jdbcType=VARCHAR},
+             #{ynFor, jdbcType=VARCHAR},
+             #{noSocial, jdbcType=VARCHAR},
+             #{fgSchool, jdbcType=VARCHAR},
+             #{fgGraduation, jdbcType=VARCHAR},
+             #{ynTogether, jdbcType=VARCHAR},
+             #{ynLunarbir, jdbcType=VARCHAR},
+             #{daBirth, jdbcType=VARCHAR},
+             #{cdJob, jdbcType=VARCHAR},
+             #{nmKrcom, jdbcType=VARCHAR},
+             #{cdOffpos, jdbcType=VARCHAR}
+         )
+    </insert>
+
+
+    <update id="updateEmpFamBySeqValAndCdEmp" parameterType="EmpFam">
+        UPDATE EMPFAM
+        SET
+            cd_famrel = #{cdFamrel, jdbcType=VARCHAR},
+            nm_krname = #{nmKrname, jdbcType=VARCHAR},
+            no_social = #{noSocial, jdbcType=VARCHAR},
+            yn_for = #{ynFor, jdbcType=VARCHAR},
+            fg_school = #{fgSchool, jdbcType=VARCHAR},
+            fg_graduation = #{fgGraduation, jdbcType=VARCHAR},
+            yn_together = #{ynTogether, jdbcType=VARCHAR},
+            yn_lunarbir = #{ynLunarbir, jdbcType=VARCHAR},
+            da_birth = #{daBirth, jdbcType=VARCHAR},
+            cd_job = #{cdJob, jdbcType=VARCHAR},
+            nm_krcom = #{nmKrcom, jdbcType=VARCHAR},
+            cd_offpos = #{cdOffpos, jdbcType=VARCHAR}
+        WHERE
+            cd_emp = #{cdEmp} AND seq_val = #{seqVal}
+    </update>
+
+
+    <delete id="deleteEmpFam" parameterType="EmpFam">
+        DELETE
+        FROM EMPFAM
+        WHERE cd_emp = #{cdEmp}
+          AND seq_val = #{seqVal}
+    </delete>
+</mapper>
