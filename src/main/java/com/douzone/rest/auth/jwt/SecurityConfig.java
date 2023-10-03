@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://osh8242.iptime.org");
         configuration.addExposedHeader("Authorization");
 //        configuration.addExposedHeader("*");
         configuration.addAllowedHeader("*");
