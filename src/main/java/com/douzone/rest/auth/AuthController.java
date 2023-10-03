@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,16 +29,26 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
-//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
+    //    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
-    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user) {
+    public ResponseEntity<ResponseVo> login(@RequestBody UserVo user, HttpServletRequest request) {
         System.out.println("parameter login info: ");
-        System.out.println(user);
-        ResponseVo response = authService.findUser(user);
-        System.out.println("response");
-        System.out.println(response);
 
-        if (response.getMessage().equals("SUCCESS")) {
+        //Test
+        System.out.println("Client IP: " + request.getRemoteAddr());
+        System.out.println("Requested URL: " + request.getRequestURL());
+        System.out.println("Query String: " + request.getQueryString());
+        System.out.println("Request Method: " + request.getMethod());
+
+        // Headers
+        System.out.println("=== Headers ===");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + ": " + request.getHeader(headerName));
+        }
+        ResponseVo response = authService.findUser(user);
+               if (response.getMessage().equals("SUCCESS")) {
             HttpHeaders headers = new HttpHeaders();
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
             System.out.println("responseeeeeeeeeee login");
