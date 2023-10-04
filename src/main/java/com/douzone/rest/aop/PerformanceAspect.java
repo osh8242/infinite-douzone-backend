@@ -1,4 +1,4 @@
-package com.douzone.aop;
+package com.douzone.rest.aop;
 
 //import org.aspectj.lang.ProceedingJoinPoint;
 //import org.aspectj.lang.annotation.Around;

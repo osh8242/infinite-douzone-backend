@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -27,16 +29,30 @@ public class LoggingAspect {
         this.logService = logService;
     }
 
+    private ThreadLocal<String> companyCodeThreadLocal = new ThreadLocal<>();
     private ThreadLocal<String> userIdThreadLocal = new ThreadLocal<>();
     private ThreadLocal<String> ipAddressThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<String> requestUrlThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<String> queryStringThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<String> requestMethodThreadLocal = new ThreadLocal<>();
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Before("execution(* com.douzone.rest.auth.AuthController.login(..)) && args(user) && args(request)")
     public void logBeforeLogin(UserVo user, HttpServletRequest request) {
 
         userIdThreadLocal.set(user.getUserId());
-        ipAddressThreadLocal.set(request.getRemoteAddr());
-        logger.info("User login request: {}", user.getUserId());
+        String clientIpAddress = "";
+
+        String xForwardedForHeader = request.getHeader("X-Forwarded-For");
+        if (xForwardedForHeader != null && !xForwardedForHeader.isEmpty()) {
+            String[] ipAddresses = xForwardedForHeader.split(",");
+            clientIpAddress = ipAddresses[0].trim();
+        }
+
+        ipAddressThreadLocal.set(clientIpAddress);
+        requestUrlThreadLocal.set(request.getRequestURL().toString());
+        queryStringThreadLocal.set(request.getQueryString());
+        requestMethodThreadLocal.set(request.getMethod());
     }
 
     @AfterReturning(
@@ -45,48 +61,28 @@ public class LoggingAspect {
     )
     public void logAfterLogin(JoinPoint joinPoint, ResponseEntity<ResponseVo> response) {
 
-        String userId = userIdThreadLocal.get();
-        String ipAddress = ipAddressThreadLocal.get();
-
-        String loginResult = "SUCCESS";
-
-        System.out.println("@@@@@@@@@@");
-        System.out.println(ipAddress);
-        System.out.println("@@@@@@@@@@");
-
         if (response.getStatusCode() == HttpStatus.OK) {
             logger.info("User login succeeded. Response: {}", response.getBody());
 
-            Log log = Log.builder()
-                    .userId(userId)
-                    .ipAddress(ipAddress)   // 임시
-                    .result(loginResult)
-                    .message(response.getBody().getMessage())
-                    .requestUrl("/login")
-                    .token(extractJwtTokenFromResponse(response))
-                    .build();
-            logService.insertLog(log);
-
         } else {
             logger.warn("User login failed. Response: {}", response.getBody());
-            loginResult = "SUCCESS";
-            Log log = Log.builder()
-                    .companyCode(response.getBody().getUser().getCompanyCode())
-                    .userId(userId)
-                    .ipAddress(ipAddress)   // 임시
-                    .result(loginResult)
-                    .message(response.getBody().getMessage())
-                    .requestUrl("/login")
-                    .token(extractJwtTokenFromResponse(response))
-                    .build();
-            logService.insertLog(log);
         }
 
+        Log.LogBuilder logBuilder = Log.builder()
+                .companyCode(Optional.ofNullable(response.getBody().getUser().getCompanyCode()).orElse(""))
+                .userId(Optional.ofNullable(userIdThreadLocal.get()).orElse(""))
+                .ipAddress(Optional.ofNullable(ipAddressThreadLocal.get()).orElse(""))
+                .token(Optional.ofNullable(extractJwtTokenFromResponse(response)).orElse(""))
+                .requestUrl(Optional.ofNullable(requestUrlThreadLocal.get()).orElse(""))
+                .message(Optional.ofNullable(response.getBody().getMessage()).orElse(""))
+                .queryString(Optional.ofNullable(queryStringThreadLocal.get()).orElse(""));
 
+        Log log = logBuilder.build();
 
+        //logService.insertLog(log);
     }
 
-    private String extractJwtTokenFromResponse(ResponseEntity<ResponseVo> response) {
+    private String extractJwtTokenFromResponse(ResponseEntity<ResponseVo>  response) {
 
         ResponseVo responseBody = response.getBody();
         if (responseBody != null && responseBody.getToken() != null ) {
@@ -95,4 +91,7 @@ public class LoggingAspect {
             return "Token not found";
         }
     }
+
+
+
 }

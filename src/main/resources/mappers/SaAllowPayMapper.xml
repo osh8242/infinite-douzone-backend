@@ -367,14 +367,13 @@
     <select id="getSalAllow" parameterType="SaAllow" resultType="SaAllow">
         SELECT YN_TAX
         FROM (
-        SELECT s.CD_ALLOW,
-        CASE
-        WHEN s.YN_TAX = 'Y' THEN 'Y'
-        WHEN s.YN_TAX = 'N' THEN 'N'
-        END AS YN_TAX,
-        ROW_NUMBER() OVER (ORDER BY s.CD_ALLOW) AS rn
+        SELECT
+        ROW_NUMBER() OVER (ORDER BY s.YN_TAX) AS rn,
+        s.CD_ALLOW,
+        YN_TAX
         FROM SAALLOW s
         WHERE CD_ALLOW = #{cdAllow}
+        ORDER BY YN_TAX desc
         ) tmp
         WHERE rn = 1
     </select>

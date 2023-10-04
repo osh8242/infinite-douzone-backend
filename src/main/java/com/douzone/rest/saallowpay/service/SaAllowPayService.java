@@ -243,6 +243,7 @@ public class SaAllowPayService {
 
                 if ("Y".equals(saAllow.getYnTax())) {
                     result = saAllowPayMapper.deleteSalAllow(saAllow);
+                    saAllow.setNonTaxLimit("");
                 }
 
                 saAllowPayMapper.updateSalAllow(saAllow);

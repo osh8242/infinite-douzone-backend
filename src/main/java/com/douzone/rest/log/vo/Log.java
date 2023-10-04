@@ -12,5 +12,6 @@ public class Log {
     private String token;
     private String requestUrl;
     private String message;
-    private String result;
+    private String queryString;
+    private String requestMethod;
 }
