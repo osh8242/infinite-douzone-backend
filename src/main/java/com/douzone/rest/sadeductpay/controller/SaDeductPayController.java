@@ -43,4 +43,38 @@ public class SaDeductPayController {
         return result;
     }
 
+    @PostMapping("/insertSaDeduct")
+    public int insertSaDeduct(@RequestBody SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            System.out.println("옴?");
+            result = saDeductPayService.insertSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @PutMapping("/updateSaDeduct")
+    public int updateSaDeduct(@RequestBody SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayService.updateSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @DeleteMapping("/deleteSaDeduct")
+    public int deleteSaDeduct(@RequestBody SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayService.deleteSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
 }

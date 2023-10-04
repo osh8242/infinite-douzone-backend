@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/auth")
@@ -45,17 +46,14 @@ public class AuthController {
         System.out.println("parameter login info: ");
         System.out.println(user);
         ResponseVo response = authService.findUser(user);
-        System.out.println("response");
-        System.out.println(response);
-
-        if (response.getMessage().equals("SUCCESS")) {
+               if (response.getMessage().equals("SUCCESS")) {
             HttpHeaders headers = new HttpHeaders();
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
             System.out.println("responseeeeeeeeeee login");
             System.out.println(response);
 
             System.out.println(response.getToken());
-            System.out.println("succeess token: " + response.getToken());
+            System.out.println("succeess token: "+response.getToken());
             headers.set("Authorization", "Bearer " + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
@@ -63,25 +61,25 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/cookieLogin")
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-    public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-        System.out.println("d---------------------------d");
-        ResponseVo response = authService.findUser(user);
+        @PostMapping("/cookieLogin")
+        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+            System.out.println("d---------------------------d");
+            ResponseVo response = authService.findUser(user);
 
-        if (response.getMessage().equals("SUCCESS")) {
-            System.out.println("SUCCCEESSS COKIIIEEE");
-            Cookie tokenCookie = new Cookie("authToken", response.getToken());
-            tokenCookie.setPath("/");
-            tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+            if (response.getMessage().equals("SUCCESS")) {
+                System.out.println("SUCCCEESSS COKIIIEEE");
+                Cookie tokenCookie = new Cookie("authToken", response.getToken());
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
 
-            httpResponse.addCookie(tokenCookie);
+                httpResponse.addCookie(tokenCookie);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
         }
-    }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
@@ -105,7 +103,7 @@ public class AuthController {
                 }
                 else return "INSERT DATASOURCE FAIL";
             } else return "CREATE SCHEMA FAIL";
-        } else return "REGISTER FAIL";
+        } else return "FAIL";
     }
 
     @PostMapping("/checkVaildCd")

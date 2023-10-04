@@ -13,6 +13,7 @@ import java.util.Map;
 public class SaDeductPayService {
 
     private SaDeductPayDao saDeductPayDao;
+
     @Autowired
     public SaDeductPayService(SaDeductPayDao saDeductPayDao) {
         this.saDeductPayDao = saDeductPayDao;
@@ -26,24 +27,61 @@ public class SaDeductPayService {
         return saDeductPayDao.getSalDeductPaySum(requestMap);
     }
 
-    public List<Map<String, String>> getsalDeductList(Map<String, String> map){
+    public List<Map<String, String>> getsalDeductList(Map<String, String> map) {
         List<Map<String, String>> result = new ArrayList<>();
         try {
             result = saDeductPayDao.getsalDeductList(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
-    public int mergeSalDeductPay(SaDeductPay saDeductPay){
+
+    public int mergeSalDeductPay(SaDeductPay saDeductPay) {
+        System.out.println("SaDeductPayService.mergeSalDeductPay");
+        System.out.println("saDeductPay = " + saDeductPay);
         int result = 0;
         try {
-            result = saDeductPayDao.mergeSalDeductPay(saDeductPay);
-        }catch (Exception e){
+//            result = saDeductPayDao.mergeSalDeductPay(saDeductPay);
+
+            if (saDeductPayDao.getCountSaDeductPay(saDeductPay) == 0) {
+                result = saDeductPayDao.insertSaDeductPay(saDeductPay);
+            } else {
+                result = saDeductPayDao.updateSaDeductPay(saDeductPay);
+            }
+        } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
 
+    public int insertSaDeduct(SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayDao.insertSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
 
+    public int updateSaDeduct(SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayDao.updateSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteSaDeduct(SaDeductPay saDeductPay) {
+        int result = 0;
+        try {
+            result = saDeductPayDao.deleteSaDeduct(saDeductPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
 }

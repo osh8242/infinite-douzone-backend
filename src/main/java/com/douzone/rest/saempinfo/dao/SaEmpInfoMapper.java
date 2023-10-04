@@ -21,4 +21,6 @@ public interface SaEmpInfoMapper {
 
     Map<String, String> getDateInfo(Map<String, String> reqestMap);//날짜 id 검색
     int deleteDateId(String dateId);
+
+    int countSaAllowByDateId(String dateId);
 }

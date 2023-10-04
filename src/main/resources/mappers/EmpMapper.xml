@@ -300,7 +300,7 @@
         WHERE e.cd_emp = #{cdEmp}
     </select>
 
-    <select id="getEmpListForCodeHelper" parameterType="java.util.Map">
+    <select id="getEmpListForCodeHelper" parameterType="java.util.Map" resultType="Emp">
         select
         CD_EMP,
         NM_KRNAME,
