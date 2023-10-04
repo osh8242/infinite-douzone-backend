@@ -102,7 +102,8 @@
         ) VALUES (
         #{cdEmp, jdbcType=VARCHAR},
         #{nmKrname, jdbcType=VARCHAR},
-        #{ynFor, jdbcType=VARCHAR},
+        <if test="ynFor != null and ynFor != ''">#{ynFor, jdbcType=VARCHAR},</if>
+        <if test="ynFor == null or ynFor == ''">'K',</if>
         #{noSocial, jdbcType=VARCHAR},
         <if test="jobOk != null and jobOk != ''">
             #{jobOk, jdbcType=VARCHAR},
@@ -113,7 +114,12 @@
         <if test="incomeClassfication != null">#{incomeClassfication, jdbcType=VARCHAR},</if>
         <if test="dateOfcreate != null">#{dateOfcreate, jdbcType=VARCHAR},</if>
         <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
-        #{fgSex, jdbcType=VARCHAR},
+        <if test="fgSex != null and fgSex != ''">
+            #{fgSex, jdbcType=VARCHAR},
+        </if>
+        <if test="fgSex == null or fgSex == ''">
+            'M',
+        </if>
         #{abbNation, jdbcType=VARCHAR},
         #{ynResident, jdbcType=VARCHAR},
         #{cdNation, jdbcType=VARCHAR},
@@ -149,16 +155,46 @@
         #{noHealth, jdbcType=VARCHAR},
         #{mnEmptarget, jdbcType=VARCHAR},
         #{mnEmp, jdbcType=VARCHAR},
-        #{ynEmploy, jdbcType=VARCHAR},
+        <if test="ynEmploy != null and ynEmploy != ''">
+            #{ynEmploy, jdbcType=VARCHAR},
+        </if>
+        <if test="ynEmploy == null or ynEmploy == ''">
+            'Y',
+        </if>
         #{ynCeo, jdbcType=VARCHAR},
-        #{ynSanjae, jdbcType=VARCHAR},
-        #{ynLonginsur, jdbcType=VARCHAR},
+        <if test="ynSanjae != null and ynSanjae != ''">
+            #{ynSanjae, jdbcType=VARCHAR},
+        </if>
+        <if test="ynSanjae == null or ynSanjae == ''">
+            'Y',
+        </if>
+        <if test="ynLonginsur != null and ynLonginsur != ''">
+            #{ynLonginsur, jdbcType=VARCHAR},
+        </if>
+        <if test="ynLonginsur == null or ynLonginsur == ''">
+            'Y',
+        </if>
         #{ynDanil, jdbcType=VARCHAR},
         #{ynIclman, jdbcType=VARCHAR},
         #{mnIclpay, jdbcType=VARCHAR},
-        #{ynForlabor, jdbcType=VARCHAR},
-        #{ynUnit, jdbcType=VARCHAR},
-        #{ynOverwork, jdbcType=VARCHAR}
+        <if test="ynForlabor != null and ynForlabor != ''">
+            #{ynForlabor, jdbcType=VARCHAR},
+        </if>
+        <if test="ynForlabor == null or ynForlabor == ''">
+            'Y',
+        </if>
+        <if test="ynUnit != null and ynUnit != ''">
+            #{ynUnit, jdbcType=VARCHAR},
+        </if>
+        <if test="ynUnit == null or ynUnit == ''">
+            'Y',
+        </if>
+        <if test="ynUnit != null and ynUnit != ''">
+            #{ynOverwork, jdbcType=VARCHAR}
+        </if>
+        <if test="ynUnit == null or ynUnit == ''">
+            'Y'
+        </if>
         )
     </insert>
 
