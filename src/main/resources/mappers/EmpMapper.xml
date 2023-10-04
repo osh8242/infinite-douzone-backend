@@ -52,7 +52,7 @@
         job_ok,
         <if test="incomeClassfication != null">income_classfication,</if>
         <if test="dateOfcreate != null">date_ofcreate,</if>
-        da_enter,
+        <if test="daEnter != null">da_enter,</if>
         fg_sex,
         abb_nation,
         yn_resident,
@@ -112,7 +112,7 @@
         </if>
         <if test="incomeClassfication != null">#{incomeClassfication, jdbcType=VARCHAR},</if>
         <if test="dateOfcreate != null">#{dateOfcreate, jdbcType=VARCHAR},</if>
-        #{daEnter, jdbcType=VARCHAR},
+        <if test="daEnter != null">#{daEnter, jdbcType=VARCHAR},</if>
         #{fgSex, jdbcType=VARCHAR},
         #{abbNation, jdbcType=VARCHAR},
         #{ynResident, jdbcType=VARCHAR},
