@@ -22,14 +22,19 @@ public class EmpService {
     private static final Logger logger = LoggerFactory.getLogger(EmpService.class);
 
     public List<Emp> getAllEmp() {
+        System.out.println("empServiceAlllll");
         List<Emp> result = null;
         try {
             logger.info("EmpService 진입");
             result = empDao.getAllEmp();
             logger.info("resullttt empAll List: {}", result);
+            System.out.println("result = " + result);
         } catch (Exception e) {
             logger.error("getAllEmp에서 에러 발생!", e);
         }
+
+        System.out.println("resutttt:list///");
+        System.out.println(result);
         return result;
     }
 
