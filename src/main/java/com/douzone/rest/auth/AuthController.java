@@ -90,7 +90,7 @@ public class AuthController {
         System.out.println("result Msg: " + resultMsg);
         Integer schemaResult = null;
         if (resultMsg == 1) {
-            String companyCode = user.getCompanyCode();
+            String companyCode = user.getCompanyCode().toUpperCase();
             // 스키마 생성
             schemaResult = companyService.createNewSchema(companyCode, password);
             if (schemaResult == 1) {
