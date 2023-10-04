@@ -2,7 +2,6 @@ package com.douzone.rest.emp.service;
 
 import com.douzone.rest.emp.dao.EmpDao;
 import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,15 +85,15 @@ public class EmpService {
         return result;
     }
 
-    public EmpMenuUsage deleteEmp(Emp emp){
+    public int deleteEmp(Emp emp){
         System.out.println("Emp delete -----");
 
         int deleteRows = empDao.deleteEmp(emp);
-        EmpMenuUsage empMenuUsage = empDao.getUndeletedEmpByCdEmp(emp);
+//        EmpMenuUsage empMenuUsage = empDao.getUndeletedEmpByCdEmp(emp);
 
         System.out.println("삭제된 row의 수: " + deleteRows);
-        System.out.println("삭제되지 않은 데이터: " + empMenuUsage);
-        return empMenuUsage;
+//        System.out.println("삭제되지 않은 데이터: " + empMenuUsage);
+        return deleteRows;
     }
 
     public List<Emp> getEmpListForCodeHelper(Map<String, String> map){

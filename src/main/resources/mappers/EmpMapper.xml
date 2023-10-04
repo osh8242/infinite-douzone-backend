@@ -178,8 +178,6 @@
             <if test="fgSex != null">fg_sex = #{fgSex, jdbcType=VARCHAR},</if>
             <if test="abbNation != null">abb_nation = #{abbNation, jdbcType=VARCHAR},</if>
             <if test="ynResident != null">yn_resident = #{ynResident, jdbcType=VARCHAR},</if>
-            <!--            <if test="str3911 != null">str_39_1_1 = #{str3911, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str4011 != null">str_40_1_1 = #{str4011, jdbcType=VARCHAR},</if>-->
             <if test="cdNation != null">cd_nation = #{cdNation, jdbcType=VARCHAR},</if>
             <if test="zipHome != null">zip_home = #{zipHome, jdbcType=VARCHAR},</if>
             <if test="addHome1 != null">add_home1 = #{addHome1, jdbcType=VARCHAR},</if>
@@ -202,7 +200,6 @@
             <if test="cdBank != null">cd_bank = #{cdBank, jdbcType=VARCHAR},</if>
             <if test="noBnkacct != null">no_bnkacct = #{noBnkacct, jdbcType=VARCHAR},</if>
             <if test="nmBnkowner != null">nm_bnkowner = #{nmBnkowner, jdbcType=VARCHAR},</if>
-            <!--&#45;&#45;             <if test="mn611 != null">mn_6_1_1 = #{mn611, jdbcType=VARCHAR},</if>-->
             <if test="cdAcctit1 != null">cd_acctit1 = #{cdAcctit1, jdbcType=VARCHAR},</if>
             <if test="cdAcctit2 != null">cd_acctit2 = #{cdAcctit2, jdbcType=VARCHAR},</if>
             <if test="fgPaysupply != null">fg_paysupply = #{fgPaysupply, jdbcType=VARCHAR},</if>
@@ -218,27 +215,18 @@
             <if test="ynCeo != null">yn_ceo = #{ynCeo, jdbcType=VARCHAR},</if>
             <if test="ynSanjae != null">yn_sanjae = #{ynSanjae, jdbcType=VARCHAR},</if>
             <if test="ynLonginsur != null">yn_longinsur = #{ynLonginsur, jdbcType=VARCHAR},</if>
-            <!--            <if test="str3211 != null">str_32_1_1 = #{str3211, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str3311 != null">str_33_1_1 = #{str3311, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str3511 != null">str_35_1_1 = #{str3511, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="mn2111 != null">mn_2_1_1 = #{mn2111, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="mn3111 != null">mn_3_1_1 = #{mn3111, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str1111 != null">str_1_1_1 = #{str1111, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str4511 != null">str_45_1_1 = #{str4511, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str4611 != null">str_46_1_1 = #{str4611, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str4711 != null">str_47_1_1 = #{str4711, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="mn1111 != null">mn_1_1_1 = #{mn1111, jdbcType=VARCHAR},</if>-->
             <if test="ynDanil != null">yn_danil = #{ynDanil, jdbcType=VARCHAR},</if>
             <if test="ynIclman != null">yn_iclman = #{ynIclman, jdbcType=VARCHAR},</if>
-            <!--            <if test="str4311 != null">str_43_1_1 = #{str4311, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="str4411 != null">str_44_1_1 = #{str4411, jdbcType=VARCHAR},</if>-->
+<!--            <if test="str4311 != null">str_43_1_1 = #{str4311, jdbcType=VARCHAR},</if>-->
+<!--            <if test="str4411 != null">str_44_1_1 = #{str4411, jdbcType=VARCHAR},</if>-->
             <if test="mnIclpay != null">mn_iclpay = #{mnIclpay, jdbcType=VARCHAR},</if>
-            <!--            <if test="str3411 != null">str_34_1_1 = #{str3411, jdbcType=VARCHAR},</if>-->
+<!--            <if test="str3411 != null">str_34_1_1 = #{str3411, jdbcType=VARCHAR},</if>-->
             <if test="ynForlabor != null">yn_forlabor = #{ynForlabor, jdbcType=VARCHAR},</if>
             <if test="ynUnit != null">yn_unit = #{ynUnit, jdbcType=VARCHAR},</if>
             <if test="ynOverwork != null">yn_overwork = #{ynOverwork, jdbcType=VARCHAR},</if>
-            <!--            <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>-->
-            <!--            <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>-->
+<!--            <if test="str4211 != null">str_42_1_1 = #{str4211, jdbcType=VARCHAR},</if>-->
+<!--            <if test="mn4111 != null">mn_4_1_1 = #{mn4111, jdbcType=VARCHAR},</if>-->
+>>>>>>> 2eb6a1afdf647a50c62a00b3ec551187333b351c
             cd_emp = #{cdEmp}
         </set>
         WHERE cd_emp = #{cdEmp}
@@ -248,7 +236,7 @@
     <delete id="deleteEmp" parameterType="Emp">
         DELETE
         FROM emp
-        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
+        WHERE cd_emp = #{cdEmp}
     </delete>
 
     <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
