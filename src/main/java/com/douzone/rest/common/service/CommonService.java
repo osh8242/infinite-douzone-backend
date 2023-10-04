@@ -19,7 +19,6 @@ public class CommonService {
     }
 
     public List<Code> getAllCode(Code code){
-        System.out.println(code.getParentId());
         List<Code> result = commonDao.getAllCode(code);
         return result;
     }

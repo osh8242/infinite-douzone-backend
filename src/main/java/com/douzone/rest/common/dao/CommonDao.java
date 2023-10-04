@@ -8,5 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface CommonDao {
-    public List<Code> getAllCode(Code code);
+    List<Code> getAllCode(Code code);
 }

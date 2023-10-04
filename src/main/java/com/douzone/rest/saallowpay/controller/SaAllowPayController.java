@@ -1,6 +1,7 @@
 package com.douzone.rest.saallowpay.controller;
 
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
+import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class SaAllowPayController {
         Map<String, Object> result = new HashMap<>();
         try {
             result = saAllowPayService.getSalaryAllInfoByDate(requestMap);
+
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -133,13 +135,57 @@ public class SaAllowPayController {
     }
 
     @PostMapping("/setCopyLastMonthData")
-    public int setCopyLastMonthData(@RequestBody Map<String, String> requestMap) {
+    public int setCopyLastMonthData(@RequestBody SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            result = saAllowPayService.setCopyLastMonthData(requestMap);
+            result = saAllowPayService.setCopyLastMonthData(saAllowPay);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
+
+    @PostMapping("/insertSalAllow")
+    public int insertSalAllow(@RequestBody SaAllow saAllow) {
+        int result = 0;
+        try {
+            result = saAllowPayService.insertSalAllow(saAllow);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+    @PutMapping("/updateSalAllow")
+    public int updateSalAllow(@RequestBody SaAllow saAllow){
+        int result = 0;
+        try {
+            result = saAllowPayService.updateSalAllow(saAllow);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+    @DeleteMapping("deleteSalAllow")
+    public int deleteSalAllow(@RequestBody SaAllow saAllow){
+        int result = 0;
+        try {
+            result = saAllowPayService.deleteSalAllow(saAllow);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    @PutMapping("updateNonTaxLimit")
+    public int updateNonTaxLimit(@RequestBody SaAllowPay saAllowPay) {
+        int result = 0;
+        try {
+            result = saAllowPayService.updateNonTaxLimit(saAllowPay);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
 }

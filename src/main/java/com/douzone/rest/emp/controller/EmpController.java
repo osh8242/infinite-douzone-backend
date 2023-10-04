@@ -86,14 +86,15 @@ public class EmpController {
 
     @PostMapping("insertEmp")
     public int insertEmp(@RequestBody Emp emp) {
-        System.out.println("Emp insert Controller -----");
+        System.out.println("EmpController.insertEmp");
+        System.out.println("emp = " + emp);
         int result = empservice.insertEmp(emp);
         return result;
     }
 
     @PutMapping("/updateEmp")
     public int updateEmp(@RequestBody Emp emp){
-        System.out.println("Emp update Controller -----");
+        System.out.println("EmpController.updateEmp");
         System.out.println("emp = " + emp);
         int result = empservice.updateEmp(emp);
         return result;
@@ -109,7 +110,6 @@ public class EmpController {
 
     @GetMapping("/getEmpListForCodeHelper")
     public ResponseEntity<List<Emp>> getEmpListForCodeHelper(@RequestParam Map<String, String> reqestMap) {
-        System.out.println(reqestMap.toString());
         List<Emp> result = empservice.getEmpListForCodeHelper(reqestMap);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -15,6 +15,7 @@ import java.util.Map;
 public class SaDeductCalculationService {
     private final SaAllowPayMapper saAllowPayMapper;
     private final SaDeductPayDao saDeductPayDao;
+    int incomePay = 0;
 
     @Autowired
     public SaDeductCalculationService(
@@ -28,8 +29,8 @@ public class SaDeductCalculationService {
     public int mergeNewDeductAllowPay(SaAllowPay saAllowPay){
         int result = 0;
         try {
-            List<SaDeductPay> makeCalculationDeductPayList = makeCalculationDeductPayList(saAllowPay);
-            result = saDeductPayDao.mergeSaDeductPayList(makeCalculationDeductPayList);
+            List<SaDeductPay> newDeductPayList = makeCalculationDeductPayList(saAllowPay);
+            result = saDeductPayDao.mergeSaDeductPayList(newDeductPayList);
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -48,6 +49,7 @@ public class SaDeductCalculationService {
 
             // 공제항목 정보 가져오기
             Map<String,String> requestMap = new HashMap<>();
+
             List<Map<String, String>> getsalDeductList = saDeductPayDao.getsalDeductList(requestMap);
 
             for(Map<String, String> salDeduct : getsalDeductList){
@@ -60,9 +62,14 @@ public class SaDeductCalculationService {
                 if("Y".equals(salDeduct.get("ynBonus"))) allowpaySum += sumTaxYByBonus;
                 if("Y".equals(salDeduct.get("ynSal"))) allowpaySum += sumTaxYBySal;
 
-                int deductPay = makeDeductPay(salDeduct.get("cdDeduct") , allowpaySum, Double.parseDouble(salDeduct.get("rate")));
-                newDeductPay.setAllowPay(Integer.toString(deductPay));
+                int deductPay = 0;
+                if ("DEDUCT_INCOME".equals(salDeduct.get("cdDeduct")) || "DEDUCT_LOCALINCOME".equals(salDeduct.get("cdDeduct"))) {
+                    deductPay = makeDeductPay(salDeduct.get("cdDeduct") , allowpaySum, 0.0);
+                }else{
+                    deductPay = makeDeductPay(salDeduct.get("cdDeduct") , allowpaySum, Double.parseDouble(salDeduct.get("rate")));
+                }
 
+                newDeductPay.setAllowPay(Integer.toString(deductPay));
                 makeCalculationDeductPayData.add(newDeductPay);
             }
 
@@ -73,19 +80,34 @@ public class SaDeductCalculationService {
         return makeCalculationDeductPayData;
     }
 
-    private int makeDeductPay(String cdDeduct, int allowPaySum, double rate){
+    private int makeDeductPay(String cdDeduct, int allowPaySum, double rate) {
         int deductPay = 0;
+
         try {
-            if(cdDeduct.equals("DEDUCT_INCOME")){   // 소득세
-                deductPay = (int) (allowPaySum * (3.5 / 100)); // 소득세 안해버려
+            if (cdDeduct.equals("DEDUCT_INCOME")) {
+                if (allowPaySum * 12 > 500000000) {
+                    deductPay = (int)(allowPaySum * 0.168);
+                } else if (allowPaySum * 12 > 300000000){
+                    deductPay = (int)(allowPaySum * 0.280032);
+                } else if (allowPaySum * 12 > 150000000) {
+                    deductPay = (int)(allowPaySum * 0.191192);
+                } else if (allowPaySum * 12 > 88000000) {
+                    deductPay = (int)(allowPaySum * 0.1098109);
+                } else if (allowPaySum * 12 > 50000000) {
+                    deductPay = (int)(allowPaySum * 0.052);
+                } else if (allowPaySum * 12 >= 12720000) {
+                    deductPay = (int)(allowPaySum * 0.014);
+                } else {
+                    deductPay = 0;
+                }
 
-            }if(cdDeduct.equals("DEDUCT_LOCALINCOME")){   // 지방소득세
-                //소득세 * 0.1
-                deductPay = (int) (allowPaySum * (0.35 / 100)); // 지방소득세도 안해버려
+                incomePay = deductPay;
 
-            }else{
-                deductPay = (int) (allowPaySum * (rate / 100)); // 기타 비율만 곱하기
-            }
+        } else if (cdDeduct.equals("DEDUCT_LOCALINCOME")) {   // 지방소득세 = 소득세 * 0.1
+            deductPay = (int)(incomePay * 0.1);
+        } else {
+            deductPay = (int) (allowPaySum * (rate / 100)); // 기타 비율만 곱하기
+        }
 
         }catch (Exception e){
             e.getStackTrace();

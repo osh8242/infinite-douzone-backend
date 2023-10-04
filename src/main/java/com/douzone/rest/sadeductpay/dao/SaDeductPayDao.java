@@ -16,4 +16,13 @@ public interface SaDeductPayDao {
     List<Map<String, String>> getsalDeductList(Map<String, String> requestMap);
 
     int mergeSaDeductPayList(List<SaDeductPay> saDeductPayList);
+    int mergeSalDeductPay(SaDeductPay saDeductPay);
+
+    int insertSaDeduct(SaDeductPay saDeductPay);
+    int updateSaDeduct(SaDeductPay saDeductPay);
+    int deleteSaDeduct(SaDeductPay saDeductPay);
+    int insertSaDeductPay(SaDeductPay saDeductPay);
+    int updateSaDeductPay(SaDeductPay saDeductPay);
+    int deleteSaDeductPay(SaDeductPay saDeductPay);
+    int getCountSaDeductPay(SaDeductPay saDeductPay);
 }

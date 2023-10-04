@@ -40,26 +40,6 @@ public class DataSourceConfig {
         DataSource dataSource = createDataSource("ADMIN", PASSWORD);
         targetDataSources.put("default", dataSource);
 
-//        // 데이터소스 목록 파일에서 데이터소스 목록을 불러오기
-//        Map<String, DataSourceVo> dataSourceInfos = loadDataSourceInfos();
-//        System.out.println("dataSourceInfos = " + dataSourceInfos.toString());
-//        StringBuilder connections = new StringBuilder();
-//        if (dataSourceInfos.size() != 0) {
-//            for (DataSourceVo dataSourceInfo : dataSourceInfos.values()) {
-//                String companyCode = dataSourceInfo.getCompanyCode();
-//                try {
-//                    dataSource = createDataSource(companyCode, dataSourceInfo.getPassword());
-//                    targetDataSources.put(companyCode, dataSource);
-//                    connections.append("companyCode = " + companyCode + "(연결성공)").append("\n");
-//                } catch (Exception e) {
-//                    System.err.println("해당 회사코드로 데이터소스 연결실패: " + dataSourceInfo.getCompanyCode());
-//                    targetDataSources.remove(companyCode);
-//                    saveDataSourceMap();
-//                    connections.append("companyCode = " + companyCode + "(연결실패)").append("\n");
-//                }
-//            }
-//        }
-//
         routingCompanyDataSource.setTargetDataSources(targetDataSources);
         routingCompanyDataSource.setDefaultTargetDataSource(targetDataSources.get("default")); // default data source
 
@@ -79,7 +59,6 @@ public class DataSourceConfig {
         return new HikariDataSource(hikariConfig);
     }
 
-    // 데이터소스 목록에 데이터소스 추가
     // 데이터소스 목록에 데이터소스 추가
     public void addNewDataSource(String companyCode, String password) {
         DataSource newDataSource = createDataSource(companyCode, password);

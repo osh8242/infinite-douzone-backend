@@ -9,6 +9,7 @@ public class RoutingCompanyDataSource extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         System.out.println("RoutingCompanyDataSource.determineCurrentLookupKey");
         System.out.println("CompanyContextHolder.getCompanyCode() = " + CompanyContextHolder.getCompanyCode());
+        System.out.println("연결된 companyCode = " + CompanyContextHolder.getCompanyCode());
         return CompanyContextHolder.getCompanyCode();
     }
 }
