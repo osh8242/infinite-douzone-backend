@@ -22,7 +22,7 @@ public class DataSourcePostConstruct {
     }
 
     @PostConstruct
-    public void addDataSourcesFromDB() {
+    public void loadDataSourcesFromDB() {
         System.out.println("DataSourceConfig.addDataSourcesFromDB");
         //DB로부터 모든 데이터소스 목록을 불러옴
         List<DataSourceVo> dataSourceInfos = dataSourceService.getAllDataSourceVo();
@@ -31,11 +31,13 @@ public class DataSourcePostConstruct {
         //데이터소스 목록이 비어있지 않다면 현재 백엔드 서버에 연결작업하기
         if (!dataSourceInfos.isEmpty()) {
             List<DataSourceVo> failedDataSourceList = new ArrayList<>();
+            List<DataSourceVo> successfulDataSourceList = new ArrayList<>();
             for (DataSourceVo dataSourceVo : dataSourceInfos) {
                 String companyCode = dataSourceVo.getCompanyCode();
                 try {
                     DataSource dataSource = dataSourceConfig.createDataSource(companyCode, dataSourceVo.getPassword());
                     dataSourceConfig.targetDataSources.put(companyCode, dataSource);
+                    successfulDataSourceList.add(dataSourceVo);
                     stringBuilder.append("companyCode = ").append(companyCode).append("(연결성공)").append("\n");
                 } catch (Exception e) {
                     failedDataSourceList.add(dataSourceVo);
@@ -45,6 +47,10 @@ public class DataSourcePostConstruct {
             for (DataSourceVo dataSourceVo : failedDataSourceList) {
                 System.out.println("연결에 실패한 소스 : " + dataSourceVo);
                 dataSourceVo.setStatus(0);
+                dataSourceService.updateDataSourceVo(dataSourceVo);
+            }
+            for (DataSourceVo dataSourceVo : successfulDataSourceList) {
+                dataSourceVo.setStatus(1);
                 dataSourceService.updateDataSourceVo(dataSourceVo);
             }
             //데이터 소스 연결상태 출력
