@@ -248,7 +248,7 @@
     <delete id="deleteEmp" parameterType="Emp">
         DELETE
         FROM emp
-        WHERE cd_emp = #{cdEmp} AND cd_emp IN (SELECT cd_emp FROM empMenuUsage WHERE use_menulist IS NULL OR use_menuList = '')
+        WHERE cd_emp = #{cdEmp}
     </delete>
 
     <select id="getUndeletedEmpByCdEmp" parameterType="Emp">
