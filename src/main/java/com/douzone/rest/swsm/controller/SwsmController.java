@@ -60,6 +60,7 @@ public class SwsmController {
 
     @PostMapping("/insertSwsm")
     public ResponseEntity<Integer> insertSwsm(@RequestBody Swsm swsm) {
+        System.out.println("swsmparmeter?"+swsm);
         System.out.println("EmpAddController.insertEmpAdd");
         System.out.println("swsm = " + swsm);
         int result = 0;
@@ -129,103 +130,6 @@ public class SwsmController {
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
-
-
-    // 조회 조회기준으로 가지고 온 리스트
-//    @GetMapping("/getEmpListForSwsm")
-//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job,
-//                                                       @RequestParam(name = "date") String date, @RequestParam(name = "dateEnd") String dateEnd) {
-//        System.out.println("dateEnd" + dateEnd);
-//        System.out.println("date:" + date);
-//
-//        List<Emp> jobList = new ArrayList<>();
-//        if (job.equals("empAll")) {
-//            System.out.println("empall임");
-//            System.out.println(empservice.getAllEmp());
-//            jobList = empservice.getAllEmp();
-//
-//            // 임시 테스트로 all 에서만 혹인중
-//            for (Emp e : jobList) {
-//                System.out.println(e.getDaEnter());
-//            }
-//            return new ResponseEntity<>(jobList, HttpStatus.OK);
-//        } else {
-//            System.out.println("EmpController.getEmpListByJobClassfication");
-//            System.out.println("incomeClassfication || job = " + job);
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("incomeClassfication", job.trim());
-//            jobList = empservice.getEmpListForSwsm(map);
-//
-//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
-//            System.out.println(jobList);
-//
-//            return new ResponseEntity<>(jobList, HttpStatus.OK);
-//        }
-//        result = checkPeriod(jobList, date, dateEnd);
-//        // success 면 그 해당하는 emp만 반환
-//        if (result.equals("SUCCESS")) {
-//            return new ResponseEntity<>(jobList, HttpStatus.OK);
-//        } else {
-// }
-//        }
-
-
-    /// check period
-
-
-    // null 이면 http not oke returnhhh
-
-
-//    public List<Emp> checkPeriod(List<Emp> list, String date, String dateEnd) {
-//        return null;
-//    }
-
-
-//    // 조회기준으로 가지고 온 리스트
-//    @GetMapping("/getEmpListForSwsm")
-//    public ResponseEntity<List<Emp>> getEmpListForSwsm(@RequestParam(name = "job") String job) {
-//        if (job.equals("empAll")) {
-//            System.out.println("empall임");
-//            System.out.println(empservice.getAllEmp());
-//            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
-//        } else {
-//            System.out.println("EmpController.getEmpListByJobClassfication");
-//            System.out.println("incomeClassfication || job = " + job);
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("incomeClassfication", job.trim());
-//            List<Emp> list = null;
-//            list = empservice.getEmpListForSwsm(map);
-//
-//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
-//            System.out.println(list);
-//
-//            return new ResponseEntity<>(list, HttpStatus.OK);
-//        }
-//    }
-
-    // 조회기준으로 가지고 온 리스트
-//    @GetMapping("/getEmpListForSwsm")
-//    public List<Emp> getEmpListForSwsm(@RequestParam(name = "job") String job) {
-//        List<Emp> list = null;
-//        if (job.equals("empAll")) {
-//            System.out.println("empall임");
-//            System.out.println(empservice.getAllEmp());
-//            list = empservice.getAllEmp();
-////            return new ResponseEntity<>(empservice.getAllEmp(), HttpStatus.OK);
-//        } else {
-//            System.out.println("EmpController.getEmpListByJobClassfication");
-//            System.out.println("incomeClassfication || job = " + job);
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("incomeClassfication", job.trim());
-//            list = empservice.getEmpListForSwsm(map);
-//
-//            System.out.println("conrtrlllerrr getEmpilist for wmwmw");
-//            System.out.println(list);
-//
-////            return new ResponseEntity<>(list, HttpStatus.OK);
-//        }
-//        return list;
-//    }
 
     // codehelper List load
     @GetMapping("/getSwsmListForSwsm")

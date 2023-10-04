@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 @CrossOrigin(origins = {"http://localhost:3000", "http://osh8242.iptime.org"})
 public class AuthController {
-
     @Autowired
     private AuthService authService;
 
