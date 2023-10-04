@@ -182,7 +182,7 @@
     </select>
 
     <insert id="insertEmp" parameterType="Emp">
-        INSERT ALL
+        INSERT
         INTO EMP(
         cd_emp,
         nm_krname,
@@ -335,12 +335,8 @@
         #{str4211, jdbcType=VARCHAR},
         #{mn4111, jdbcType=VARCHAR}
         )
-        <if test="cdEmp != null">
-            INTO EmpMenuUsage
-            VALUES (#{cdEmp, jdbcType=VARCHAR}, null)
-        </if>
-        SELECT 1 FROM DUAL
     </insert>
+
 
 
 
