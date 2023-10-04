@@ -10,6 +10,7 @@ import java.util.Map;
 @Mapper
 public interface SaAllowPayMapper {
     List<SaAllowPay> getSalAlLowPayListByEmp(Map<String, String> requestMap);   // 급여항목 지급내역 리스트 조회
+    List<SaAllowPay> getSalAlLowPayListByEmpForCalculation(Map<String, String> requestMap);   // 급여항목 지급내역 리스트 조회
     List<Map<String, String>> getSalAllowPaySum(Map<String, String> requestMap);    // select_box 영역 전체 합 급여항목
 
     List<Map<String, String>> getPaymentDateList(Map<String, String> requestMap);   // 지급일 데이터 리스트_모달
@@ -18,15 +19,26 @@ public interface SaAllowPayMapper {
     int mergeSalAllowPay(List<SaAllowPay> newSaAllowPayList );  // 급여항목 입력 + 수정
     SaAllow getSalAllowInfo(SaAllowPay saAllowPay); // 급여자료
     int deleteSalAllowPay(SaAllowPay saAllowPay);   // 급여항목 지우기
+    int insertSalAllowPay(SaAllowPay saAllowPay);   //급여항목
+    int updateSalAllowPay(SaAllowPay saAllowPay);
+
     int updateDate(Map<String, String> requestMap); // 완료여부 고치기
 
-    Map<String, String> setDateId(Map<String,String> requestMap); // date Id 만들기
-    int setCopyLastMonthData(Map<String, String> requestMap); // 전월데이터 복사
+
+    int setCopyLastMonthData(SaAllowPay saAllowPay); // 전월데이터 복사
 
     Map<String, String> getSumAllowPayByYnTax(Map<String, String> requestMap); // (날짜별 사원별) 과세 비과세 합
 
     void makeDateId(SaAllowPay saAllowPay);
+    void makeOneMonthLaterDateId(SaAllowPay saAllowPay);
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
     Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
+    int insertSalAllow(SaAllow saAllow);
+    int updateSalAllow(SaAllow saAllow);
+    int deleteSalAllow(SaAllow saAllow);
+    int updateNonTaxLimit(SaAllowPay saAllowPay);
+
+    String createSallowSeq();
+    SaAllow getSalAllow(SaAllow saAllow);
 }

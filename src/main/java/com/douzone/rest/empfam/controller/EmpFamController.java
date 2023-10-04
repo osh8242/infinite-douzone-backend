@@ -29,6 +29,7 @@ public class EmpFamController {
     @PostMapping("/getEmpFamListByCdEmp")
     public ResponseEntity<List<EmpFam>> getEmpFamListByCdEmp(@RequestBody EmpFam empfam){
         System.out.println("EmpFamController.getEmpFamListByCdEmp");
+        System.out.println("empfam = " + empfam);
         List<EmpFam> result = null;
         result = empFamService.getEmpFamListByCdEmp(empfam);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -37,6 +38,7 @@ public class EmpFamController {
     @PostMapping("/insertEmpFam")
     public int insertEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empFam/insert 컨트롤러 진입!");
+        System.out.println("empfam = " + empfam);
         int result = empFamService.insertEmpFam(empfam);
         return result;
     }
@@ -44,13 +46,17 @@ public class EmpFamController {
     @PutMapping("/updateEmpFamBySeqValAndCdEmp")
     public int updateEmpFamBySeqValAndCdEmp(@RequestBody EmpFam empfam){
         System.out.println("empfam/update 컨트롤러 진입!");
-        int result = empFamService.updateEmpFamBySeqValAndCdEmp(empfam);
+        System.out.println("empfam = " + empfam);
+        int result = 0;
+        if(empfam.getSeqVal() != null) result = empFamService.updateEmpFamBySeqValAndCdEmp(empfam);
+        else result = empFamService.insertEmpFam(empfam);
         return result;
     }
 
     @DeleteMapping("/deleteEmpFam")
     public int deleteEmpFam(@RequestBody EmpFam empfam){
         System.out.println("empfam/deleteEmpFam 컨트롤러 진입!");
+        System.out.println("empfam = " + empfam);
         int result = empFamService.deleteEmpFam(empfam);
         return result;
     }

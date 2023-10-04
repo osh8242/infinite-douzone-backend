@@ -1,11 +1,14 @@
 package com.douzone.rest.saallowpay.service;
 
 import com.douzone.rest.saallowpay.dao.SaAllowPayMapper;
+import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.dao.SaDeductPayDao;
+import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import com.douzone.rest.saempinfo.dao.SaEmpInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,8 +41,6 @@ public class SaAllowPayService {
 
         try {
             Map<String, String> dateInfo = saEmpInfoMapper.getDateInfo(requestMap);
-            System.out.println("dateInfo");
-            System.out.println(dateInfo);
             resultMap.put("dateInfo", dateInfo);
             resultMap.put("plist", saEmpInfoMapper.getSaEmpInfoList(requestMap));
 
@@ -66,11 +67,11 @@ public class SaAllowPayService {
             resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
             resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));              // 사원 상세 정보
 
-            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
-            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
-            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
-
-            resultMap.put("totalSalPaydata", totalSalPaydata);
+//            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
+//            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
+//            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
+//
+//            resultMap.put("totalSalPaydata", totalSalPaydata);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -88,16 +89,18 @@ public class SaAllowPayService {
                 makeDateId(saAllowPay);
             }
 
-            int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay);
-
-            if(mergeSalaryAllowPayResult > 0) {
-                saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 inesert or update
-                dateId = saAllowPay.getDateId();
+            if("".equals(saAllowPay.getAllowPay())){
+                if (saAllowPayMapper.deleteSalAllowPay(saAllowPay) > 0) {
+                    saAllowPay.setAllowPay("0");
+                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
+                }
+            } else {
+                int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
+                if (mergeSalaryAllowPayResult > 0) {
+                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 공제항목 insert or update
+                    dateId = saAllowPay.getDateId();
+                }
             }
-
-
-            //List<SaDeductPay> salartyDeductPayList = saDeductCalculationService.salaryDeductPayList(saAllowPay.getAllowPay(),saAllowPay.getDateId());
-            //result = saDeductPayDao.updateSaDeductPayList(salartyDeductPayList);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -172,11 +175,19 @@ public class SaAllowPayService {
     }
 
 
-    public int setCopyLastMonthData(Map<String, String> requestMap) {
+    public int setCopyLastMonthData(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            saAllowPayMapper.setDateId(requestMap);
-            result = saAllowPayMapper.setCopyLastMonthData(requestMap);
+            // 전월 데이터 불러오기
+
+            // 이번달 월 모든 급여항목 공제항목 삭제
+
+            // 이번달 dateId 만들어주기
+            saAllowPayMapper.makeOneMonthLaterDateId(saAllowPay); // dateId 만들어주기
+
+            // 전월데이터 복사본 insert 시키기
+            result = saAllowPayMapper.setCopyLastMonthData(saAllowPay);
+
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -192,7 +203,7 @@ public class SaAllowPayService {
         try {
             saAllowPayMapper.makeDateId(saAllowPay);
             newDateId = saAllowPay.getDateId();
-            System.out.println("newDateId");
+
 
         }catch (Exception e){
             e.getStackTrace();
@@ -200,5 +211,105 @@ public class SaAllowPayService {
         }
         return newDateId;
     }
+
+
+    public int insertSalAllow(SaAllow saAllow) {
+        int result = 0;
+        try {
+            saAllow.setCdAllow(saAllowPayMapper.createSallowSeq());
+
+            System.out.println(saAllow.toString());
+            result = saAllowPayMapper.insertSalAllow(saAllow);
+            if("N".equals(saAllow.getYnTax())){
+                saAllow.setYnTax("Y");
+                result = saAllowPayMapper.insertSalAllow(saAllow);
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return result;
+    }
+
+    public int updateSalAllow(SaAllow saAllow) {
+        int result = 0;
+        try {
+
+            SaAllow oriSallow = saAllowPayMapper.getSalAllow(saAllow);
+
+            if(!oriSallow.getYnTax().equals(saAllow.getYnTax())){
+
+                saAllow.setOriginYnTax(oriSallow.getYnTax());
+
+                if ("Y".equals(saAllow.getYnTax())) {
+                    result = saAllowPayMapper.deleteSalAllow(saAllow);
+                    saAllow.setNonTaxLimit("");
+                }
+
+                saAllowPayMapper.updateSalAllow(saAllow);
+
+                if ("N".equals(saAllow.getYnTax())) {
+                    saAllow.setYnTax("Y");
+                    result = saAllowPayMapper.insertSalAllow(saAllow);
+                }
+
+            }else {
+                saAllow.setOriginYnTax(saAllow.getYnTax());
+                saAllowPayMapper.updateSalAllow(saAllow);
+            }
+            result = saAllowPayMapper.updateSalAllow(saAllow);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteSalAllow(SaAllow saAllow) {
+        int result = 0;
+        try {
+            result = saAllowPayMapper.deleteSalAllow(saAllow);
+            if("N".equals(saAllow.getYnTax())){
+                saAllow.setYnTax("Y");
+                saAllowPayMapper.deleteSalAllow(saAllow);
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+
+    public int updateNonTaxLimit(SaAllowPay saAllowPay){
+        int result = 0;
+        try {
+            result = saAllowPayMapper.updateNonTaxLimit(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
+//    private int insertSalAllowPay(SaAllowPay saAllowPay){
+//        int result = 0;
+//        try {
+//            saAllowPayMapper.insertSalAllowPay(saAllowPay);
+//        }catch (Exception e){
+//            e.getStackTrace();
+//            System.out.println("insertSalAllowPay에서 터짐.");
+//        }
+//        return result;
+//    }
+//
+//    private int updateSalAllowPay(SaAllowPay saAllowPay){
+//        int result = 0;
+//        try {
+//            saAllowPayMapper.updateSalAllowPay(saAllowPay);
+//        }catch (Exception e){
+//            e.getStackTrace();
+//            System.out.println("updateSalAllowPay 터짐.");
+//        }
+//        return result;
+//    }
+
 
 }
