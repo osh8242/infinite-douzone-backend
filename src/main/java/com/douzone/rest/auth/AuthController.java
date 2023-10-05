@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
 
@@ -61,26 +59,6 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
-
-//    @PostMapping("/cookieLogin")
-//    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-//    public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-//        System.out.println("d---------------------------d");
-//        ResponseVo response = authService.findUser(user);
-//
-//        if (response.getMessage().equals("SUCCESS")) {
-//            System.out.println("SUCCCEESSS COKIIIEEE");
-//            Cookie tokenCookie = new Cookie("authToken", response.getToken());
-//            tokenCookie.setPath("/");
-//            tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
-//
-//            httpResponse.addCookie(tokenCookie);
-//
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-//        }
-//    }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
@@ -165,6 +143,14 @@ public class AuthController {
 
         ResponseVo response = new ResponseVo();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/getClientIp")
+    public String getClientIp(HttpServletRequest request) {
+        System.out.println("AuthController.getClientIp");
+        String clientIp = request.getRemoteAddr();
+        System.out.println("clientIp = " + clientIp);
+        return clientIp;
     }
 
 }

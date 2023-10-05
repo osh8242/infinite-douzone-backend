@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.douzone.rest.auth.jwt.JwtProperties.*;
 import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
@@ -48,10 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-            UserVo userVo = jwtService.parseToken(token.replace(TOKEN_PREFIX, ""));
-            request.setAttribute("companyCode", userVo.getCompanyCode());
-            if (userVo != null) {
-                return new UsernamePasswordAuthenticationToken(userVo.getUserId(), null, new ArrayList<>());
+            Map<String, String> tokenBody = jwtService.parseToken(token.replace(TOKEN_PREFIX, ""));
+            request.setAttribute("companyCode", tokenBody.get("companyCode"));
+            if (tokenBody != null) {
+                return new UsernamePasswordAuthenticationToken(tokenBody.get("userId"), null, new ArrayList<>());
             }
             return null;
         }
