@@ -62,26 +62,6 @@ public class AuthController {
         }
     }
 
-//    @PostMapping("/cookieLogin")
-//    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-//    public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-//        System.out.println("d---------------------------d");
-//        ResponseVo response = authService.findUser(user);
-//
-//        if (response.getMessage().equals("SUCCESS")) {
-//            System.out.println("SUCCCEESSS COKIIIEEE");
-//            Cookie tokenCookie = new Cookie("authToken", response.getToken());
-//            tokenCookie.setPath("/");
-//            tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
-//
-//            httpResponse.addCookie(tokenCookie);
-//
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-//        }
-//    }
-
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
         String password = user.getUserPwd();
@@ -165,6 +145,14 @@ public class AuthController {
 
         ResponseVo response = new ResponseVo();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/getClientIp")
+    public String getClientIp(HttpServletRequest request) {
+        System.out.println("AuthController.getClientIp");
+        String clientIp = request.getRemoteAddr();
+        System.out.println("clientIp = " + clientIp);
+        return clientIp;
     }
 
 }
