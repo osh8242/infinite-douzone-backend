@@ -29,9 +29,9 @@ public class JwtService {
      private String SECRET_KEY;
 
     // 토큰생성
-    public String generateAccessToken(String userId, String companyCode) {
+    public String generateAccessToken(String userId, String companyCode, String clientIp) {
         String token = Jwts.builder()
-                .setSubject(companyCode + "&" + userId)
+                .setSubject(companyCode + "&" + userId+"&"+clientIp)
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
@@ -42,7 +42,7 @@ public class JwtService {
         return token;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, String clientIp) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
            //  Redis에서 토큰 값 검사

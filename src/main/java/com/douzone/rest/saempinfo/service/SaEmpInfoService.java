@@ -73,9 +73,14 @@ public class SaEmpInfoService {
         int result = 0;
         try {
 
-            result = saEmpInfoMapper.deleteDateId(deleteEmpList.get(0).get("dateId"));   // dateId 삭제
             result = saEmpInfoMapper.deleteSaAllowPayEmpList(deleteEmpList); // 급여지급 삭제
             result = saEmpInfoMapper.deleteSaDeductEmpList(deleteEmpList);   // 공제 지급 삭제
+
+            String dateId = deleteEmpList.get(0).get("dateId");
+            if(saEmpInfoMapper.countSaAllowByDateId(dateId)==0){// 모든 항목이 사라지면 dateId 삭제
+               saEmpInfoMapper.deleteDateId(dateId);
+            }
+
         } catch (Exception e) {
             e.getStackTrace();
         }
