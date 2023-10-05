@@ -37,7 +37,7 @@ public class AuthService {
         }
     }
 
-    public ResponseVo findUser(UserVo userVo) {
+    public ResponseVo findUser(UserVo userVo, String clientIp) {
         ResponseVo response = new ResponseVo();
         UserVo user = userDao.findUser(userVo);
 
@@ -47,7 +47,7 @@ public class AuthService {
         }
 
         if (passwordEncoder.matches(userVo.getUserPwd(), user.getUserPwd())) {
-            String jwtToken = jwtService.generateAccessToken(user.getUserId(), user.getCompanyCode());
+            String jwtToken = jwtService.generateAccessToken(user.getUserId(), user.getCompanyCode(), clientIp);
             logger.info("Generated token: {}", jwtToken);
             response.setMessage("SUCCESS");
             response.setToken(jwtToken);
