@@ -40,7 +40,7 @@ public class SwsmController {
 
     @DeleteMapping("/deleteSwsm")
     public ResponseEntity<Integer> deleteSwsm(@RequestBody Swsm swsm) {
-        int result = 0;
+        int result;
         result = swsmService.deleteSwsm(swsm);
         return ResponseEntity.ok(result);
     }
@@ -63,7 +63,7 @@ public class SwsmController {
         System.out.println("swsmparmeter?" + swsm);
         System.out.println("EmpAddController.insertEmpAdd");
         System.out.println("swsm = " + swsm);
-        int result = 0;
+        int result;
         result = swsmService.insertSwsm(swsm);
         return ResponseEntity.ok(result);
     }
@@ -72,7 +72,7 @@ public class SwsmController {
     @GetMapping("/getEmpAllListForSwsmDate")
     public ResponseEntity<List<Emp>> getEmpAllListForSwsmDate(@RequestParam(name = "date", defaultValue = "default") String date, @RequestParam(name = "dateEnd", defaultValue = "default") String dateEnd) {
 
-        List<Emp> listByJobList = new ArrayList<>();
+        List<Emp> listByJobList;
 
         System.out.println("empall dateList임");
         listByJobList = empservice.getAllEmp();
@@ -104,11 +104,11 @@ public class SwsmController {
         System.out.println("date: " + date);
         System.out.println("dateEnd: " + dateEnd);
 
-        List<Emp> listByJobList = new ArrayList<>();
+        List<Emp> listByJobList;
         if (job.equals("empAll")) {
             System.out.println("empall selected.");
             listByJobList = empservice.getAllEmp();
-            System.out.println("ListByJob Result > > > > > "+listByJobList);
+            System.out.println("ListByJob Result > > > > > " + listByJobList);
         } else {
             System.out.println("EmpController.getEmpListByJobClassfication");
             System.out.println("incomeClassfication || job = " + job);
@@ -117,46 +117,49 @@ public class SwsmController {
             listByJobList = empservice.getEmpListForSwsm(map);
         }
 
-        System.out.println("IF FINSH AND AGAIN > > > > "+listByJobList);
-
-
+        System.out.println("IF FINSH AND AGAIN > > > > " + listByJobList);
         System.out.println("..... START SELECT BY DATE");
         // 기간 조회
         List<Emp> resultList = new ArrayList<>();
         for (Emp e : listByJobList) {
-            System.out.println("PARAM : "+e.getCdEmp());
-            String temp = e.getDateOfcreate().substring(0, 7);
-            if (date.compareTo(temp) <= 0) {
-                if (dateEnd.compareTo(temp) >= 0)
-                    resultList.add(e);
+            System.out.println("PARAM : " + e.getCdEmp());
+            if (e.getDateOfcreate() != null) { // Null Check 추가
+                String temp = e.getDateOfcreate().substring(0, 7);
+                if (date.compareTo(temp) <= 0) {
+                    if (dateEnd.compareTo(temp) >= 0)
+                        resultList.add(e);
+                }
+            } else {
+                System.out.println("Date of creation is null for employee: " + e.getCdEmp());
             }
         }
+
         System.out.println("END SELECT BY DATE ....");
 
-        System.out.println("RESULT: "+resultList);
+        System.out.println("RESULT: " + resultList);
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
-    @GetMapping("/getEmpListForSwsmDateExceptJob")
-    public ResponseEntity<List<Emp>> getEmpListForSwsmDateExceptJob(@RequestParam(name = "date", defaultValue = "default") String date, @RequestParam(name = "dateEnd", defaultValue = "default") String dateEnd) {
-        List<Emp> listByJobList = new ArrayList<>();
-
-
-        listByJobList = empservice.getAllEmp();
-        System.out.println("ListByJobListttt");
-        System.out.println(listByJobList);
-        // 기간 조회
-//        List<Emp> resultList = new ArrayList<>();
-//        for (Emp e : listByJobList) {
-//            String temp = e.getDateOfcreate().substring(0, 7);
-//            if (date.compareTo(temp) <= 0) {
-//                if (dateEnd.compareTo(temp) >= 0)
-//                    resultList.add(e);
-//            }
-//        }
-
-        return new ResponseEntity<>(listByJobList, HttpStatus.OK);
-    }
+//    @GetMapping("/getEmpListForSwsmDateExceptJob")
+//    public ResponseEntity<List<Emp>> getEmpListForSwsmDateExceptJob(@RequestParam(name = "date", defaultValue = "default") String date, @RequestParam(name = "dateEnd", defaultValue = "default") String dateEnd) {
+//        List<Emp> listByJobList = new ArrayList<>();
+//
+//
+//        listByJobList = empservice.getAllEmp();
+//        System.out.println("TESTING...");
+//        System.out.println(listByJobList);
+//        // 기간 조회
+////        List<Emp> resultList = new ArrayList<>();
+////        for (Emp e : listByJobList) {
+////            String temp = e.getDateOfcreate().substring(0, 7);
+////            if (date.compareTo(temp) <= 0) {
+////                if (dateEnd.compareTo(temp) >= 0)
+////                    resultList.add(e);
+////            }
+////        }
+//
+//        return new ResponseEntity<>(listByJobList, HttpStatus.OK);
+//    }
 
 
     // codehelper List load
@@ -164,7 +167,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getSwsmListForSwsm(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList = new ArrayList<>();
+        List<Emp> empList;
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
@@ -201,7 +204,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getCodeHelperList(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList = new ArrayList<>();
+        List<Emp> empList;
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
@@ -237,7 +240,7 @@ public class SwsmController {
     public ResponseEntity<List<Emp>> getExceptList(@RequestParam(name = "job") String job) {
         System.out.println("startttt");
 
-        List<Emp> empList = new ArrayList<>();
+        List<Emp> empList;
 
         if (job.equals("empAll")) {
             System.out.println("empall임");
