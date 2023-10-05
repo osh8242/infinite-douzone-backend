@@ -164,4 +164,9 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/getClientIp")
+    public String getClientIp(HttpServletRequest request) {
+        String clientIp = request.getRemoteAddr();
+        return clientIp;
+    }
 }
