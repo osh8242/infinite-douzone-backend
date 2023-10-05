@@ -49,6 +49,7 @@ public class SaDeductCalculationService {
 
             // 공제항목 정보 가져오기
             Map<String,String> requestMap = new HashMap<>();
+
             List<Map<String, String>> getsalDeductList = saDeductPayDao.getsalDeductList(requestMap);
 
             for(Map<String, String> salDeduct : getsalDeductList){

@@ -1,9 +1,8 @@
 package com.douzone.rest.saallowpay.controller;
 
-import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.saallowpay.service.SaAllowPayService;
+import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
-import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -147,10 +146,10 @@ public class SaAllowPayController {
     }
 
     @PostMapping("/insertSalAllow")
-    public int insertSalAllow(@RequestBody SaAllowPay saAllowPay) {
+    public int insertSalAllow(@RequestBody SaAllow saAllow) {
         int result = 0;
         try {
-            result = saAllowPayService.insertSalAllow(saAllowPay);
+            result = saAllowPayService.insertSalAllow(saAllow);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -158,21 +157,20 @@ public class SaAllowPayController {
         return result;
     }
     @PutMapping("/updateSalAllow")
-    public int updateSalAllow(@RequestBody SaAllowPay saAllowPay){
+    public int updateSalAllow(@RequestBody SaAllow saAllow){
         int result = 0;
         try {
-            System.out.println("here");
-            result = saAllowPayService.updateSalAllow(saAllowPay);
+            result = saAllowPayService.updateSalAllow(saAllow);
         } catch (Exception e) {
             e.getStackTrace();
         }
         return result;
     }
     @DeleteMapping("deleteSalAllow")
-    public int deleteSalAllow(@RequestBody SaAllowPay saAllowPay){
+    public int deleteSalAllow(@RequestBody SaAllow saAllow){
         int result = 0;
         try {
-            result = saAllowPayService.deleteSalAllow(saAllowPay);
+            result = saAllowPayService.deleteSalAllow(saAllow);
         } catch (Exception e) {
             e.getStackTrace();
         }

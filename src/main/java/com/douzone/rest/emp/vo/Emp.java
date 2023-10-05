@@ -4,6 +4,12 @@ import lombok.Data;
 
 @Data
 public class Emp {
+    // custom type을 위해 추가된 field
+//    private String combinedAddress; //zipHome, addHome1 - 우편번호와 상세주소1
+//    private String telHome; //telHome1, telHome2, telHome3 - 전화번호
+//    private String celEmp ; // celEmp1, celEmp2, celEmp3 - 모바일번호
+
+    // 기본 Emp field
     private String cdEmp;
     private String nmKrname;
     private String ynFor;
@@ -13,8 +19,8 @@ public class Emp {
     private String fgSex;
     private String abbNation;
     private String ynResident;
-    private String str3911;
-    private String str4011;
+//    private String str3911;
+//    private String str4011;
     private String cdNation;
     private String zipHome;
     private String addHome1;
@@ -37,7 +43,7 @@ public class Emp {
     private String cdBank;
     private String noBnkacct;
     private String nmBnkowner;
-    private String mn611;
+//    private String mn611;
     private String cdAcctit1;
     private String cdAcctit2;
     private String fgPaysupply;
@@ -53,27 +59,27 @@ public class Emp {
     private String ynCeo;
     private String ynSanjae;
     private String ynLonginsur;
-    private String str3211;
-    private String str3311;
-    private String str3511;
-    private String mn2111;
-    private String mn3111;
-    private String str1111;
-    private String str4511;
-    private String str4611;
-    private String str4711;
-    private String mn1111;
+//    private String str3211;
+//    private String str3311;
+//    private String str3511;
+//    private String mn2111;
+//    private String mn3111;
+//    private String str1111;
+//    private String str4511;
+//    private String str4611;
+//    private String str4711;
+//    private String mn1111;
     private String ynDanil;
     private String ynIclman;
-    private String str4311;
-    private String str4411;
+//    private String str4311;
+//    private String str4411;
     private String mnIclpay;
-    private String str3411;
+//    private String str3411;
     private String ynForlabor;
     private String ynUnit;
     private String ynOverwork;
-    private String str4211;
-    private String mn4111;
+//    private String str4211;
+//    private String mn4111;
     private String incomeClassfication;
     private String dateOfcreate;
 

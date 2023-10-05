@@ -4,28 +4,58 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.rest.saallowpay.dao.SaAllowPayMapper">
 
-    <!-- 급여지급액 리스트 -->
+    <!-- 진짜 급여지급액 리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY) AS "ALLOW_PAY"
-        FROM ( SELECT
-        s.CD_ALLOW,
-        s.NM_ALLOW,
-        s.YN_TAX,
-        p.ALLOW_PAY
-        FROM SAALLOW s LEFT OUTER JOIN (
-        SELECT
-        CD_ALLOW,
-        YN_TAX,
-        SUM(ALLOW_PAY) AS "ALLOW_PAY"
-        FROM SAALLOWPAY
-        WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
-        GROUP BY CD_ALLOW, YN_TAX ) p
-        ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY"
+        FROM (
+            SELECT
+                s.CD_ALLOW,
+                s.NM_ALLOW,
+                s.YN_TAX,
+                p.ALLOW_PAY,
+                p.CD_EMP
+            FROM SAALLOW s LEFT OUTER JOIN (
+                SELECT
+                    CD_EMP,
+                    CD_ALLOW,
+                    YN_TAX,
+                    SUM(ALLOW_PAY) AS "ALLOW_PAY"
+                FROM SAALLOWPAY
+                WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
+                GROUP BY CD_ALLOW, YN_TAX , CD_EMP
+            ) p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
         <if test="salDivision       != null and salDivision     != ''">
             WHERE s.SAL_DIVISION = #{salDivision}
         </if>
         ) a
         GROUP BY a.CD_ALLOW, a.NM_ALLOW
+    </select>
+
+    <!-- 계산용 급여지급액 리스트 -->
+    <select id="getSalAlLowPayListByEmpForCalculation" parameterType="java.util.Map" resultType="SaAllowPay">
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY", a.CD_EMP
+        FROM (
+        SELECT
+        s.CD_ALLOW,
+        s.NM_ALLOW,
+        s.YN_TAX,
+        p.ALLOW_PAY,
+        p.CD_EMP
+        FROM SAALLOW s LEFT OUTER JOIN (
+        SELECT
+        CD_EMP,
+        CD_ALLOW,
+        YN_TAX,
+        SUM(ALLOW_PAY) AS "ALLOW_PAY"
+        FROM SAALLOWPAY
+        WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
+        GROUP BY CD_ALLOW, YN_TAX , CD_EMP
+        ) p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
+        <if test="salDivision       != null and salDivision     != ''">
+            WHERE s.SAL_DIVISION = #{salDivision}
+        </if>
+        ) a
+        GROUP BY a.CD_ALLOW, a.NM_ALLOW , a.CD_EMP
     </select>
 
     <!-- 급여지급액 과세 비과세별 합계  -->
@@ -84,7 +114,7 @@
         ON p.DATE_ID = d.DATE_ID LEFT OUTER JOIN EMP e
         ON p.CD_EMP = e.CD_EMP
         WHERE 1=1
-        <if test="salDivision   != null and salDivision    != ''">AND a.SAL_DIVISION = #{salDivision}</if>
+<!--        <if test="salDivision   != null and salDivision    != ''">AND a.SAL_DIVISION = #{salDivision}</if>-->
         <if test="paymentDateFlag ==  'true'">
             AND d."DATE" = #{paymentDate}
             <if test="nowFlag ==  'true'">
@@ -114,6 +144,19 @@
         AND DATE_ID = #{dateId}
         AND CD_EMP = #{cdEmp}
     </delete>
+
+    <insert id="insertSalAllowPay" parameterType="SaAllowPay">
+        INSERT INTO SAALLOWPAY (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
+        VALUES (#{cdDeduct}, #{dateId}, #{cdEmp}, #{allowPay})
+    </insert>
+
+    <update id="updateSalAllowPay" parameterType="SaAllowPay">
+        UPDATE SAALLOWPAY
+        SET ALLOWPAY = #{allowPay}
+        WHERE CD_DEDUCT = #{cdDeduct}
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+    </update>
 
     <!-- 지급일 리스트(코드도움창) -->
     <select id="getPaymentDateList" parameterType="java.util.Map" resultType="hashmap">
@@ -151,7 +194,7 @@
         ON c.CODE_ID = a.SAL_DIVISION
         WHERE YN_TAX = 'N'
         OR (YN_TAX = 'Y' AND NOT EXISTS (SELECT 1 FROM SAALLOW b WHERE b.CD_ALLOW = a.CD_ALLOW AND b.YN_TAX = 'N'))
-        ORDER BY COMMONLY_YN
+        ORDER BY CD_ALLOW, COMMONLY_YN
     </select>
 
     <!-- DATE 테이블 완료 여부 수정 -->
@@ -176,26 +219,6 @@
         AND "MONTH"= (SELECT TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM') FROM DUAL)
         )
     </insert>
-
-    <!-- 지급일메뉴 구현예정 -->
-    <!--    <insert id="insertCopyLastMonthAndGetDateId" parameterType="java.util.Map">-->
-    <!--        <selectKey resultType="String" keyProperty="newDateId" order="BEFORE">-->
-    <!--            CALL GET_DATE_ID(#{allowYear}, #{allowMonth}, #{paymentDate})-->
-    <!--        </selectKey>-->
-    <!--        INSERT INTO SAALLOWPAY (CD_ALLOW, ALLOW_PAY, DATE_ID, YN_TAX)-->
-    <!--        SELECT CD_ALLOW-->
-    <!--        , ALLOW_PAY-->
-    <!--        , CD_EMP-->
-    <!--        , newDateId AS DATE_ID-->
-    <!--        , YN_TAX-->
-    <!--        FROM SAALLOWPAY s-->
-    <!--        WHERE DATE_ID IN (-->
-    <!--        SELECT DATE_ID FROM "DATE" d-->
-    <!--        WHERE 1=1-->
-    <!--        AND ALLOW_YEAR = #{allowYear}-->
-    <!--        AND "MONTH"= (SELECT TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM') FROM DUAL)-->
-    <!--        )-->
-    <!--    </insert>-->
 
     <!-- 지급액 계산_급여항목 정보(과세 분기) -->
     <select id="getSalAllowInfo" parameterType="SaAllowPay" resultType="SaAllow">
@@ -247,14 +270,14 @@
     <update id="makeOneMonthLaterDateId" parameterType="SaAllowPay">
         MERGE INTO "DATE" target
         USING (
-        SELECT
-        DISTINCT
-        d.ALLOW_YEAR
-        , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
-        , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
-        FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
-        ON d.DATE_ID = p.DATE_ID
-        WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
+            SELECT
+            DISTINCT
+            d.ALLOW_YEAR
+            , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
+            , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
+            FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
+            ON d.DATE_ID = p.DATE_ID
+            WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
         ) source
         ON (target.ALLOW_YEAR = source.ALLOW_YEAR
         AND target."MONTH" = source."MONTH"
@@ -274,8 +297,8 @@
     <!-- 급여항목 과세 합 -->
     <select id="getSalAllowPaySumTaxY" parameterType="SaAllowPay" resultType="hashmap">
         SELECT
-        CAST(SUM(CASE WHEN s.SAL_DIVISION = 'SAL' THEN ALLOW_PAY ELSE '0' END) AS INTEGER) AS "sumTaxYBySal",
-        CAST(SUM(CASE WHEN s.SAL_DIVISION = 'BONUS' THEN ALLOW_PAY ELSE '0' END) AS INTEGER) AS "sumTaxYByBonus"
+        COALESCE(CAST(SUM(CASE WHEN s.SAL_DIVISION = 'SAL' THEN ALLOW_PAY ELSE '0' END) AS INTEGER), 0) AS "sumTaxYBySal",
+        COALESCE(CAST(SUM(CASE WHEN s.SAL_DIVISION = 'BONUS' THEN ALLOW_PAY ELSE '0' END) AS INTEGER), 0) AS "sumTaxYByBonus"
         FROM SAALLOWPAY p LEFT OUTER JOIN SAALLOW s
         ON s.CD_ALLOW= p.CD_ALLOW
         WHERE 1=1
@@ -300,15 +323,20 @@
     </select>
 
     <!-- 수당등록 -->
-    <insert id="insertSalAllow" parameterType="SaAllowPay">
+    <insert id="insertSalAllow" parameterType="SaAllow">
         INSERT INTO SAALLOW (CD_ALLOW, NM_ALLOW, YN_TAX, SAL_DIVISION, COMMONLY_YN, MONTHLY_YN)
         VALUES (
-        #{cdAllow}, #{nmAllow}, #{ynTax}, #{salDivision}, #{commonlyYn}, #{monthlyYn}
+            #{cdAllow}, #{nmAllow}, #{ynTax}, #{salDivision}, #{commonlyYn}, #{monthlyYn}
         )
     </insert>
 
+    <select id ="createSallowSeq" resultType="String">
+        SELECT TO_CHAR(NVL(MAX(TO_NUMBER(CD_ALLOW))+1, 200)) AS MAX_CD_ALLOW_STR
+        FROM SAALLOW
+    </select>
+
     <!-- 수당 수정 -->
-    <update id="updateSalAllow" parameterType="SaAllowPay">
+    <update id="updateSalAllow" parameterType="SaAllow">
         UPDATE SAALLOW
         <set>
             <if test="nmAllow != null">NM_ALLOW = #{nmAllow},</if>
@@ -316,15 +344,17 @@
             <if test="salDivision != null">SAL_DIVISION = #{salDivision},</if>
             <if test="commonlyYn != null">COMMONLY_YN = #{commonlyYn},</if>
             <if test="monthlyYn != null">MONTHLY_YN = #{monthlyYn},</if>
-            <if test="nontaxLimit != null">NONTAX_LIMIT= #{nontaxLimit},</if>
+            <if test="nonTaxLimit != null">NONTAX_LIMIT= #{nonTaxLimit},</if>
         </set>
         WHERE CD_ALLOW = #{cdAllow}
+        AND YN_TAX = #{originYnTax}
     </update>
 
     <!-- 수당 삭제 -->
-    <delete id="deleteSalAllow" parameterType="SaAllowPay">
+    <delete id="deleteSalAllow" parameterType="SaAllow">
         DELETE FROM SAALLOW
         WHERE CD_ALLOW = #{cdAllow}
+        AND YN_TAX = #{ynTax}
     </delete>
 
     <!-- 비과세 감면설정 한도 update-->
@@ -333,5 +363,19 @@
         SET NONTAX_LIMIT = #{nontaxLimit}
         WHERE CD_ALLOW = #{cdAllow} AND YN_TAX = 'N'
     </update>
+
+    <select id="getSalAllow" parameterType="SaAllow" resultType="SaAllow">
+        SELECT YN_TAX
+        FROM (
+        SELECT
+        ROW_NUMBER() OVER (ORDER BY s.YN_TAX) AS rn,
+        s.CD_ALLOW,
+        YN_TAX
+        FROM SAALLOW s
+        WHERE CD_ALLOW = #{cdAllow}
+        ORDER BY YN_TAX desc
+        ) tmp
+        WHERE rn = 1
+    </select>
 
 </mapper>

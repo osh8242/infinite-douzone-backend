@@ -26,6 +26,4 @@ public class SaAllowPay {
     private String monthlyYn;
     private String nontaxLimit;
 
-
-
 }
