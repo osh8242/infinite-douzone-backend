@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserVo {
     private String companyCode;
+    private String companyName;
     private String userId;
     private String userPwd;
     private String userName;
