@@ -57,6 +57,7 @@ public class SaDeductCalculationService {
                 newDeductPay.setCdDeduct(salDeduct.get("cdDeduct"));
                 newDeductPay.setCdEmp(saAllowPay.getCdEmp());
                 newDeductPay.setDateId(saAllowPay.getDateId());
+                newDeductPay.setSalDivision(saAllowPay.getSalDivision());
 
                 int allowpaySum = 0;
                 if("Y".equals(salDeduct.get("ynBonus"))) allowpaySum += sumTaxYByBonus;
