@@ -44,6 +44,7 @@ public class JwtService {
         return token;
     }
 
+    // 토큰 검증
     public boolean validateToken(String token, String clientIp) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);

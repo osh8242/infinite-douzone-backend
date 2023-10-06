@@ -2,7 +2,6 @@ package com.douzone.rest.emp.controller;
 
 import com.douzone.rest.emp.service.EmpService;
 import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +41,7 @@ public class EmpController {
         Map<String, Object> map = new HashMap<>();
         map.put("jobOk", jobOk.trim());
         if(refYear != null ) map.put("refYear", refYear.trim());
+        map.put("orderRef", orderRef.trim());
         map.put("orderRef", orderRef.trim());
         List<Emp> list = null;
         list = empservice.getEmpListForHrManagement(map);
