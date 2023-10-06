@@ -101,6 +101,7 @@ public class AuthController {
     public String Register(@RequestBody UserVo user) throws Exception {
         String password = user.getUserPwd();
         System.out.println("Register Parameter: " + user);
+        user.setCompanyCode(user.getUserId().toUpperCase());
         // 스키마 관리자 계정 등록
         int resultMsg = authService.register(user);
         System.out.println("result Msg: " + resultMsg);

@@ -2,7 +2,6 @@ package com.douzone.rest.auth.jwt;
 
 import com.douzone.rest.auth.vo.UserVo;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
