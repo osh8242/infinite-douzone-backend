@@ -2,7 +2,6 @@ package com.douzone.rest.auth.jwt;
 
 import com.douzone.rest.auth.vo.UserVo;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.douzone.rest.auth.jwt.JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME;
+import static com.douzone.rest.auth.jwt.JwtProperties.*;
 
 @Service
 public class JwtService {
@@ -44,6 +43,7 @@ public class JwtService {
         return token;
     }
 
+    // 토큰 검증
     public boolean validateToken(String token, String clientIp) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);

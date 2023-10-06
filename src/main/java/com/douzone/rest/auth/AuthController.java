@@ -17,6 +17,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = {"http://localhost:3000", "http://osh8242.iptime.org"})
@@ -29,9 +31,6 @@ public class AuthController {
 
     @Autowired
     private EmailService emailService;
-
-//    @Autowired
-//    private TokenBlacklistService tokenBlacklistService;
 
     @Autowired
     private DataSourceService dataSourceService;
@@ -54,33 +53,25 @@ public class AuthController {
             System.out.println(response);
 
             System.out.println(response.getToken());
-            System.out.println("succeess token: "+response.getToken());
-            headers.set("Authorization", "Bearer " + response.getToken());
+            System.out.println("succeess token: " + response.getToken());
+            headers.set("Authorization", TOKEN_PREFIX + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseVo> logout() {
+        System.out.println("logoutTesting...");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        @PostMapping("/cookieLogin")
-        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-            System.out.println("d---------------------------d");
-            ResponseVo response = authService.findUser(user);
-
-            if (response.getMessage().equals("SUCCESS")) {
-                System.out.println("SUCCCEESSS COKIIIEEE");
-                Cookie tokenCookie = new Cookie("authToken", response.getToken());
-                tokenCookie.setPath("/");
-                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
-
-                httpResponse.addCookie(tokenCookie);
-
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-            }
-        }
+    // 로그아웃 시 토큰 강제 만료 후, 블랙리스트 추가
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+//        tokenBlacklistService.addTokenToBlacklist(token);
+//        return ResponseEntity.ok().body("Logged out successfully");
+//    }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
