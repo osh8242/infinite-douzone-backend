@@ -12,6 +12,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.douzone.rest.auth.jwt.JwtProperties.*;
@@ -29,9 +31,9 @@ public class JwtService {
      private String SECRET_KEY;
 
     // 토큰생성
-    public String generateAccessToken(String userId, String companyCode) {
+    public String generateAccessToken(String userId, String companyCode, String clientIp) {
         String token = Jwts.builder()
-                .setSubject(companyCode + "&" + userId)
+                .setSubject(companyCode + "&" + userId+"&"+clientIp)
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
@@ -42,11 +44,12 @@ public class JwtService {
         return token;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, String clientIp) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
            //  Redis에서 토큰 값 검사
             if (redisTemplate.hasKey(token)) {
+                if(parseToken(token).get("clientIp") == clientIp)
                 return true;
             }
         } catch (ExpiredJwtException e) {
@@ -62,8 +65,8 @@ public class JwtService {
     }
 
     //companyCode, userId 반환 (UserVo 객체형태 반환)
-    public UserVo parseToken(String token) {
-        UserVo user = null;
+    public Map<String, String> parseToken(String token) {
+        Map<String, String> tokenBody = null;
         try {
             System.out.println("JwtService.getUsernameFromToken");
             String subject = Jwts.parser()
@@ -73,13 +76,17 @@ public class JwtService {
                     .getSubject();
             String companyCode = subject.split("&")[0];
             String userId = subject.split("&")[1];
-            user = new UserVo();
-            user.setCompanyCode(companyCode);
-            user.setUserId(userId);
+            String clientIp = subject.split("&")[2];
+
+            tokenBody = new HashMap<>();
+            tokenBody.put("companyCode",companyCode);
+            tokenBody.put("userId",userId);
+            tokenBody.put("clientIp",clientIp);
+
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException |
                  IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
-        return user;
+        return tokenBody;
     }
 }

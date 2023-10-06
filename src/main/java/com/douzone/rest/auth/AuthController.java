@@ -13,10 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
+
+import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,45 +40,25 @@ public class AuthController {
     //    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "Authorization")
     @PostMapping("/login")
     public ResponseEntity<ResponseVo> login(@RequestBody UserVo user, HttpServletRequest request) {
-        String clientIP = request.getRemoteAddr();
-        System.out.println("clientIP = " + clientIP);
+        String clientIp = request.getHeader("Client-IP");
+        System.out.println("clientIp = " + clientIp);
         System.out.println("parameter login info: ");
         System.out.println(user);
-        ResponseVo response = authService.findUser(user);
-               if (response.getMessage().equals("SUCCESS")) {
+        ResponseVo response = authService.findUser(user, clientIp);
+        if (response.getMessage().equals("SUCCESS")) {
             HttpHeaders headers = new HttpHeaders();
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
             System.out.println("responseeeeeeeeeee login");
             System.out.println(response);
 
             System.out.println(response.getToken());
-            System.out.println("succeess token: "+response.getToken());
-            headers.set("Authorization", "Bearer " + response.getToken());
+            System.out.println("succeess token: " + response.getToken());
+            headers.set("Authorization", TOKEN_PREFIX + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
-
-        @PostMapping("/cookieLogin")
-        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
-            System.out.println("d---------------------------d");
-            ResponseVo response = authService.findUser(user);
-
-            if (response.getMessage().equals("SUCCESS")) {
-                System.out.println("SUCCCEESSS COKIIIEEE");
-                Cookie tokenCookie = new Cookie("authToken", response.getToken());
-                tokenCookie.setPath("/");
-                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
-
-                httpResponse.addCookie(tokenCookie);
-
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-            }
-        }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
@@ -100,8 +79,7 @@ public class AuthController {
                     // 데이터소스 서버에 등록
                     dataSourceConfig.addNewDataSource(companyCode, password);
                     return "SUCCESS";
-                }
-                else return "INSERT DATASOURCE FAIL";
+                } else return "INSERT DATASOURCE FAIL";
             } else return "CREATE SCHEMA FAIL";
         } else return "FAIL";
     }
@@ -165,6 +143,14 @@ public class AuthController {
 
         ResponseVo response = new ResponseVo();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/getClientIp")
+    public String getClientIp(HttpServletRequest request) {
+        System.out.println("AuthController.getClientIp");
+        String clientIp = request.getRemoteAddr();
+        System.out.println("clientIp = " + clientIp);
+        return clientIp;
     }
 
 }
