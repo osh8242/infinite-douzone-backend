@@ -75,9 +75,13 @@ public class AuthController {
 
         @PostMapping("/cookieLogin")
         @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
             System.out.println("d---------------------------d");
-            ResponseVo response = authService.findUser(user);
+            String clientIp = httpRequest.getHeader("Client-IP");
+            System.out.println("clientIp = " + clientIp);
+            System.out.println("parameter login info: ");
+            System.out.println(user);
+            ResponseVo response = authService.findUser(user, clientIp);
 
             if (response.getMessage().equals("SUCCESS")) {
                 System.out.println("SUCCCEESSS COKIIIEEE");
