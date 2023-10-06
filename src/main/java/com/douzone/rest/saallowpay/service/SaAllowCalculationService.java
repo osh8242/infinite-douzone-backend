@@ -147,34 +147,42 @@ public class SaAllowCalculationService {
         List<SaAllowPay> salaryAllowList = new ArrayList<>();
 
         try {
+
             SaAllow salAllowInfo = getSalAllowInfo(saAllowPay); // 지급항목의 정보
 
             if (NON_TAXABLE.equals(salAllowInfo.getYnTax())) {
 
-                System.out.println("delete 지급항목들");
-
                 deleteSalAllowPay(saAllowPay);  // 해당 사원의 해당날짜 모든 지급항목 삭제
 
-                int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
+                int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 지급금액
 
                 if (salAllowInfo.getNonTaxLimit() == null) {
-                    salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(allowPay)));
+                    salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(allowPay),saAllowPay.getSalDivision()));
                 } else {
                     int limit = Integer.parseInt(salAllowInfo.getNonTaxLimit());   // 한달 한도
                     int allowPaySumByEmp = getSalAllowPaySumByMonth(saAllowPay);   // 사원이 이번달 받은 해당 수당의 합
 
-                    if (allowPaySumByEmp + allowPay > limit) {
-                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp)));
-                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp))));
-
-                    } else {
-                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),NON_TAXABLE, String.valueOf(allowPay)));
+                    if(allowPaySumByEmp == 0) {
+                        if(allowPay < limit) {
+                            salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(allowPay), saAllowPay.getSalDivision()));
+                        }else {
+                            salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(limit), saAllowPay.getSalDivision()));
+                            salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), TAXABLE, String.valueOf(allowPay-limit), saAllowPay.getSalDivision()));
+                        }
+                    }else if(allowPaySumByEmp > limit){
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), TAXABLE, String.valueOf(allowPay), saAllowPay.getSalDivision()));
+                    }else{
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), NON_TAXABLE, String.valueOf(limit - allowPaySumByEmp), saAllowPay.getSalDivision()));
+                        salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(), TAXABLE, String.valueOf(allowPay - (limit - allowPaySumByEmp)), saAllowPay.getSalDivision()));
                     }
+
                 }
 
             } else {
-                salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),TAXABLE, saAllowPay.getAllowPay()));
+                salaryAllowList.add(createSalAllowPay(saAllowPay.getCdAllow(),TAXABLE, saAllowPay.getAllowPay(),saAllowPay.getSalDivision()));
             }
+
+            //deleteSalAllowPay(saAllowPay);  // 해당 사원의 해당날짜 모든 지급항목 삭제
 
         }catch (Exception e){
             e.printStackTrace();
@@ -192,6 +200,7 @@ public class SaAllowCalculationService {
             requestMap.put("cdAllow", saAllowPay.getCdAllow());
             requestMap.put("allowMonth", saAllowPay.getAllowMonth());
             requestMap.put("cdEmp", saAllowPay.getCdEmp());
+            requestMap.put("salDivision", saAllowPay.getSalDivision());
 
             if(saAllowPayMapper.getSumAllowPayByYnTax(requestMap) != null){
                 result = saAllowPayMapper.getSalAllowPaySumByMonth(requestMap);
@@ -206,13 +215,16 @@ public class SaAllowCalculationService {
     }
 
     // 입력/수정할 saAllowPay row 만들기
-    private SaAllowPay createSalAllowPay(String cdAllow, String ynTax, String allowPay) {
+    private SaAllowPay createSalAllowPay(String cdAllow, String ynTax, String allowPay, String salDivision) {
         SaAllowPay newSaAllowPay = new SaAllowPay();
         try {
+
             newSaAllowPay.setCdAllow(cdAllow);
             newSaAllowPay.setCdEmp(this.cdEmp);
             newSaAllowPay.setDateId(this.dateId);
-            newSaAllowPay.setSalDivision(this.salDivision);
+
+//            newSaAllowPay.setSalDivision(this.salDivision);
+            newSaAllowPay.setSalDivision(salDivision);
             newSaAllowPay.setYnTax(ynTax);
             newSaAllowPay.setAllowPay(allowPay);
         }catch (Exception e){
@@ -231,7 +243,6 @@ public class SaAllowCalculationService {
 
             requestMap.put("cdEmp", saAllowPay.getCdEmp());
             requestMap.put("dateId", saAllowPay.getDateId());
-            requestMap.put("salDivision" , saAllowPay.getSalDivision());
 
             //List<SaAllowPay> a = saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
             resultList =  saAllowPayMapper.getSalAlLowPayListByEmpForCalculation(requestMap).stream()

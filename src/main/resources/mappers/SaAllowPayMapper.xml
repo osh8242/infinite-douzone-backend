@@ -6,27 +6,32 @@
 
     <!-- 진짜 급여지급액 리스트 -->
     <select id="getSalAlLowPayListByEmp" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY"
+        FROM (
+            SELECT
             s.CD_ALLOW,
             s.NM_ALLOW,
-            SUM(p.ALLOW_PAY) AS ALLOW_PAY
-        FROM SAALLOW s LEFT OUTER JOIN (
+            s.YN_TAX,
+            p.ALLOW_PAY,
+            p.CD_EMP
+            FROM SAALLOW s LEFT OUTER JOIN (
             SELECT
-                CD_EMP,
-                CD_ALLOW,
-                YN_TAX,
-                SUM(ALLOW_PAY) AS "ALLOW_PAY"
+            CD_EMP,
+            CD_ALLOW,
+            YN_TAX,
+            SUM(ALLOW_PAY) AS "ALLOW_PAY"
             FROM SAALLOWPAY
-            WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
-        <if test="salDivision       != null and salDivision     != ''">
-            AND SAL_DIVISION = #{salDivision}
-        </if>
-        GROUP BY CD_ALLOW, YN_TAX , CD_EMP
+            WHERE DATE_ID = #{dateId}
+                AND CD_EMP = #{cdEmp}
+                AND SAL_DIVISION = #{salDivision}
+            GROUP BY CD_ALLOW, YN_TAX , CD_EMP
         ) p ON p.CD_ALLOW = s.CD_ALLOW
+            AND p.YN_TAX = s.YN_TAX
         <if test="salDivision       != null and salDivision     != '' and salDivision != 'SALBONUS'">
             WHERE s.SAL_DIVISION = #{salDivision}
         </if>
-        GROUP BY s.CD_ALLOW, s.NM_ALLOW
+        ) a
+        GROUP BY a.CD_ALLOW, a.NM_ALLOW
     </select>
 
     <!-- 급여지급액 과세 비과세별 합계  -->
@@ -48,34 +53,37 @@
         AND p.YN_TAX IN ('Y', 'N')
     </select>
 
-
     <!-- 계산용 급여지급액 리스트 -->
     <select id="getSalAlLowPayListByEmpForCalculation" parameterType="java.util.Map" resultType="SaAllowPay">
-        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY", a.CD_EMP
+        SELECT a.CD_ALLOW, a.NM_ALLOW, SUM(a.ALLOW_PAY)  AS "ALLOW_PAY", a.CD_EMP , a.SAL_DIVISION, a.DATE_ID
+        , (SELECT "MONTH" FROM "DATE" WHERE DATE_ID = #{dateId}) AS "ALLOW_MONTH"
         FROM (
-            SELECT
+        SELECT
             s.CD_ALLOW,
             s.NM_ALLOW,
             s.YN_TAX,
             p.ALLOW_PAY,
-            p.CD_EMP
-            FROM SAALLOW s LEFT OUTER JOIN (
+            p.CD_EMP,
+            p.SAL_DIVISION,
+            p.DATE_ID
+            FROM SAALLOW s INNER JOIN (
             SELECT
             CD_EMP,
             CD_ALLOW,
             YN_TAX,
-            SUM(ALLOW_PAY) AS "ALLOW_PAY"
-            FROM SAALLOWPAY
+            SUM(ALLOW_PAY) AS "ALLOW_PAY",
+            SAL_DIVISION,
+            DATE_ID
+        FROM SAALLOWPAY
             WHERE DATE_ID = #{dateId} AND CD_EMP = #{cdEmp}
-            GROUP BY CD_ALLOW, YN_TAX , CD_EMP
+        GROUP BY CD_ALLOW, YN_TAX , CD_EMP, SAL_DIVISION, DATE_ID
         ) p ON p.CD_ALLOW = s.CD_ALLOW AND p.YN_TAX = s.YN_TAX
         <if test="salDivision       != null and salDivision     != ''">
             WHERE s.SAL_DIVISION = #{salDivision}
         </if>
         ) a
-        GROUP BY a.CD_ALLOW, a.NM_ALLOW , a.CD_EMP
+        GROUP BY a.CD_ALLOW, a.NM_ALLOW , a.CD_EMP, a.SAL_DIVISION, a.DATE_ID
     </select>
-
 
 
     <!-- 급여지급액 insert or update -->
@@ -90,7 +98,6 @@
             #{item.ynTax} AS YN_TAX,
             #{item.salDivision} AS SAL_DIVISION
             FROM dual
-
         </foreach>
         ) source
         ON (target.CD_ALLOW = source.CD_ALLOW
@@ -247,13 +254,14 @@
 
     <!-- 지급액 계산_해당 귀속연월 사원의 급여 지급액 정보(한도)-->
     <select id="getSalAllowPaySumByMonth" parameterType="java.util.Map" resultType="Integer">
-        SELECT SUM(s.ALLOW_PAY)
-        FROM SAALLOWPAY s LEFT OUTER JOIN "DATE" d
-        ON s.DATE_ID = d.DATE_ID
-        WHERE s.CD_ALLOW = #{cdAllow}
+        SELECT SUM(p.ALLOW_PAY)
+        FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
+        ON p.DATE_ID = d.DATE_ID
+        WHERE p.CD_ALLOW = #{cdAllow}
         AND d."MONTH" = #{allowMonth}
-        AND s.CD_EMP = #{cdEmp]
-        GROUP BY s.CD_ALLOW
+        AND p.CD_EMP = #{cdEmp}
+        AND p.SAL_DIVISION = #{salDivision}
+        GROUP BY p.CD_ALLOW
     </select>
 
     <!-- 지급액 계산_해당 지급날짜 사원의 지급액 정보(과세여부)-->
