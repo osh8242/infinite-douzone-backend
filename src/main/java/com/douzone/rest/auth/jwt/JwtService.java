@@ -49,8 +49,8 @@ public class JwtService {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
            //  Redis에서 토큰 값 검사
-            if (redisTemplate.hasKey(token)) {
-                if(parseToken(token).get("clientIp") == clientIp)
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(token))) {
+                if(parseToken(token).get("clientIp").equals(clientIp))
                 return true;
             }
         } catch (ExpiredJwtException e) {

@@ -19,7 +19,7 @@
             , (SELECT CODE_NAME FROM CODE c WHERE c.CODE_ID = e.RANK_NO) AS "RANK_NO_NAME"
             , e.JOB_OK
         FROM EMP e
-        WHERE e.DA_ENTER &lt; #{paymentDate}
+        WHERE e.DA_ENTER <![CDATA[<=]]> #{paymentDate}
         AND (e.DA_RETIRE IS NULL OR e.DA_RETIRE &gt; #{paymentDate})
         <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND e.CD_EMP       = #{searchCdEmp}      </if>
         <if test="searchCdDept      != null and searchCdDept      != ''">   AND e.CD_DEPT      = #{searchCdDept}     </if>
