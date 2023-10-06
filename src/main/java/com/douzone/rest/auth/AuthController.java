@@ -182,4 +182,12 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/getClientIp")
+    public String getClientIp(HttpServletRequest request) {
+        System.out.println("AuthController.getClientIp");
+        String clientIp = request.getRemoteAddr();
+        System.out.println("clientIp = " + clientIp);
+        return clientIp;
+    }
+
 }
