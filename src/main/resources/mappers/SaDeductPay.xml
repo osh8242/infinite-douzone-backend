@@ -15,6 +15,7 @@
             ON d.CD_DEDUCT = p.CD_DEDUCT
             AND p.DATE_ID = #{dateId}
             AND p.CD_EMP = #{cdEmp}
+            AND p.SAL_DIVISION = #{salDivision}
         <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
     </select>
 
@@ -74,39 +75,44 @@
             SELECT #{item.cdDeduct} AS CD_DEDUCT,
                 #{item.cdEmp} AS CD_EMP,
                 #{item.dateId} AS DATE_ID,
-                #{item.allowPay} AS ALLOW_PAY
+                #{item.allowPay} AS ALLOW_PAY,
+                #{item.salDivision} AS SAL_DIVISION
             FROM dual
         </foreach>
         ) source
         ON (target.CD_DEDUCT = source.CD_DEDUCT
             AND target.CD_EMP = source.CD_EMP
-            AND target.DATE_ID = source.DATE_ID)
+            AND target.DATE_ID = source.DATE_ID
+            AND target.SAL_DIVISION = source.SAL_DIVISION
+        )
         WHEN MATCHED THEN
             UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
         WHEN NOT MATCHED THEN
-            INSERT (CD_DEDUCT, CD_EMP, DATE_ID, ALLOW_PAY)
-            VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY)
+            INSERT (CD_DEDUCT, CD_EMP, DATE_ID, ALLOW_PAY, SAL_DIVISION)
+            VALUES (source.CD_DEDUCT, source.CD_EMP, source.DATE_ID, source.ALLOW_PAY, source.SAL_DIVISION)
     </update>
 
     <update id="mergeSalDeductPay" parameterType="SaDeductPay">
         MERGE INTO SADEDUCTPAY target
         USING (
-            SELECT CD_DEDUCT, DATE_ID, CD_EMP, ALLOW_PAY
+            SELECT CD_DEDUCT, DATE_ID, CD_EMP, ALLOW_PAY, SAL_DIVISION
             FROM SADEDUCTPAY
             WHERE CD_DEDUCT = #{cdDeduct}
             AND DATE_ID = #{dateId}
             AND CD_EMP = #{cdEmp}
             AND ALLOW_PAY = #{allowPay}
+            AND SAL_DIVISION = #{salDivision}
         ) source
         ON (target.CD_DEDUCT = source.CD_DEDUCT
         AND target.DATE_ID = source.DATE_ID
         AND target.CD_EMP = source.CD_EMP
+        AND SAL_DIVISION = source.SAL_DIVISION
         )
         WHEN MATCHED THEN
         UPDATE SET target.ALLOW_PAY = source.ALLOW_PAY
         WHEN NOT MATCHED THEN
-        INSERT (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
-        VALUES (source.CD_DEDUCT, source.DATE_ID, source.CD_EMP, source.ALLOW_PAY)
+        INSERT (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY, SAL_DIVISION)
+        VALUES (source.CD_DEDUCT, source.DATE_ID, source.CD_EMP, source.ALLOW_PAY, source.SAL_DIVISION)
     </update>
 
     <insert id="insertSaDeduct" parameterType="SaDeductPay">
@@ -133,8 +139,8 @@
     </delete>
 
     <insert id ="insertSaDeductPay" parameterType="SaDeductPay">
-        INSERT INTO SADEDUCTPAY (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY)
-        VALUES (#{cdDeduct}, #{dateId}, #{cdEmp}, #{allowPay})
+        INSERT INTO SADEDUCTPAY (CD_DEDUCT, DATE_ID, CD_EMP,  ALLOW_PAY , SAL_DIVISION)
+        VALUES (#{cdDeduct}, #{dateId}, #{cdEmp}, #{allowPay}, #{salDivision})
     </insert>
 
     <update id ="updateSaDeductPay" parameterType="SaDeductPay">
@@ -143,6 +149,7 @@
         WHERE CD_DEDUCT = #{cdDeduct}
         AND DATE_ID = #{dateId}
         AND CD_EMP = #{cdEmp}
+        AND SAL_DIVISION = #{salDivision}
     </update>
 
     <delete id ="deleteSaDeductPay" parameterType="SaDeductPay">
@@ -150,6 +157,7 @@
         WHERE CD_DEDUCT = #{cdDeduct}
         AND DATE_ID = #{dateId}
         AND CD_EMP = #{cdEmp}
+        AND SAL_DIVISION = #{salDivision}
     </delete>
 
     <select id="getCountSaDeductPay" parameterType="SaDeductPay" resultType="int">
