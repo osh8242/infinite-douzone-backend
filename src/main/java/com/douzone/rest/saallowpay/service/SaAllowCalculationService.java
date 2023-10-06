@@ -23,6 +23,7 @@ public class SaAllowCalculationService {
     private String allowMonth;
 
     private String allowYear;
+    private String salDivision;
 
     // 상수 정의
     private static final String TAXABLE = "Y";
@@ -43,13 +44,12 @@ public class SaAllowCalculationService {
     public int mergeNewSalaryAllowPay(SaAllowPay saAllowPay) throws Exception {
 
         this.dateId = saAllowPay.getDateId();
-
         this.cdEmp = saAllowPay.getCdEmp();
         this.cdAllow = saAllowPay.getCdAllow();
+        this.salDivision = saAllowPay.getSalDivision();
 
         int result = 0;
         try {
-
             List<SaAllowPay> newSalaryAllowPayList = makeCalculationAllowPayData(saAllowPay);   // 수당 리스트
 
             saAllowPayMapper.deleteSalAllowPay(saAllowPay); // 수당 delete
@@ -70,6 +70,7 @@ public class SaAllowCalculationService {
         this.dateId = requestMap.get("dateId").toString();;
         this.allowMonth = (String) requestMap.get("allowMonth");
         this.allowYear = (String) requestMap.get("allowYear");
+        this.salDivision = (String) requestMap.get("salDivision");
 
         List<String> selectOptionList = (List<String>) requestMap.get("selectOption");
 
@@ -99,6 +100,7 @@ public class SaAllowCalculationService {
             SaAllowPay salAllowPay = new SaAllowPay();
             salAllowPay.setCdEmp(this.cdEmp);
             salAllowPay.setDateId(this.dateId);
+            salAllowPay.setSalDivision(this.salDivision);
 
             List<SaAllowPay> reCalculateAllowPayList = new ArrayList<>();
 
@@ -148,6 +150,9 @@ public class SaAllowCalculationService {
             SaAllow salAllowInfo = getSalAllowInfo(saAllowPay); // 지급항목의 정보
 
             if (NON_TAXABLE.equals(salAllowInfo.getYnTax())) {
+
+                System.out.println("delete 지급항목들");
+
                 deleteSalAllowPay(saAllowPay);  // 해당 사원의 해당날짜 모든 지급항목 삭제
 
                 int allowPay = Integer.parseInt(saAllowPay.getAllowPay());      // 입력한 수당 값
@@ -207,6 +212,7 @@ public class SaAllowCalculationService {
             newSaAllowPay.setCdAllow(cdAllow);
             newSaAllowPay.setCdEmp(this.cdEmp);
             newSaAllowPay.setDateId(this.dateId);
+            newSaAllowPay.setSalDivision(this.salDivision);
             newSaAllowPay.setYnTax(ynTax);
             newSaAllowPay.setAllowPay(allowPay);
         }catch (Exception e){
@@ -225,6 +231,7 @@ public class SaAllowCalculationService {
 
             requestMap.put("cdEmp", saAllowPay.getCdEmp());
             requestMap.put("dateId", saAllowPay.getDateId());
+            requestMap.put("salDivision" , saAllowPay.getSalDivision());
 
             //List<SaAllowPay> a = saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
             resultList =  saAllowPayMapper.getSalAlLowPayListByEmpForCalculation(requestMap).stream()

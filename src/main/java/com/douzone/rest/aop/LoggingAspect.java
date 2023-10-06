@@ -5,35 +5,37 @@ import com.douzone.rest.auth.vo.UserVo;
 import com.douzone.rest.log.LogService;
 import com.douzone.rest.log.vo.Log;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.apache.bcel.classfile.Method;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.CodeSignature;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Aspect
 @Slf4j
 @Component
 public class LoggingAspect {
+
+    private String logDir;
+
     LogService logService;
+
     @Autowired
     public LoggingAspect(LogService logService) {
         this.logService = logService;
@@ -49,6 +51,8 @@ public class LoggingAspect {
 
     @Before("execution(* com.douzone.rest.auth.AuthController.login(..)) && args(user) && args(request)")
     public void logBeforeLogin(UserVo user, HttpServletRequest request) {
+
+        logger.info(user.toString());
 
         userIdThreadLocal.set(user.getUserId());
         String clientIpAddress = "";
@@ -92,84 +96,69 @@ public class LoggingAspect {
         logService.insertLog(log);
     }
 
-    private String extractJwtTokenFromResponse(ResponseEntity<ResponseVo>  response) {
+    private String extractJwtTokenFromResponse(ResponseEntity<ResponseVo> response) {
 
         ResponseVo responseBody = response.getBody();
-        if (responseBody != null && responseBody.getToken() != null ) {
+        if (responseBody != null && responseBody.getToken() != null) {
             return responseBody.getToken();
         } else {
             return "Token not found";
         }
     }
-//
-//    @Pointcut("within(* com.douzone.rest.*..*.*(..))")
-//    private void onRequest(){}
-//    // POST
-//
-//    @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
-//
-//// GET
-//    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
 
-    /* Pointcut 과 매칭되는 메서드의 실행 전, 후에 실행
-     *  @Around advice 는 꼭 proceed()가 필요하다. */
-//    @Around("onRequest()")
-//    public Object logAction(ProceedingJoinPoint joinPoint) throws Throwable{
-//        Class clazz = joinPoint.getTarget().getClass();
-//        Logger logger = LoggerFactory.getLogger(clazz);
-//        Object result = null;
-//        try {
-//            result = joinPoint.proceed(joinPoint.getArgs());
-//            return result;
-//        } finally {
-//            logger.info(getRequestUrl(joinPoint, clazz));
-//            logger.info("parameters" + JSON.toJSONString(params(joinPoint)));
-//            logger.info("response: " + JSON.toJSONString(result, true));
-//        }
-//    }
-//
+    @Around("bean(*Controller)")
+    public Object controllerAroundLogging(ProceedingJoinPoint pjp) throws Throwable {
 
-//    private String getRequestUrl(JoinPoint joinPoint, Class clazz) {
-//        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-//        Method method = methodSignature.getMethod();
-//        RequestMapping requestMapping = (RequestMapping) clazz.getAnnotation(RequestMapping.class);
-//        String baseUrl = requestMapping.value()[0];
-//
-//        String url = Stream.of( GetMapping.class, PutMapping.class, PostMapping.class,
-//                        PatchMapping.class, DeleteMapping.class, RequestMapping.class)
-//                .filter(mappingClass -> method.isAnnotationPresent(mappingClass))
-//                .map(mappingClass -> getUrl(method, mappingClass, baseUrl))
-//                .findFirst().orElse(null);
-//        return url;
-//    }
-//
-//    /* httpMETHOD + requestURI 를 반환 */
-//    private String getUrl(Method method, Class<? extends Annotation> annotationClass, String baseUrl){
-//        Annotation annotation = method.getAnnotation(annotationClass);
-//        String[] value;
-//        String httpMethod = null;
-//        try {
-//            value = (String[])annotationClass.getMethod("value").invoke(annotation);
-//            httpMethod = (annotationClass.getSimpleName().replace("Mapping", "")).toUpperCase();
-//        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-//            return null;
-//        }
-//        return String.format("%s %s%s", httpMethod, baseUrl, value.length > 0 ? value[0] : "") ;
-//    }
-//
-//
-//    private Map params(JoinPoint joinPoint) {
-//        CodeSignature codeSignature = (CodeSignature) joinPoint.getSignature();
-//        String[] parameterNames = codeSignature.getParameterNames();
-//        Object[] args = joinPoint.getArgs();
-//        Map<String, Object> params = new HashMap<>();
-//        for (int i = 0; i < parameterNames.length; i++) {
-//            params.put(parameterNames[i], args[i]);
-//        }
-//        return params;
-//    }
+        // 최근 요청
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ipAddress = request.getRemoteAddr();
+        String requestUrl = request.getRequestURL().toString();
+
+        // 현재 날짜
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String callFunction = pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName();
+
+        Object result;
+        try {
+            result = pjp.proceed();
+            String logMessage = "Controller Request Log - Date: " + formattedDate +
+                    ", IP Address: " + ipAddress +
+                    ", Request URL: " + requestUrl +
+                    ", Controller Method: " + callFunction;
+
+            log.info(logMessage);
+
+        } catch (Exception e) {
+            log.warn("Controller Request Log - Date: {}, IP Address: {}, Request URL: {}, Controller Method: {} - FAILED",
+                    formattedDate, ipAddressThreadLocal.get(), requestUrlThreadLocal.get(), callFunction, e);
+            throw e;
+        }
+
+        return result;
+    }
 
 
+    @Around("execution(* com.douzone.rest.*.service..*(..))")
+    public Object serviceAroundLogging(ProceedingJoinPoint pjp) throws Throwable {
 
+        String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String callFunction = pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName();
 
+        Object result;
+        try {
+            result = pjp.proceed();
+            String logMessage = "Service Method Log - Date: " + formattedDate +
+                    ", Service Method: " + callFunction;
+            log.info(logMessage);
+        } catch (Exception e) {
+            log.warn("Service Method Log - Date: " + formattedDate +
+                    ", Service Method: " + callFunction + " - FAILED", e);
+            throw e;
+        }
+
+        return result;
+    }
 }
+
+
+

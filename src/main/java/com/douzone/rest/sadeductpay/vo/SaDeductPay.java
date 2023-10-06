@@ -15,6 +15,7 @@ public class SaDeductPay {
     private String sumDeductPay;    //공제항목 합계
     private String dateId;          // dateId
 
+    private String salDivision;     // 지급구분 조회
     private String ynBonus;
     private String ynSal;
     private String rate;

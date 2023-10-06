@@ -27,7 +27,6 @@ public class SaAllowPayController {
         Map<String, Object> result = new HashMap<>();
         try {
             result = saAllowPayService.getSalaryAllInfoByDate(requestMap);
-
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -46,14 +45,12 @@ public class SaAllowPayController {
         return dateId;
     }
 
-
     @PostMapping("/getSaPayByCdEmp")
     public Map<String, Object> getSaPayByCdEmp(@RequestBody Map<String, String> requestMap) {
 
         Map<String, Object> result = new HashMap<>();
         try {
             result = saAllowPayService.getSaPayByCdEmp(requestMap);
-
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -65,7 +62,6 @@ public class SaAllowPayController {
 
         Map<String, Object> result = new HashMap<>();
         try {
-            System.out.println(requestMap.toString());
             result = saAllowPayService.getSalTotalPaySum(requestMap);
         } catch (Exception e) {
             e.getStackTrace();
