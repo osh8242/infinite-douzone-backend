@@ -13,15 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = {"http://localhost:3000", "http://osh8242.iptime.org"})
 public class AuthController {
-
     @Autowired
     private AuthService authService;
 
@@ -30,6 +29,9 @@ public class AuthController {
 
     @Autowired
     private EmailService emailService;
+
+//    @Autowired
+//    private TokenBlacklistService tokenBlacklistService;
 
     @Autowired
     private DataSourceService dataSourceService;
@@ -52,13 +54,33 @@ public class AuthController {
             System.out.println(response);
 
             System.out.println(response.getToken());
-            System.out.println("succeess token: " + response.getToken());
-            headers.set("Authorization", TOKEN_PREFIX + response.getToken());
+            System.out.println("succeess token: "+response.getToken());
+            headers.set("Authorization", "Bearer " + response.getToken());
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
+
+        @PostMapping("/cookieLogin")
+        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse) {
+            System.out.println("d---------------------------d");
+            ResponseVo response = authService.findUser(user);
+
+            if (response.getMessage().equals("SUCCESS")) {
+                System.out.println("SUCCCEESSS COKIIIEEE");
+                Cookie tokenCookie = new Cookie("authToken", response.getToken());
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+
+                httpResponse.addCookie(tokenCookie);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {

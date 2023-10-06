@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.douzone.rest.auth.jwt.JwtProperties.*;
+import static com.douzone.rest.auth.jwt.JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME;
 
 @Service
 public class JwtService {

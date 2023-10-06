@@ -2,7 +2,6 @@ package com.douzone.rest.emp.service;
 
 import com.douzone.rest.emp.dao.EmpDao;
 import com.douzone.rest.emp.vo.Emp;
-import com.douzone.rest.emp.vo.EmpMenuUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,19 @@ public class EmpService {
     private static final Logger logger = LoggerFactory.getLogger(EmpService.class);
 
     public List<Emp> getAllEmp() {
+        System.out.println("empServiceAlllll");
         List<Emp> result = null;
         try {
             logger.info("EmpService 진입");
             result = empDao.getAllEmp();
             logger.info("resullttt empAll List: {}", result);
+            System.out.println("result = " + result);
         } catch (Exception e) {
             logger.error("getAllEmp에서 에러 발생!", e);
         }
+
+        System.out.println("resutttt:list///");
+        System.out.println(result);
         return result;
     }
 

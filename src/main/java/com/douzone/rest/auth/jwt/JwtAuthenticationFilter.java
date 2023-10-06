@@ -1,6 +1,7 @@
 package com.douzone.rest.auth.jwt;
 
 import com.douzone.rest.auth.vo.UserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,15 +15,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static com.douzone.rest.auth.jwt.JwtProperties.*;
+import static com.douzone.rest.auth.jwt.JwtProperties.HEADER_STRING;
 import static com.douzone.rest.auth.jwt.JwtProperties.TOKEN_PREFIX;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Autowired
     private final JwtService jwtService;
 
+//    @Autowired
+//    private TokenBlacklistService tokenBlacklistService;
+
     public JwtAuthenticationFilter(JwtService jwtService){
-        System.out.println("jwt service");
         this.jwtService = jwtService;
     }
 
@@ -36,9 +40,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Authentication authentication = getAuthentication(request);
+//        String token = header.substring(TOKEN_PREFIX.length());
+//
+//        if (tokenBlacklistService.isTokenBlacklisted(token)) {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            return;
+//        }
 
-        // ??
+        Authentication authentication = getAuthentication(request);
         if(authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
