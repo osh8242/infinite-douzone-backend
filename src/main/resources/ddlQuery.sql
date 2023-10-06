@@ -325,24 +325,6 @@ INSERT INTO EMPPHOTO (CD_EMP) VALUES (:NEW.CD_EMP);
 END;
 
 --------------------------------------------------------
---  DDL FOR TABLE MEMBER
---------------------------------------------------------
-
-CREATE TABLE "HRHR"."MEMBER"
-(
-    "COMPANY_CODE" VARCHAR2(100 BYTE),
-    "USER_ID" VARCHAR2(100 BYTE),
-    "USER_PWD" VARCHAR2(100 BYTE),
-    "EMP_IMG" VARCHAR2(100 BYTE),
-    "USER_NAME" VARCHAR2(100 BYTE),
-    "EMAIL" VARCHAR2(100 BYTE),
-    "PHONE" VARCHAR2(100 BYTE),
-    "THEME" VARCHAR2(100 BYTE),
-    "SALT" VARCHAR2(100 BYTE)
-)
-
-    TABLESPACE "USERS";
---------------------------------------------------------
 --  DDL FOR TABLE SAALLOW
 --------------------------------------------------------
 
