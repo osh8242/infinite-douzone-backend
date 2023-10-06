@@ -21,6 +21,7 @@
         INSERT INTO MEMBER
         (
         COMPANY_CODE,
+        COMPANY_NAME,
         USER_ID,
         USER_PWD,
         USER_NAME,
@@ -31,6 +32,7 @@
         VALUES
         (
         #{companyCode, jdbcType=VARCHAR},
+        #{companyName, jdbcType=VARCHAR},
         #{userId, jdbcType=VARCHAR},
         #{userPwd, jdbcType=VARCHAR},
         #{userName, jdbcType=VARCHAR},

@@ -73,10 +73,35 @@ public class AuthController {
 //        return ResponseEntity.ok().body("Logged out successfully");
 //    }
 
+        @PostMapping("/cookieLogin")
+        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
+            System.out.println("d---------------------------d");
+            String clientIp = httpRequest.getHeader("Client-IP");
+            System.out.println("clientIp = " + clientIp);
+            System.out.println("parameter login info: ");
+            System.out.println(user);
+            ResponseVo response = authService.findUser(user, clientIp);
+
+            if (response.getMessage().equals("SUCCESS")) {
+                System.out.println("SUCCCEESSS COKIIIEEE");
+                Cookie tokenCookie = new Cookie("authToken", response.getToken());
+                tokenCookie.setPath("/");
+                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+
+                httpResponse.addCookie(tokenCookie);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        }
+
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
         String password = user.getUserPwd();
         System.out.println("Register Parameter: " + user);
+        user.setCompanyCode(user.getUserId().toUpperCase());
         // 스키마 관리자 계정 등록
         int resultMsg = authService.register(user);
         System.out.println("result Msg: " + resultMsg);
