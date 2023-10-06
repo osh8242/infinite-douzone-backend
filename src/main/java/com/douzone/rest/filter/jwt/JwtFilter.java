@@ -39,8 +39,9 @@ public class JwtFilter implements Filter {
 
         System.out.println("httpRequest.getHeader(\"Authorization\") = " + httpRequest.getHeader("Authorization"));
         String token = httpRequest.getHeader("Authorization").trim().split(" ")[1];
+        String clientIp = httpRequest.getHeader("Client-IP");
         System.out.println("getHeader(Authorization) = " + token);
-        if (token != null && jwtService.validateToken(token)) {
+        if (token != null && jwtService.validateToken(token, clientIp)) {
             System.out.println("유효한 토큰입니다");
             chain.doFilter(httpRequest, response);
         } else {
