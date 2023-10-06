@@ -60,6 +60,8 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    
     @PostMapping("/logout")
     public ResponseEntity<ResponseVo> logout() {
         System.out.println("logoutTesting...");
