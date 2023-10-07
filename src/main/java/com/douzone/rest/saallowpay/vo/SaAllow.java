@@ -13,4 +13,5 @@ public class SaAllow {
     private String nonTaxLimit;         // 비과세항목 한도
     private String nonTaxDivision;      // 비과세 항목 구분
     private String originYnTax;
+    private String ynUse;               // 사용여부
 }
