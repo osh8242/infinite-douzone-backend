@@ -5,6 +5,7 @@ import com.douzone.rest.saallowpay.vo.SaAllow;
 import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class SaAllowCalculationService {
         }
         return result;
     }
-
+    @Transactional
     // 재계산 버튼 함수
     public int getReCalculateResult(Map<String, Object> requestMap) {
 
@@ -140,6 +141,7 @@ public class SaAllowCalculationService {
         }
         return result;
     }
+
 
     // 과세 비과세 처리
     private List<SaAllowPay> makeCalculationAllowPayData(SaAllowPay saAllowPay){

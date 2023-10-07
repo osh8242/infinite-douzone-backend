@@ -67,12 +67,6 @@ public class SaAllowPayService {
             resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
             resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));              // 사원 상세 정보
 
-//            Map<String, List<Map<String, String>>> totalSalPaydata = new HashMap<>();
-//            totalSalPaydata.put("salAllow", saAllowPayMapper.getSalAllowPaySum(requestMap));            // 지급항목
-//            totalSalPaydata.put("salDeduct", saDeductPayDao.getSalDeductPaySum(requestMap));            // 공제항목
-//
-//            resultMap.put("totalSalPaydata", totalSalPaydata);
-
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -80,6 +74,7 @@ public class SaAllowPayService {
         return resultMap;
     }
 
+    @Transactional
     /* 급여항목 입력 or 수정 */
     public String mergeSalAllowPay(SaAllowPay saAllowPay) {
         String dateId = saAllowPay.getDateId();
@@ -108,6 +103,7 @@ public class SaAllowPayService {
         }
         return dateId;
     }
+
 
     public Map<String, Object> getSalTotalPaySum(Map<String, String> requestMap) {
         Map<String, Object> result = new HashMap<>();
@@ -174,7 +170,7 @@ public class SaAllowPayService {
         return result;
     }
 
-
+    @Transactional
     public int setCopyLastMonthData(SaAllowPay saAllowPay) {
         int result = 0;
         try {
@@ -195,7 +191,6 @@ public class SaAllowPayService {
     }
 
     // DateId 만들기
-    // Date테이블 dateId 생성하는 프로시져 호출
     // SaAllowPay (allowyear, allowMonth, paymentDate)
     private String makeDateId(SaAllowPay saAllowPay){
         String newDateId = "";
@@ -204,7 +199,6 @@ public class SaAllowPayService {
             saAllowPayMapper.makeDateId(saAllowPay);
             newDateId = saAllowPay.getDateId();
 
-
         }catch (Exception e){
             e.getStackTrace();
             System.out.println("setDateId에서 터짐.");
@@ -212,13 +206,12 @@ public class SaAllowPayService {
         return newDateId;
     }
 
-
+    @Transactional
     public int insertSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
             saAllow.setCdAllow(saAllowPayMapper.createSallowSeq());
 
-            System.out.println(saAllow.toString());
             result = saAllowPayMapper.insertSalAllow(saAllow);
             if("N".equals(saAllow.getYnTax())){
                 saAllow.setYnTax("Y");
@@ -230,7 +223,7 @@ public class SaAllowPayService {
 
         return result;
     }
-
+    @Transactional
     public int updateSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
@@ -264,14 +257,31 @@ public class SaAllowPayService {
         return result;
     }
 
+    @Transactional
     public int deleteSalAllow(SaAllow saAllow) {
         int result = 0;
         try {
-            result = saAllowPayMapper.deleteSalAllow(saAllow);
-            if("N".equals(saAllow.getYnTax())){
-                saAllow.setYnTax("Y");
-                saAllowPayMapper.deleteSalAllow(saAllow);
+
+            // 만약 지급내역이 있으면 ynUse 업데이트 지급내역이 없으면 진짜 삭제
+            int count = saAllowPayMapper.selectCountByAllow(saAllow);
+
+
+            if(count > 0){   // 지급내역이 있다
+                saAllow.setYnUse("N");  // 사용여부 'N'
+
+                saAllow.setOriginYnTax(saAllow.getYnTax());
+                result = saAllowPayMapper.updateSalAllow(saAllow);
+
+                if("N".equals(saAllow.getYnTax())){
+                    saAllow.setOriginYnTax("Y");
+                    saAllow.setYnTax("Y");
+                    saAllowPayMapper.updateSalAllow(saAllow);
+                }
+
+            }else{  //지급내역이 없다
+                result = saAllowPayMapper.deleteSalAllow(saAllow);
             }
+
         } catch (Exception e) {
             e.getStackTrace();
         }
