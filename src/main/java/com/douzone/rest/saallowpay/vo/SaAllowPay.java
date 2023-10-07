@@ -25,5 +25,5 @@ public class SaAllowPay {
     private String commonlyYn;
     private String monthlyYn;
     private String nontaxLimit;
-
+    private String ynUse;
 }
