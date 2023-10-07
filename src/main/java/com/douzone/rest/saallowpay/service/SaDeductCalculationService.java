@@ -64,7 +64,7 @@ public class SaDeductCalculationService {
                 if("Y".equals(salDeduct.get("ynSal"))) allowpaySum += sumTaxYBySal;
 
                 int deductPay = 0;
-                if ("DEDUCT_INCOME".equals(salDeduct.get("cdDeduct")) || "DEDUCT_LOCALINCOME".equals(salDeduct.get("cdDeduct"))) {
+                if ("505".equals(salDeduct.get("cdDeduct")) || "506".equals(salDeduct.get("cdDeduct"))) {
                     deductPay = makeDeductPay(salDeduct.get("cdDeduct") , allowpaySum, 0.0);
                 }else{
                     deductPay = makeDeductPay(salDeduct.get("cdDeduct") , allowpaySum, Double.parseDouble(salDeduct.get("rate")));
@@ -85,7 +85,7 @@ public class SaDeductCalculationService {
         int deductPay = 0;
 
         try {
-            if (cdDeduct.equals("DEDUCT_INCOME")) {
+            if (cdDeduct.equals("505")) {
                 if (allowPaySum * 12 > 500000000) {
                     deductPay = (int)(allowPaySum * 0.168);
                 } else if (allowPaySum * 12 > 300000000){
@@ -104,7 +104,7 @@ public class SaDeductCalculationService {
 
                 incomePay = deductPay;
 
-        } else if (cdDeduct.equals("DEDUCT_LOCALINCOME")) {   // 지방소득세 = 소득세 * 0.1
+        } else if (cdDeduct.equals("506")) {   // 지방소득세 = 소득세 * 0.1
             deductPay = (int)(incomePay * 0.1);
         } else {
             deductPay = (int) (allowPaySum * (rate / 100)); // 기타 비율만 곱하기

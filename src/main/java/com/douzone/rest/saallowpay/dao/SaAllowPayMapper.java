@@ -41,4 +41,5 @@ public interface SaAllowPayMapper {
 
     String createSallowSeq();
     SaAllow getSalAllow(SaAllow saAllow);
+    int selectCountByAllow(SaAllow saAllow);
 }
