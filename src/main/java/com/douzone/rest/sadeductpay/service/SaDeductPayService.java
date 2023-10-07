@@ -20,6 +20,8 @@ public class SaDeductPayService {
     }
 
     public List<SaDeductPay> getSaDeductPayByCdEmp(Map<String, String> requestMap) {
+        if("BONUS".equals(requestMap.get("salDivision"))){ requestMap.put("ynBonus" , "Y"); }
+        if("SAL".equals(requestMap.get("salDivision"))){ requestMap.put("ynSal" , "Y"); }
         return saDeductPayDao.getSaDeductPayByCdEmp(requestMap);
     }
 
