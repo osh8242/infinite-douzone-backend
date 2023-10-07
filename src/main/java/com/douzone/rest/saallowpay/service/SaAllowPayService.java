@@ -64,6 +64,8 @@ public class SaAllowPayService {
             resultMap.put("saAllowPayList", saAllowPayMapper.getSalAlLowPayListByEmp(requestMap));      // 급여항목 리스트
             resultMap.put("sumAllowPayByYnTax", saAllowPayMapper.getSumAllowPayByYnTax(requestMap));    // 과세 비과세 합
 
+            if("BONUS".equals(requestMap.get("salDivision"))){ requestMap.put("ynBonus","true"); }
+            if("SAL".equals(requestMap.get("salDivision"))){ requestMap.put("ynSal","true"); }
             resultMap.put("saDeductPayList", saDeductPayDao.getSaDeductPayByCdEmp(requestMap));         // 공제항목 리스트
             resultMap.put("saEmpDetail", saEmpInfoMapper.getSaEmpInfoByCdEmp(requestMap));              // 사원 상세 정보
 
