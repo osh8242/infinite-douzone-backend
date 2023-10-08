@@ -7,16 +7,20 @@
     <!-- 사원별 공제항목 조회 -->
     <select id="getSaDeductPayByCdEmp" parameterType="java.util.Map" resultType="SaDeductPay">
         SELECT
-            d.CD_DEDUCT
-            , d.NM_DEDUCT
-            , p.ALLOW_PAY
-            , p.CD_EMP , p.DATE_ID
-        FROM SADEDUCT d LEFT OUTER JOIN SADEDUCTPAY p
-            ON d.CD_DEDUCT = p.CD_DEDUCT
+            d.CD_DEDUCT,
+            d.NM_DEDUCT,
+            p.ALLOW_PAY,
+            p.CD_EMP,
+            p.DATE_ID
+        FROM SADEDUCT d
+        LEFT OUTER JOIN SADEDUCTPAY p ON d.CD_DEDUCT = p.CD_DEDUCT
             AND p.DATE_ID = #{dateId}
             AND p.CD_EMP = #{cdEmp}
             AND p.SAL_DIVISION = #{salDivision}
-        <if test="cdDeduct                    != null"> AND s.CD_DEDUCT = #{cdDeduct} </if>
+        <if test="cdDeduct != null"> AND d.CD_DEDUCT = #{cdDeduct} </if>
+        WHERE 1=1
+        <if test="ynBonus == 'true'"> AND d.YN_BONUS = 'Y' </if>
+        <if test="ynSal == 'true'"> AND d.YN_SAL = 'Y' </if>
     </select>
 
     <!-- 합계 데이터 조회-->
