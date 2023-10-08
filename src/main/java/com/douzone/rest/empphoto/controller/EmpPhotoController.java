@@ -5,6 +5,7 @@ import com.douzone.rest.empphoto.vo.EmpPhoto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/empPhoto")
 public class EmpPhotoController {
-    private static final String UPLOAD_DIRECTORY = "src/main/resources/images/";
+
+    @Value("${empphoto-file-path}")
+    private String UPLOAD_DIRECTORY;
     private final EmpPhotoService empPhotoService;
 
     @Autowired
