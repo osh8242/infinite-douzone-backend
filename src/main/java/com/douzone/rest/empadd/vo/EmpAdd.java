@@ -10,7 +10,7 @@ public class EmpAdd {
     private String nmChName;
     private String nmEnName;
     private String ynDrawContracts;
-    private String dcMidRetire;
+    private String dcMidretire;
     private String fgWedding;
     private String fgDisorder;
     private String daBirth;
@@ -23,8 +23,8 @@ public class EmpAdd {
     private String zipOrgin;
     private String addOrgin1;
     private String addOrgin2;
-    private String mnKeepGarden;
-    private String mnKeepEstate;
+    private String mnKeepgarden;
+    private String mnKeepestate;
     private String fgOwnHouse;
     private String telHome1;
     private String telHome2;

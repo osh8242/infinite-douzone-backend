@@ -85,7 +85,7 @@
             <if test="nmChName != null">NM_CHNAME = #{nmChName},</if>
             <if test="nmEnName != null">NM_ENNAME = #{nmEnName},</if>
             <if test="ynDrawContracts != null">YN_DRAWCONTRACTS = #{ynDrawContracts},</if>
-            <if test="dcMidRetire != null">DC_MIDRETIRE = #{dcMidRetire},</if>
+            <if test="dcMidretire != null">DC_MIDRETIRE = #{dcMidretire},</if>
             <if test="fgWedding != null">FG_WEDDING = #{fgWedding},</if>
             <if test="fgDisorder != null">FG_DISORDER = #{fgDisorder},</if>
             <if test="daBirth != null">DA_BIRTH = #{daBirth},</if>
@@ -99,8 +99,8 @@
             <if test="zipOrgin != null">ZIP_ORGIN = #{zipOrgin},</if>
             <if test="addOrgin1 != null">ADD_ORGIN1 = #{addOrgin1},</if>
             <if test="addOrgin2 != null">ADD_ORGIN2 = #{addOrgin2},</if>
-            <if test="mnKeepGarden != null">MN_KEEPGARDEN = #{mnKeepGarden},</if>
-            <if test="mnKeepEstate != null">MN_KEEPESTATE = #{mnKeepEstate},</if>
+            <if test="mnKeepgarden != null">MN_KEEPGARDEN = #{mnKeepgarden},</if>
+            <if test="mnKeepestate != null">MN_KEEPESTATE = #{mnKeepestate},</if>
             <if test="fgOwnHouse != null">FG_OWNHOUSE = #{fgOwnHouse},</if>
             <if test="telOffice1 != null">TEL_OFFICE1 = #{telOffice1},</if>
             <if test="telOffice2 != null">TEL_OFFICE2 = #{telOffice2},</if>
