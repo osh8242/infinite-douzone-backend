@@ -176,18 +176,41 @@ public class SaAllowPayService {
     public int setCopyLastMonthData(SaAllowPay saAllowPay) {
         int result = 0;
         try {
-            // 전월 데이터 불러오기
+            // 전월 dateId 불러오기
+            List<SaAllowPay> getDateListByLastMonth = saAllowPayMapper.getDateListByLastMonth(saAllowPay);
 
             // 이번달 월 모든 급여항목 공제항목 삭제
+            saAllowPayMapper.deleteSalAllowPayThisMonth(saAllowPay);
+            //saAllowPayMapper.deleteSalDeductPayThisMonth(saAllowPay);
 
-            // 이번달 dateId 만들어주기
-            saAllowPayMapper.makeOneMonthLaterDateId(saAllowPay); // dateId 만들어주기
+            // date별로 for문 돌려서 이번달 dateId 만들고 지난달 급여항목이랑 공제항목데이터 불러오기
+            for (SaAllowPay dateLastMonth : getDateListByLastMonth){
 
-            // 전월데이터 복사본 insert 시키기
-            result = saAllowPayMapper.setCopyLastMonthData(saAllowPay);
+                dateLastMonth.setSalDivision(saAllowPay.getSalDivision());
+
+                List<SaAllowPay> getSaAllowPayListByLastMonthPaymentDate = saAllowPayMapper.getSaAllowPayListByLastMonthPaymentDate(dateLastMonth);
+
+                if(getSaAllowPayListByLastMonthPaymentDate.size() > 0){
+                    saAllowPay.setPaymentDate(dateLastMonth.getPaymentDate());
+                    String newDateId = saAllowPayMapper.getDateId(saAllowPay);
+
+                    if(newDateId==null){
+                        saAllowPayMapper.makeDateIdForCopyLastMonth(saAllowPay);
+                        newDateId = saAllowPay.getDateId() ;
+                    }
+
+                    for (SaAllowPay SaAllowPayByLastMonth : getSaAllowPayListByLastMonthPaymentDate){
+                        SaAllowPayByLastMonth.setDateId(newDateId);
+                    }
+
+                   result += saAllowPayMapper.copyLastMonthData(getSaAllowPayListByLastMonthPaymentDate);
+                }
+            }
 
         } catch (Exception e) {
             e.getStackTrace();
+            System.out.println("전월데이터 복사에서 터짐");
+            throw new RuntimeException("전월데이터 복사에서 예외 발생", e);
         }
         return result;
     }

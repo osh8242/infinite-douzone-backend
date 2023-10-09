@@ -25,12 +25,13 @@ public interface SaAllowPayMapper {
     int updateDate(Map<String, String> requestMap); // 완료여부 고치기
 
 
-    int setCopyLastMonthData(SaAllowPay saAllowPay); // 전월데이터 복사
+    int copyLastMonthData(List<SaAllowPay> saAllowPay); // 전월데이터 복사
 
     Map<String, String> getSumAllowPayByYnTax(Map<String, String> requestMap); // (날짜별 사원별) 과세 비과세 합
 
     void makeDateId(SaAllowPay saAllowPay);
-    void makeOneMonthLaterDateId(SaAllowPay saAllowPay);
+    void makeDateIdForCopyLastMonth(SaAllowPay saAllowPay);
+    String getDateId(SaAllowPay saAllowPay);
     int getSalAllowPaySumByMonth(Map<String, String> requestMap);
 
     Map<String,Integer> getSalAllowPaySumTaxY(SaAllowPay saAllowPay);
@@ -42,4 +43,8 @@ public interface SaAllowPayMapper {
     String createSallowSeq();
     SaAllow getSalAllow(SaAllow saAllow);
     int selectCountByAllow(SaAllow saAllow);
+    List<SaAllowPay> getDateListByLastMonth(SaAllowPay saAllowPay);
+    int deleteSalAllowPayThisMonth(SaAllowPay saAllowPay);
+    int deleteSalDeductPayThisMonth(SaAllowPay saAllowPay);
+    List<SaAllowPay> getSaAllowPayListByLastMonthPaymentDate(SaAllowPay saAllowPay);
 }
