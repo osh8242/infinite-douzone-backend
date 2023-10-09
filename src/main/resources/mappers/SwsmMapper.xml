@@ -62,17 +62,26 @@
         #{startBreakTime, jdbcType=VARCHAR},
         #{endBreakTime, jdbcType=VARCHAR},
         #{workingDay, jdbcType=VARCHAR},
-        #{dayOff, jdbcType=VARCHAR},
-        #{salaryType, jdbcType=VARCHAR},
-        #{otherBenefits, jdbcType=VARCHAR},
-        #{bonusPaymentStatus, jdbcType=VARCHAR},
-        #{salaryPaymentDateType, jdbcType=VARCHAR},
+        <if test="dayOff != null and dayOff != ''">#{dayOff, jdbcType=VARCHAR},</if>
+        <if test="dayOff == null or dayOff == ''">'mon',</if>
+        <if test="salaryType != null and salaryType != ''">#{salaryType, jdbcType=VARCHAR},</if>
+        <if test="salaryType == null or salaryType == ''">'monthlySal',</if>
+        <if test="otherBenefits != null and otherBenefits != ''">#{otherBenefits, jdbcType=VARCHAR},</if>
+        <if test="otherBenefits == null or otherBenefits == ''">'T',</if>
+        <if test="bonusPaymentStatus != null and bonusPaymentStatus != ''">#{bonusPaymentStatus, jdbcType=VARCHAR},</if>
+        <if test="bonusPaymentStatus == null or bonusPaymentStatus == ''">'T',</if>
+        <if test="salaryPaymentDateType != null and salaryPaymentDateType != ''">#{salaryPaymentDateType, jdbcType=VARCHAR},</if>
+        <if test="salaryPaymentDateType == null or salaryPaymentDateType == ''">'month',</if>
         #{paymentDate, jdbcType=VARCHAR},
         #{paymentMethod, jdbcType=VARCHAR},
-        #{empInsurance, jdbcType=VARCHAR},
-        #{compensationInsurance, jdbcType=VARCHAR},
-        #{nationalPension, jdbcType=VARCHAR},
-        #{healthInsurance, jdbcType=VARCHAR},
+        <if test="empInsurance != null and empInsurance != ''">#{empInsurance, jdbcType=VARCHAR},</if>
+        <if test="empInsurance == null or empInsurance == ''">'T',</if>
+        <if test="compensationInsurance != null and compensationInsurance != ''">#{compensationInsurance, jdbcType=VARCHAR},</if>
+        <if test="compensationInsurance == null or compensationInsurance == ''">'T',</if>
+        <if test="nationalPension != null and nationalPension != ''">#{nationalPension, jdbcType=VARCHAR},</if>
+        <if test="nationalPension == null or nationalPension == ''">'T',</if>
+        <if test="healthInsurance != null and healthInsurance != ''">#{healthInsurance, jdbcType=VARCHAR},</if>
+        <if test="healthInsurance == null or healthInsurance == ''">'T',</if>
         #{addDetail, jdbcType=VARCHAR},
         #{startWorktime, jdbcType=VARCHAR},
         #{endWorktime, jdbcType=VARCHAR}
