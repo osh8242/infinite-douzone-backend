@@ -64,28 +64,30 @@ public class SaAllowCalculationService {
     }
     @Transactional
     // 재계산 버튼 함수
-    public int getReCalculateResult(Map<String, Object> requestMap) {
-
+    public int getReCalculateResult(List<Map<String, Object>> requestMapList) {
         int result = 0;
-        this.cdEmp = (String) requestMap.get("cdEmp");
-        this.dateId = requestMap.get("dateId").toString();;
-        this.allowMonth = (String) requestMap.get("allowMonth");
-        this.allowYear = (String) requestMap.get("allowYear");
-        this.salDivision = (String) requestMap.get("salDivision");
 
-        List<String> selectOptionList = (List<String>) requestMap.get("selectOption");
+        for(Map<String, Object> requestMap: requestMapList) {
+            this.cdEmp = (String) requestMap.get("cdEmp");
+            this.dateId = requestMap.get("dateId").toString();
+            this.allowMonth = (String) requestMap.get("allowMonth");
+            this.allowYear = (String) requestMap.get("allowYear");
+            this.salDivision = (String) requestMap.get("salDivision");
 
-        for (String option : selectOptionList) {
-            switch (option) {
-                case "editEmpInfo":               // 사원정보 변경 진 메뉴 생산직여부
-                case "recalculateTaxYn":          // 과세 비과세 재계산
-                    result = recalculateTaxYn();
-                    break;
-                case "recalculateDeductInfo":       // 공제항목 재계산
-                    result = recalculateDeductInfo();
-                    break;
-                default:
-                    break;
+            List<String> selectOptionList = (List<String>) requestMap.get("selectOption");
+
+            for (String option : selectOptionList) {
+                switch (option) {
+                    case "editEmpInfo":               // 사원정보 변경 진 메뉴 생산직여부
+                    case "recalculateTaxYn":          // 과세 비과세 재계산
+                        result = recalculateTaxYn();
+                        break;
+                    case "recalculateDeductInfo":       // 공제항목 재계산
+                        result = recalculateDeductInfo();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         return result;
