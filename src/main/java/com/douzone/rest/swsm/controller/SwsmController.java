@@ -88,6 +88,13 @@ public class SwsmController {
                     resultList.add(e);
             }
         }
+//        List<Swsm> swsmResultList = new ArrayList<>();
+//        for (Emp e : resultList){
+//            Swsm swsm = new Swsm();
+//            swsm.setCdEmp(e.getCdEmp());
+//            Swsm s=swsmService.getSwsmByCdEmp(swsm);
+//            swsmResultList.add(s);
+//        }
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
