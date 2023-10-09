@@ -36,9 +36,10 @@
     </select>
 
     <insert id="insertEmpAdd" parameterType="EmpAdd">
-        INSERT INTO empadd
+        INSERT ALL
+        INTO empadd
         (
-        cd_Emp, nm_ChName, nm_EnName, yn_DrawContracts, dc_MidRetire, fg_Wedding,
+        cd_Emp, nm_ChName, nm_EnName, yn_DrawContracts, dc_Midretire, fg_Wedding,
         fg_Disorder, da_Birth, str_Hobby, nm_Special, ty_Religion, zip_Home, add_Home1, add_Home2,
         zip_Orgin, add_Orgin1, add_Orgin2, mn_KeepGarden, mn_KeepEstate, fg_OwnHouse,
         tel_Office1, tel_Office2, tel_Office3, tel_Extens, ty_Milit, why_MltOff,
@@ -50,14 +51,14 @@
         (
         #{cdEmp, jdbcType=VARCHAR}, #{nmChName, jdbcType=VARCHAR},
         #{nmEnName, jdbcType=VARCHAR}, #{ynDrawContracts, jdbcType=VARCHAR},
-        #{dcMidRetire, jdbcType=VARCHAR}, #{fgWedding, jdbcType=VARCHAR},
+        #{dcMidretire, jdbcType=VARCHAR}, #{fgWedding, jdbcType=VARCHAR},
         #{fgDisorder, jdbcType=VARCHAR}, #{daBirth, jdbcType=DATE},
         #{strHobby, jdbcType=VARCHAR}, #{nmSpecial, jdbcType=VARCHAR},
         #{tyReligion, jdbcType=VARCHAR}, #{zipHome, jdbcType=VARCHAR},
         #{addHome1, jdbcType=VARCHAR}, #{addHome2, jdbcType=VARCHAR},
         #{zipOrgin, jdbcType=VARCHAR}, #{addOrgin1, jdbcType=VARCHAR},
-        #{addOrgin2, jdbcType=VARCHAR}, #{mnKeepGarden, jdbcType=NUMERIC},
-        #{mnKeepEstate, jdbcType=NUMERIC}, #{fgOwnHouse, jdbcType=VARCHAR},
+        #{addOrgin2, jdbcType=VARCHAR}, #{mnKeepgarden, jdbcType=NUMERIC},
+        #{mnKeepestate, jdbcType=NUMERIC}, #{fgOwnHouse, jdbcType=VARCHAR},
         #{telOffice1, jdbcType=VARCHAR}, #{telOffice2, jdbcType=VARCHAR},
         #{telOffice3, jdbcType=VARCHAR}, #{telExtens, jdbcType=VARCHAR},
         #{tyMilit, jdbcType=VARCHAR}, #{whyMltOff, jdbcType=VARCHAR},
@@ -71,8 +72,21 @@
         #{telHome3, jdbcType=VARCHAR}, #{celEmp1, jdbcType=VARCHAR},
         #{celEmp2, jdbcType=VARCHAR}, #{celEmp3, jdbcType=VARCHAR}
         )
+        INTO empFam (cd_famrel, cd_emp, yn_for, no_social, nm_krname, da_birth)
+        VALUES
+        ('CF0', #{cdEmp, jdbcType=VARCHAR}, 'K', #{noSocial, jdbcType=VARCHAR},
+        #{nmKrname, jdbcType=VARCHAR},
+        CASE
+        WHEN TO_NUMBER(SUBSTR(#{noSocial, jdbcType=VARCHAR}, 1, 2)) BETWEEN 0 AND 22 THEN
+        '20' || SUBSTR(#{noSocial, jdbcType=VARCHAR}, 1, 2)
+        ELSE
+        '19' || SUBSTR(#{noSocial, jdbcType=VARCHAR}, 1, 2)
+        END
+        || '-' ||
+        SUBSTR(#{noSocial, jdbcType=VARCHAR}, 3, 2) || '-' ||
+        SUBSTR(#{noSocial, jdbcType=VARCHAR}, 5, 2))
+        SELECT 1 FROM DUAL
     </insert>
-
 
 
     <delete id="deleteEmpByCdEmp" parameterType="EmpAdd">
@@ -85,7 +99,7 @@
             <if test="nmChName != null">NM_CHNAME = #{nmChName},</if>
             <if test="nmEnName != null">NM_ENNAME = #{nmEnName},</if>
             <if test="ynDrawContracts != null">YN_DRAWCONTRACTS = #{ynDrawContracts},</if>
-            <if test="dcMidRetire != null">DC_MIDRETIRE = #{dcMidRetire},</if>
+            <if test="dcMidretire != null">DC_MIDRETIRE = #{dcMidretire},</if>
             <if test="fgWedding != null">FG_WEDDING = #{fgWedding},</if>
             <if test="fgDisorder != null">FG_DISORDER = #{fgDisorder},</if>
             <if test="daBirth != null">DA_BIRTH = #{daBirth},</if>
@@ -99,8 +113,8 @@
             <if test="zipOrgin != null">ZIP_ORGIN = #{zipOrgin},</if>
             <if test="addOrgin1 != null">ADD_ORGIN1 = #{addOrgin1},</if>
             <if test="addOrgin2 != null">ADD_ORGIN2 = #{addOrgin2},</if>
-            <if test="mnKeepGarden != null">MN_KEEPGARDEN = #{mnKeepGarden},</if>
-            <if test="mnKeepEstate != null">MN_KEEPESTATE = #{mnKeepEstate},</if>
+            <if test="mnKeepgarden != null">MN_KEEPGARDEN = #{mnKeepgarden},</if>
+            <if test="mnKeepestate != null">MN_KEEPESTATE = #{mnKeepestate},</if>
             <if test="fgOwnHouse != null">FG_OWNHOUSE = #{fgOwnHouse},</if>
             <if test="telOffice1 != null">TEL_OFFICE1 = #{telOffice1},</if>
             <if test="telOffice2 != null">TEL_OFFICE2 = #{telOffice2},</if>

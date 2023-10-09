@@ -248,22 +248,7 @@
         WHERE DATE_ID = #{dateId}
     </update>
 
-    <!-- 전월데이터 복사 -->
-    <insert id="setCopyLastMonthData" parameterType="java.util.Map">
-        INSERT INTO SAALLOWPAY (CD_ALLOW, ALLOW_PAY, DATE_ID, YN_TAX)
-        SELECT CD_ALLOW
-        , ALLOW_PAY
-        , CD_EMP
-        , GET_DATE_ID( #{allowYear} ,#{allowMonth} ,#{paymentDate}) AS DATE_ID
-        , YN_TAX
-        FROM SAALLOWPAY s
-        WHERE DATE_ID IN (
-        SELECT DATE_ID FROM "DATE" d
-        WHERE 1=1
-        AND ALLOW_YEAR = #{allowYear}
-        AND "MONTH"= (SELECT TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM') FROM DUAL)
-        )
-    </insert>
+
 
     <!-- 지급액 계산_급여항목 정보(과세 분기) -->
     <select id="getSalAllowInfo" parameterType="SaAllowPay" resultType="SaAllow">
@@ -312,30 +297,13 @@
         VALUES (#{allowYear}, #{allowMonth}, #{paymentDate}, DATE_SEQ.nextval)
     </insert>
 
-    <!-- 전월데이터 복사 DATE_ID 만들기 -->
-    <update id="makeOneMonthLaterDateId" parameterType="SaAllowPay">
-        MERGE INTO "DATE" target
-        USING (
-            SELECT
-            DISTINCT
-            d.ALLOW_YEAR
-            , TO_CHAR(ADD_MONTHS(TO_DATE(d."MONTH",'YYYY-MM'),1), 'YYYY-MM') AS "MONTH"
-            , TO_CHAR(ADD_MONTHS(TO_DATE(d."DATE",'YYYY-MM-DD'),1), 'YYYY-MM-DD') AS "DATE"
-            FROM SAALLOWPAY p LEFT OUTER JOIN "DATE" d
-            ON d.DATE_ID = p.DATE_ID
-            WHERE p.DATE_ID IN (SELECT DATE_ID FROM "DATE" WHERE "MONTH" = #{allowMonth})
-        ) source
-        ON (target.ALLOW_YEAR = source.ALLOW_YEAR
-        AND target."MONTH" = source."MONTH"
-        AND target."DATE" = source."DATE"
-        )
-        WHEN NOT MATCHED THEN
-        INSERT (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
-        VALUES (source.ALLOW_YEAR, source."MONTH", source."DATE", DATE_SEQ.nextval)
-    </update>
+    <insert id="makeDateIdForCopyLastMonth" parameterType="SaAllowPay" useGeneratedKeys="true" keyProperty="dateId" keyColumn="DATE_ID">
+        INSERT INTO "DATE" (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
+        VALUES (#{allowYear}, #{allowMonth}, TO_CHAR(ADD_MONTHS(TO_DATE(#{paymentDate}, 'YYYY-MM-DD'), 1), 'YYYY-MM-DD'), DATE_SEQ.nextval)
+    </insert>
 
     <!-- dateId 가져오기 -->
-    <select id="getDateId" parameterType="java.util.Map" resultType="string">
+    <select id="getDateId" parameterType="SaAllowPay" resultType="string">
         SELECT DATE_ID FROM "DATE"
         WHERE ALLOW_YEAR = #{allowYear} AND "MONTH" = #{allowMonth} AND "DATE" = #{paymentDate}
     </select>
@@ -432,4 +400,41 @@
         WHERE rn = 1
     </select>
 
+    <select id="getDateListByLastMonth" parameterType="SaAllowPay" resultType="SaAllowPay">
+        SELECT date_id, "MONTH" as "ALLOW_MONTH", "DATE" as "PAYMENTDATE"
+        FROM "DATE" d
+        WHERE ALLOW_YEAR = #{allowYear}
+        AND "MONTH" = TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM')
+    </select>
+
+<!--    <delete id="deleteSalAllowPayThisMonth" parameterType="SaAllowPay">-->
+<!--        DELETE FROM SAALLOWPAY s-->
+<!--        WHERE DATE_ID IN (SELECT date_id FROM "DATE" WHERE "MONTH" = #{allowMonth})-->
+<!--        AND SAL_DIVISION =#{salDivision}-->
+<!--    </delete>-->
+
+    <delete id="deleteSalAllowPayThisMonth" parameterType="SaAllowPay">
+        DELETE FROM SAALLOWPAY s
+        WHERE DATE_ID IN (SELECT date_id FROM "DATE" WHERE "MONTH" = #{allowMonth})
+        AND SAL_DIVISION =#{salDivision}
+    </delete>
+
+    <delete id="deleteDateIdList" parameterType="SaAllowPay">
+        DELETE FROM "DATE"
+        WHERE "MONTH" = #{allowMonth}
+    </delete>
+
+    <!-- 전월데이터 복사 -->
+    <insert id="copyLastMonthData" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO SAALLOWPAY (CD_ALLOW, ALLOW_PAY, CD_EMP, DATE_ID, YN_TAX, SAL_DIVISION)
+            VALUES (#{item.cdAllow}, #{item.allowPay}, #{item.cdEmp}, #{item.dateId}, #{item.ynTax}, #{item.salDivision})
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+
+    <select id="getSaAllowPayListByLastMonthPaymentDate" parameterType="SaAllowPay" resultType="SaAllowPay">
+        SELECT * FROM SAALLOWPAY s WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision}
+    </select>
 </mapper>

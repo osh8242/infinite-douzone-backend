@@ -133,6 +133,7 @@ public class SaAllowCalculationService {
             SaAllowPay salAllowPay = new SaAllowPay();
             salAllowPay.setCdEmp(this.cdEmp);
             salAllowPay.setDateId(this.dateId);
+            salAllowPay.setSalDivision(this.salDivision);
 
             saDeductCalculationService.mergeNewDeductAllowPay(salAllowPay);
 

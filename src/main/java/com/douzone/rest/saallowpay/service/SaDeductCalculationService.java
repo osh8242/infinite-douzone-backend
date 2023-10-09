@@ -42,7 +42,7 @@ public class SaDeductCalculationService {
         List<SaDeductPay> makeCalculationDeductPayData = new ArrayList<>();
 
         try{
-            // 해당 dateId에 해당하는 해당귀속월의 사원별 급여유형(보너스or급여)별 과세항목의 합 가져오기
+            // 해당 dateId와 조회구분유형에 해당하는 해당 작성일자의 사원별 급여유형(보너스or급여)별 과세항목의 합 가져오기
             Map<String,Integer> sumAllowPayByYnTax = saAllowPayMapper.getSalAllowPaySumTaxY(saAllowPay);
             int sumTaxYBySal = Integer.parseInt(String.valueOf(sumAllowPayByYnTax.get("sumTaxYBySal")));
             int sumTaxYByBonus = Integer.parseInt(String.valueOf(sumAllowPayByYnTax.get("sumTaxYByBonus")));

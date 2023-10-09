@@ -23,7 +23,7 @@
         AND (e.DA_RETIRE IS NULL OR e.DA_RETIRE &gt; #{paymentDate})
         <if test="searchCdEmp       != null and searchCdEmp       != ''">   AND e.CD_EMP       = #{searchCdEmp}      </if>
         <if test="searchCdDept      != null and searchCdDept      != ''">   AND e.CD_DEPT      = #{searchCdDept}     </if>
-        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND e.CD_OCCUP     = #{searchCdOccup}    </if>
+        <if test="searchCdOccup     != null and searchCdOccup     != ''">   AND e.RANK_NO      = #{searchCdOccup}    </if>
         <if test="searchYnUnit      != null and searchYnUnit      != ''">   AND e.YN_UNIT      = #{searchYnUnit}     </if>
     </select>
 
@@ -31,19 +31,19 @@
         SELECT
             CD_EMP
             , NM_KRNAME AS "NM_EMP"
+            , decode(YN_UNIT,'Y','생산직','N','비생산직') AS "YN_UNIT"
+            , decode(YN_FORLABOR,'Y','국외근로','N','국내근로') AS "YN_FORLABOR"
             , CD_DEPT
             , (SELECT CODE_NAME FROM CODE WHERE CODE_ID = CD_DEPT) as "nmDept"
             , CD_FIELD
             , CD_PROJECT
-            , CD_OCCUP
+            , RANK_NO
+            , (SELECT CODE_NAME FROM CODE WHERE CODE_ID = RANK_NO) as "rankNoName"
             , YN_FORLABOR
             , DA_ENTER
             , YN_RESIDENT
-            , YN_UNIT
             , NO_SOCIAL
             , DA_RETIRE
-            , YN_UNIT
-            , YN_FORLABOR
         FROM EMP
         WHERE CD_EMP  = #{cdEmp}
         <if test="searchCdDept      != null and searchCdDept      != ''">   AND CD_DEPT      = #{searchCdDept}     </if>
