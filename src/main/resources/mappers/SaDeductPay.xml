@@ -170,5 +170,6 @@
         WHERE CD_DEDUCT = #{cdDeduct}
         AND DATE_ID = #{dateId}
         AND CD_EMP = #{cdEmp}
+        AND SAL_DIVISION = #{salDivision}
     </select>
 </mapper>
