@@ -87,7 +87,7 @@ public class SaDeductCalculationService {
         try {
             if (cdDeduct.equals("505")) {
                 if (allowPaySum * 12 > 500000000) {
-                    deductPay = (int)(allowPaySum * 0.168);
+                    deductPay = (int)(allowPaySum * 0.196);
                 } else if (allowPaySum * 12 > 300000000){
                     deductPay = (int)(allowPaySum * 0.280032);
                 } else if (allowPaySum * 12 > 150000000) {
@@ -101,14 +101,18 @@ public class SaDeductCalculationService {
                 } else {
                     deductPay = 0;
                 }
-
                 incomePay = deductPay;
-
-        } else if (cdDeduct.equals("506")) {   // 지방소득세 = 소득세 * 0.1
-            deductPay = (int)(incomePay * 0.1);
-        } else {
-            deductPay = (int) (allowPaySum * (rate / 100)); // 기타 비율만 곱하기
-        }
+            } else if (cdDeduct.equals("506")) {    // 지방소득세 = 소득세 * 0.1
+                deductPay = (int)(incomePay * 0.1);
+            } else if(cdDeduct.equals("502")){      // 건강보험
+                deductPay = (int) (allowPaySum * (rate / 100));
+                if(deductPay < 9890) deductPay = 9890;
+            } else if(cdDeduct.equals("504")){      // 장기요양보험료
+                deductPay = (int) (allowPaySum * (rate / 100));
+                if(deductPay < 1260) deductPay = 1260;
+            }else {
+                deductPay = (int) (allowPaySum * (rate / 100)); // 기타 비율만 곱하기
+            }
 
         }catch (Exception e){
             e.getStackTrace();
