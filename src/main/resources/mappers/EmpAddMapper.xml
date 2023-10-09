@@ -115,7 +115,7 @@
             <if test="addOrgin2 != null">ADD_ORGIN2 = #{addOrgin2},</if>
             <if test="mnKeepgarden != null">MN_KEEPGARDEN = #{mnKeepgarden},</if>
             <if test="mnKeepestate != null">MN_KEEPESTATE = #{mnKeepestate},</if>
-            <if test="fgOwnhouse != null">FG_OWNHOUSE = #{fgOwnHouse},</if>
+            <if test="fgOwnHouse != null">FG_OWNHOUSE = #{fgOwnHouse},</if>
             <if test="telOffice1 != null">TEL_OFFICE1 = #{telOffice1},</if>
             <if test="telOffice2 != null">TEL_OFFICE2 = #{telOffice2},</if>
             <if test="telOffice3 != null">TEL_OFFICE3 = #{telOffice3},</if>
