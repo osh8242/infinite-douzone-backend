@@ -46,8 +46,10 @@ public class AuthController {
         System.out.println("parameter login info: ");
         System.out.println(user);
         ResponseVo response = authService.findUser(user, clientIp);
+
         if (response.getMessage().equals("SUCCESS")) {
             HttpHeaders headers = new HttpHeaders();
+
             // ResponseVo에서 토큰을 가져와서 헤더에 추가
             System.out.println("responseeeeeeeeeee login");
             System.out.println(response);

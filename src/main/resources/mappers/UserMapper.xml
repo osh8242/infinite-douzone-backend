@@ -27,7 +27,8 @@
         USER_NAME,
         EMAIL,
         PHONE,
-        THEME
+        THEME,
+        SALT
         )
         VALUES
         (
@@ -38,7 +39,8 @@
         #{userName, jdbcType=VARCHAR},
         #{email, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
-        #{theme, jdbcType=VARCHAR}
+        #{theme, jdbcType=VARCHAR},
+        #{salt, jdbcType=VARCHAR}
         )
     </insert>
 
