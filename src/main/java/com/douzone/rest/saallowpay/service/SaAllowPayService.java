@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -102,6 +104,7 @@ public class SaAllowPayService {
         } catch (Exception e) {
             e.getStackTrace();
             System.out.println("mergeSalAllowPay에서 터짐");
+            throw new RuntimeException("mergeSalAllowPay Error", e);
         }
         return dateId;
     }
@@ -151,10 +154,10 @@ public class SaAllowPayService {
     }
 
 
-    public int recalculation(Map<String, Object> requestMap) {
+    public int recalculation(List<Map<String, Object>> requestMapList) {
         int result = 0;
         try {
-            result = saAllowCalculationService.getReCalculateResult(requestMap);
+            result = saAllowCalculationService.getReCalculateResult(requestMapList);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -181,23 +184,31 @@ public class SaAllowPayService {
 
             // 이번달 월 모든 급여항목 공제항목 삭제
             saAllowPayMapper.deleteSalAllowPayThisMonth(saAllowPay);
-            //saAllowPayMapper.deleteSalDeductPayThisMonth(saAllowPay);
+            saAllowPayMapper.deleteSalDeductPayThisMonth(saAllowPay);
 
             // date별로 for문 돌려서 이번달 dateId 만들고 지난달 급여항목이랑 공제항목데이터 불러오기
             for (SaAllowPay dateLastMonth : getDateListByLastMonth){
 
                 dateLastMonth.setSalDivision(saAllowPay.getSalDivision());
-
                 List<SaAllowPay> getSaAllowPayListByLastMonthPaymentDate = saAllowPayMapper.getSaAllowPayListByLastMonthPaymentDate(dateLastMonth);
 
+                String newDate = "";
                 if(getSaAllowPayListByLastMonthPaymentDate.size() > 0){
-                    saAllowPay.setPaymentDate(dateLastMonth.getPaymentDate());
+
+                    // 한 달 뒤의 날짜 계산
+                    LocalDate date = LocalDate.parse(dateLastMonth.getPaymentDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+                    LocalDate oneMonthLater = date.plusMonths(1);
+                    String newPaymentDate = oneMonthLater.format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+                    saAllowPay.setPaymentDate(newPaymentDate);
                     String newDateId = saAllowPayMapper.getDateId(saAllowPay);
 
                     if(newDateId==null){
-                        saAllowPayMapper.makeDateIdForCopyLastMonth(saAllowPay);
+                        saAllowPayMapper.makeDateId(saAllowPay);
                         newDateId = saAllowPay.getDateId() ;
                     }
+
+                    newDate = newDateId;
 
                     for (SaAllowPay SaAllowPayByLastMonth : getSaAllowPayListByLastMonthPaymentDate){
                         SaAllowPayByLastMonth.setDateId(newDateId);
@@ -205,6 +216,17 @@ public class SaAllowPayService {
 
                    result += saAllowPayMapper.copyLastMonthData(getSaAllowPayListByLastMonthPaymentDate);
                 }
+
+                // 공제항목 복사
+                List<SaDeductPay> getSaDeductPayListByLastMonthPaymentDate = saAllowPayMapper.getSaDeductPayListByLastMonthPaymentDate(dateLastMonth);
+                if(getSaDeductPayListByLastMonthPaymentDate.size() > 0){
+
+                    for (SaDeductPay SaDeductPayByLastMonth : getSaDeductPayListByLastMonthPaymentDate){
+                        SaDeductPayByLastMonth.setDateId(newDate);
+                    }
+                    result += saAllowPayMapper.copyDeductPayByLastMonthData(getSaDeductPayListByLastMonthPaymentDate);
+                }
+
             }
 
         } catch (Exception e) {
@@ -244,6 +266,7 @@ public class SaAllowPayService {
             }
         } catch (Exception e) {
             e.getStackTrace();
+            throw new RuntimeException("insertSalAllow Error", e);
         }
 
         return result;
@@ -278,6 +301,7 @@ public class SaAllowPayService {
             result = saAllowPayMapper.updateSalAllow(saAllow);
         } catch (Exception e) {
             e.getStackTrace();
+            throw new RuntimeException("updateSalAllow Error", e);
         }
         return result;
     }
@@ -309,6 +333,7 @@ public class SaAllowPayService {
 
         } catch (Exception e) {
             e.getStackTrace();
+            throw new RuntimeException("deleteSalAllow Error", e);
         }
         return result;
     }

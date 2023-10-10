@@ -297,10 +297,6 @@
         VALUES (#{allowYear}, #{allowMonth}, #{paymentDate}, DATE_SEQ.nextval)
     </insert>
 
-    <insert id="makeDateIdForCopyLastMonth" parameterType="SaAllowPay" useGeneratedKeys="true" keyProperty="dateId" keyColumn="DATE_ID">
-        INSERT INTO "DATE" (ALLOW_YEAR, "MONTH", "DATE", DATE_ID)
-        VALUES (#{allowYear}, #{allowMonth}, TO_CHAR(ADD_MONTHS(TO_DATE(#{paymentDate}, 'YYYY-MM-DD'), 1), 'YYYY-MM-DD'), DATE_SEQ.nextval)
-    </insert>
 
     <!-- dateId 가져오기 -->
     <select id="getDateId" parameterType="SaAllowPay" resultType="string">
@@ -407,11 +403,11 @@
         AND "MONTH" = TO_CHAR(TO_DATE(#{allowMonth}, 'YYYY-MM') - INTERVAL '1' MONTH, 'YYYY-MM')
     </select>
 
-<!--    <delete id="deleteSalAllowPayThisMonth" parameterType="SaAllowPay">-->
-<!--        DELETE FROM SAALLOWPAY s-->
-<!--        WHERE DATE_ID IN (SELECT date_id FROM "DATE" WHERE "MONTH" = #{allowMonth})-->
-<!--        AND SAL_DIVISION =#{salDivision}-->
-<!--    </delete>-->
+    <delete id="deleteSalDeductPayThisMonth" parameterType="SaAllowPay">
+        DELETE FROM SADEDUCTPAY s
+        WHERE DATE_ID IN (SELECT date_id FROM "DATE" WHERE "MONTH" = #{allowMonth})
+        AND SAL_DIVISION =#{salDivision}
+    </delete>
 
     <delete id="deleteSalAllowPayThisMonth" parameterType="SaAllowPay">
         DELETE FROM SAALLOWPAY s
@@ -434,7 +430,21 @@
         SELECT * FROM dual
     </insert>
 
+    <!-- 공제항목 전월데이터 복사 -->
+    <insert id="copyDeductPayByLastMonthData" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO SADEDUCTPAY (CD_DEDUCT, ALLOW_PAY, CD_EMP, DATE_ID, SAL_DIVISION)
+            VALUES (#{item.cdDeduct}, #{item.allowPay}, #{item.cdEmp}, #{item.dateId}, #{item.salDivision})
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+
     <select id="getSaAllowPayListByLastMonthPaymentDate" parameterType="SaAllowPay" resultType="SaAllowPay">
         SELECT * FROM SAALLOWPAY s WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision}
+    </select>
+
+    <select id="getSaDeductPayListByLastMonthPaymentDate" parameterType="SaAllowPay" resultType="SaDeductPay">
+        SELECT * FROM SADEDUCTPAY s WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision}
     </select>
 </mapper>
