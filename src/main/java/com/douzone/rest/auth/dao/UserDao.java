@@ -8,6 +8,7 @@ public interface UserDao {
 
     UserVo findUserByCd(UserVo user);
     UserVo findUser(UserVo user);
+
     UserVo findEmail(UserVo user);
 
     int register(UserVo user);
