@@ -20,4 +20,5 @@ public class UserVo {
     private String theme;
     private String phone;
     private String empImg;
+    private String salt;
 }

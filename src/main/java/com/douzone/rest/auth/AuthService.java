@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.security.SecureRandom;
+import java.util.Base64;
 @Service
 public class AuthService {
 
@@ -25,17 +26,26 @@ public class AuthService {
 
     public int register(UserVo user) {
         logger.info("Service register: {}", user);
-
         UserVo findUserId = userDao.findUser(user);
         if (findUserId != null) {
             logger.warn("User with given ID already exists.");
             return 0;
         } else {
-            String encodedPassword = passwordEncoder.encode(user.getUserPwd());
+            String salt=generateSalt();
+            user.setSalt(salt);
+            String encodedPassword = passwordEncoder.encode(user.getUserPwd()+salt);
             user.setUserPwd(encodedPassword);
             return userDao.register(user);
         }
     }
+
+    public static String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+
 
     public ResponseVo findUser(UserVo userVo, String clientIp) {
         ResponseVo response = new ResponseVo();
@@ -46,7 +56,9 @@ public class AuthService {
             return response;
         }
 
-        if (passwordEncoder.matches(userVo.getUserPwd(), user.getUserPwd())) {
+        String salt=user.getSalt();
+
+        if (passwordEncoder.matches(userVo.getUserPwd()+salt, user.getUserPwd())) {
             String jwtToken = jwtService.generateAccessToken(user.getUserId(), user.getCompanyCode(), clientIp);
             logger.info("Generated token: {}", jwtToken);
             response.setMessage("SUCCESS");
