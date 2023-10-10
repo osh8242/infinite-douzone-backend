@@ -107,11 +107,11 @@ public class SaAllowPayController {
     }
 
     @PostMapping("/recalculation")
-    public int recalculation(@RequestBody Map<String, Object> requestMap) {
+    public int recalculation(@RequestBody List<Map<String, Object>> requestMapList) {
         int result = 0;
 
         try {
-            result = saAllowPayService.recalculation(requestMap);
+            result = saAllowPayService.recalculation(requestMapList);
         } catch (Exception e) {
             e.getStackTrace();
         }
