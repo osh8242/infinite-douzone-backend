@@ -200,7 +200,15 @@
     </insert>
 
 
+<!--<insert id="empDummy" parameterType="Emp">-->
+<!--    INSERT INTO EMP (CD_EMP,NM_KRNAME)-->
+<!--    VALUES (#{cdEmp},#{nmKrname})-->
+<!--</insert>-->
 
+<!--<insert id="saAllowDummy" parameterType="saAllowPay">-->
+<!--    INSERT INTO SAALLOWPAY (CD_ALLOW,ALLOW_PAY,CD_EMP,DATE_ID,YN_TAX,SAL_DIVISION)-->
+<!--    VALUES (#{cdAllow},#{allowPay},#{cdEmp},#{dateId},#{ynTax},#{salDivision})-->
+<!--</insert>-->
 
     <update id="updateEmp" parameterType="Emp">
         UPDATE EMP

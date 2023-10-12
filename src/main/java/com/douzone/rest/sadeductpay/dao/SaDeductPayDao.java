@@ -1,5 +1,6 @@
 package com.douzone.rest.sadeductpay.dao;
 
+import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import com.douzone.rest.sadeductpay.vo.SaDeductPay;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,4 +26,6 @@ public interface SaDeductPayDao {
     int updateSaDeductPay(SaDeductPay saDeductPay);
     int deleteSaDeductPay(SaDeductPay saDeductPay);
     int getCountSaDeductPay(SaDeductPay saDeductPay);
+
+    int deleteAllDeductAllowPay(SaAllowPay saAllowPay);
 }

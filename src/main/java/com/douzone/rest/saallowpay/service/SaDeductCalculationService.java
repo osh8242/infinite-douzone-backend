@@ -37,6 +37,16 @@ public class SaDeductCalculationService {
         return result;
     }
 
+    public int deleteDeductAllowPay(SaAllowPay saAllowPay){
+        int result = 0;
+        try {
+            result = saDeductPayDao.deleteAllDeductAllowPay(saAllowPay);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        return result;
+    }
+
     private List<SaDeductPay> makeCalculationDeductPayList(SaAllowPay saAllowPay){
 
         List<SaDeductPay> makeCalculationDeductPayData = new ArrayList<>();

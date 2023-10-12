@@ -2,6 +2,7 @@ package com.douzone.rest.emp.dao;
 
 import com.douzone.rest.emp.vo.Emp;
 import com.douzone.rest.emp.vo.EmpMenuUsage;
+import com.douzone.rest.saallowpay.vo.SaAllowPay;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface EmpDao {
 
     //코드헬퍼
     public List<Emp> getEmpListForCodeHelper(Map<String, String> map);
+
+    //더미데이터 생성
+//    public int empDummy(Emp emp);
+//    public int saAllowDummy(SaAllowPay saAllowPay);
 }
