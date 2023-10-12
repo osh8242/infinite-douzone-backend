@@ -83,7 +83,7 @@
             )
             INTO empFam
             (
-                cd_famrel, cd_emp, yn_for, no_social, nm_krname, da_birth
+                cd_famrel, cd_emp, yn_for, no_social, nm_krname, da_birth, cd_job, cd_offpos
             )
             VALUES
             (
@@ -97,7 +97,8 @@
                 END
                 || '-' ||
                 SUBSTR(#{noSocial, jdbcType=VARCHAR}, 3, 2) || '-' ||
-                SUBSTR(#{noSocial, jdbcType=VARCHAR}, 5, 2)
+                SUBSTR(#{noSocial, jdbcType=VARCHAR}, 5, 2),
+                '001', #{rankNo, jdbcType=VARCHAR}
             )
         SELECT 1 FROM DUAL
     </insert>
