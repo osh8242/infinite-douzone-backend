@@ -441,10 +441,17 @@
     </insert>
 
     <select id="getSaAllowPayListByLastMonthPaymentDate" parameterType="SaAllowPay" resultType="SaAllowPay">
-        SELECT * FROM SAALLOWPAY s WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision}
+        SELECT *
+        FROM SAALLOWPAY s INNER JOIN Emp e
+        ON e.CD_EMP = s.CD_EMP
+        WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision} AND e.JOB_OK = 'Y'
     </select>
 
     <select id="getSaDeductPayListByLastMonthPaymentDate" parameterType="SaAllowPay" resultType="SaDeductPay">
-        SELECT * FROM SADEDUCTPAY s WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision}
+        SELECT *
+        FROM SADEDUCTPAY s INNER JOIN Emp e
+        ON e.CD_EMP = s.CD_EMP
+        WHERE DATE_ID =#{dateId} AND SAL_DIVISION= #{salDivision} AND e.JOB_OK = 'Y'
     </select>
+
 </mapper>

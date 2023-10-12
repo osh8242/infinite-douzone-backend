@@ -78,7 +78,7 @@ public class SaAllowCalculationService {
 
             for (String option : selectOptionList) {
                 switch (option) {
-                    case "editEmpInfo":               // 사원정보 변경 진 메뉴 생산직여부
+//                    case "editEmpInfo":               // 사원정보 변경 진 메뉴 생산직여부
                     case "recalculateTaxYn":          // 과세 비과세 재계산
                         result = recalculateTaxYn();
                         break;
@@ -107,8 +107,9 @@ public class SaAllowCalculationService {
 
             List<SaAllowPay> reCalculateAllowPayList = new ArrayList<>();
 
-            if(getSalAllowPayList(salAllowPay)!=null) {
-                for (SaAllowPay saAllowPay : getSalAllowPayList(salAllowPay)) {
+            List<SaAllowPay> getSalAllowPayList = getSalAllowPayList(salAllowPay);
+            if(getSalAllowPayList!=null) {
+                for (SaAllowPay saAllowPay : getSalAllowPayList) {
                     for (SaAllowPay reCalculateAllowPay : makeCalculationAllowPayData(saAllowPay)) {
                         reCalculateAllowPayList.add(reCalculateAllowPay);
                     }
@@ -232,6 +233,7 @@ public class SaAllowCalculationService {
             newSaAllowPay.setSalDivision(salDivision);
             newSaAllowPay.setYnTax(ynTax);
             newSaAllowPay.setAllowPay(allowPay);
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("createSalAllowPay에서 터짐...");
@@ -250,9 +252,9 @@ public class SaAllowCalculationService {
             requestMap.put("dateId", saAllowPay.getDateId());
 
             //List<SaAllowPay> a = saAllowPayMapper.getSalAlLowPayListByEmp(requestMap);
-            resultList =  saAllowPayMapper.getSalAlLowPayListByEmpForCalculation(requestMap).stream()
-                    .filter(s -> s.getCdEmp() != null)
-                    .collect(Collectors.toList());
+//            resultList =  saAllowPayMapper.getSalAlLowPayListByEmpForCalculation(requestMap).stream()
+//                    .filter(s -> s.getCdEmp() != null)
+//                    .collect(Collectors.toList());
 
         }catch (Exception e){
             e.printStackTrace();
@@ -266,7 +268,7 @@ public class SaAllowCalculationService {
     // 필수 값 : cdAllow
     private SaAllow getSalAllowInfo(SaAllowPay saAllowPay) {
         try {
-            System.out.println(saAllowPay.toString());
+
             return saAllowPayMapper.getSalAllowInfo(saAllowPay);
         } catch (Exception e) {
             e.printStackTrace();
