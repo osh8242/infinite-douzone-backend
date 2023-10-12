@@ -13,6 +13,7 @@
             *
         FROM EMPFAM
         WHERE cd_emp = #{cdEmp}
+        ORDER BY seq_val
     </select>
 
     <insert id="insertEmpFam" parameterType="EmpFam">
