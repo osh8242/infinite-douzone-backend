@@ -164,6 +164,13 @@
         AND SAL_DIVISION = #{salDivision}
     </delete>
 
+    <delete id="deleteAllDeductAllowPay" parameterType="SaAllowPay">
+        DELETE FROM SADEDUCTPAY
+        AND DATE_ID = #{dateId}
+        AND CD_EMP = #{cdEmp}
+        AND SAL_DIVISION = #{salDivision}
+    </delete>
+
     <select id="getCountSaDeductPay" parameterType="SaDeductPay" resultType="int">
         SELECT COUNT(*)
         FROM SADEDUCTPAY
