@@ -166,7 +166,7 @@
 
     <delete id="deleteAllDeductAllowPay" parameterType="SaAllowPay">
         DELETE FROM SADEDUCTPAY
-        AND DATE_ID = #{dateId}
+        WHERE DATE_ID = #{dateId}
         AND CD_EMP = #{cdEmp}
         AND SAL_DIVISION = #{salDivision}
     </delete>

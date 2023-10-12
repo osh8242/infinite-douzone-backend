@@ -92,7 +92,7 @@ public class SaAllowPayService {
                 if (saAllowPayMapper.deleteSalAllowPay(saAllowPay) > 0) {
                     saAllowPay.setAllowPay("0");
 //                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 급여항목 insert or update 가 아니고 지워야 겠죠???
-                    saDeductCalculationService.mergeNewDeductAllowPay(saAllowPay); // 삭제
+                    saDeductCalculationService.deleteDeductAllowPay(saAllowPay); // 삭제
                 }
             } else {
                 int mergeSalaryAllowPayResult = saAllowCalculationService.mergeNewSalaryAllowPay(saAllowPay); // 급여항목 insert or update
