@@ -1,6 +1,7 @@
 package com.douzone.rest.auth;
 
 import com.douzone.rest.auth.mail.EmailService;
+import com.douzone.rest.auth.mail.SendMailComponent;
 import com.douzone.rest.auth.vo.ResponseVo;
 import com.douzone.rest.auth.vo.UserVo;
 import com.douzone.rest.company.service.CompanyService;
@@ -33,6 +34,9 @@ public class AuthController {
     private EmailService emailService;
 
     @Autowired
+    private SendMailComponent emailCompoenet;
+
+    @Autowired
     private DataSourceService dataSourceService;
 
     @Autowired
@@ -63,7 +67,7 @@ public class AuthController {
         }
     }
 
-    
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseVo> logout() {
         System.out.println("logoutTesting...");
@@ -77,29 +81,29 @@ public class AuthController {
 //        return ResponseEntity.ok().body("Logged out successfully");
 //    }
 
-        @PostMapping("/cookieLogin")
-        @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-        public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
-            System.out.println("d---------------------------d");
-            String clientIp = httpRequest.getHeader("Client-IP");
-            System.out.println("clientIp = " + clientIp);
-            System.out.println("parameter login info: ");
-            System.out.println(user);
-            ResponseVo response = authService.findUser(user, clientIp);
+    @PostMapping("/cookieLogin")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    public ResponseEntity<ResponseVo> cookieLogin(@RequestBody UserVo user, HttpServletResponse httpResponse, HttpServletRequest httpRequest) {
+        System.out.println("d---------------------------d");
+        String clientIp = httpRequest.getHeader("Client-IP");
+        System.out.println("clientIp = " + clientIp);
+        System.out.println("parameter login info: ");
+        System.out.println(user);
+        ResponseVo response = authService.findUser(user, clientIp);
 
-            if (response.getMessage().equals("SUCCESS")) {
-                System.out.println("SUCCCEESSS COKIIIEEE");
-                Cookie tokenCookie = new Cookie("authToken", response.getToken());
-                tokenCookie.setPath("/");
-                tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
+        if (response.getMessage().equals("SUCCESS")) {
+            System.out.println("SUCCCEESSS COKIIIEEE");
+            Cookie tokenCookie = new Cookie("authToken", response.getToken());
+            tokenCookie.setPath("/");
+            tokenCookie.setMaxAge(7 * 24 * 60 * 60); // 1주일
 
-                httpResponse.addCookie(tokenCookie);
+            httpResponse.addCookie(tokenCookie);
 
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
+    }
 
     @PostMapping("/register")
     public String Register(@RequestBody UserVo user) throws Exception {
@@ -187,6 +191,20 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+//    @CrossOrigin(origins = "http://localhost:3000/")
+//    @PostMapping("/sendMailSwsm")
+//    public ResponseEntity<ResponseVo> sendMailSwsm(@RequestBody UserVo user, @RequestParam String cdEmp) {
+//        System.out.println("ready for mail"+cdEmp);
+//        System.out.println(user);
+//
+//        Swsm emailSwsm
+//
+//        emailCompoenet.sendTableForm();
+//
+//        ResponseVo response = new ResponseVo();
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
     @GetMapping("/getClientIp")
     public String getClientIp(HttpServletRequest request) {
         System.out.println("AuthController.getClientIp");
@@ -195,4 +213,16 @@ public class AuthController {
         return clientIp;
     }
 
+//    @CrossOrigin(origins = "http://localhost:3000/")
+//    @PostMapping("/sendSwsm")
+//    public ResponseEntity<ResponseVo> sendSwsm(@RequestBody UserVo user,@RequestBody Swsm swsm, @RequestBody SwsmOther swsmOther) {
+//        System.out.println("parameter email info: ");
+//
+////        UserVo result = authService.IdByEmail(user);
+//        emailService.sendSwsm(user,
+//           swsm, swsmOther
+//                );
+//        ResponseVo response = new ResponseVo();
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 }
